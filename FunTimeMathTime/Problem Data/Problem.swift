@@ -6,25 +6,33 @@
 //
 
 import SwiftUI
-import Foundation
+//import Foundation
+import Combine
 
 
-class Problem: Identifiable {
+// TODO: Add way to store for future reference
+
+class Problem: Identifiable, ObservableObject {
+    @Published var selectedSolution: Solution? {
+        didSet {
+            print("Problem:  selectedSolution?  \(selectedSolution)")
+        }
+    }
+    
     let id = UUID()
-    var index: Int = 0
     
     let topValue: Int
     let bottomValue: Int
     let problemType: ProblemType
     
-    let solution: Solution
+    let correctSolution: Solution
+    var solutions: [Solution] = []
     
-    private(set) var selectedSolution: Solution?
-    var choseCorrectSolution: Bool { solution == selectedSolution }
+    var correctSolutionChosen: Bool { correctSolution == selectedSolution }
     
     private var remainderText: String {
         guard
-            let remainder = solution.remainder,
+            let remainder = correctSolution.remainder,
             remainder > 0
         else {
             return ""
@@ -33,8 +41,8 @@ class Problem: Identifiable {
         return remainder > 0 ? "Remainder \(remainder)" : ""
     }
     
-    var choices: [Solution] = []
-    
+    // Used for animation
+    var index: Int = 0
     
         // MARK: - Lifecycle
     
@@ -43,17 +51,15 @@ class Problem: Identifiable {
         self.bottomValue = bottomValue
         self.problemType = problemType
         
-        solution = problemType.solution(topValue: topValue, bottomValue: bottomValue)
+        correctSolution = problemType.solution(topValue: topValue, bottomValue: bottomValue)
         
         var tempOptions = [Solution]()
         
-        tempOptions.append(solution)
+        tempOptions.append(correctSolution)
         tempOptions.append(problemType.solution(topValue: topValue, bottomValue: bottomValue + 1))
         tempOptions.append(problemType.solution(topValue: topValue, bottomValue: bottomValue - 1))
         
-            //        tempOptions.append(ProblemType.solution(topValue: topValue, bottomValue: bottomValue.inverted()))
-        
-        choices = tempOptions.shuffled().shuffled()
+        solutions = tempOptions.shuffled().shuffled()
     }
     
     
@@ -61,7 +67,9 @@ class Problem: Identifiable {
         Problem(topValue: topValue, bottomValue: bottomValue, problemType: problemType)
     }
     
+    
 }
+
     
 extension Problem: Equatable, Hashable {
         // Protocol
@@ -73,15 +81,13 @@ extension Problem: Equatable, Hashable {
         hasher.combine(id)
     }
     
-    
 }
 
 
 extension Problem: CustomStringConvertible {
     var description: String {
-        "\n\(topValue) \(problemType) \(bottomValue) = \(solution.result) (\(solution.remainder ?? 0))"
+        "\n\(topValue) \(problemType) \(bottomValue) = \(correctSolution.result) (\(correctSolution.remainder ?? 0))"
     }
-    
     
 }
 

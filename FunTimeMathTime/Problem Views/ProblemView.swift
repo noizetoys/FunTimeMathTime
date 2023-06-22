@@ -9,33 +9,25 @@ import SwiftUI
 
 
 struct ProblemView: View {
-    @State private(set) var selectedSolution: Solution?
+    @ObservedObject private var problem: Problem
+    
     @State private var solutionSelected: Bool = false
     @State private var correctSolutionSelected: Bool = false
-    
-    private let problem: Problem
-    private let solutions: [Solution]
-    private let correctSolution: Solution
     
     
         // MARK: - Lifecycle -
     
     init(problem: Problem) {
-//        print("ProblemView: init:  \(problem)")
         self.problem = problem
-        self.solutions = problem.choices
-        self.correctSolution = problem.solution
     }
     
     
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 10)
-//                .foregroundColor(foreGroundColor.opacity(0.7))
                 .foregroundColor(.white)
                 .overlay {
                     RoundedRectangle(cornerRadius: 10)
-//                        .stroke(.blue, lineWidth: 10.0)
                         .stroke(.black, lineWidth: 10.0)
                 }
                 .padding(5)
@@ -54,35 +46,24 @@ struct ProblemView: View {
                     .padding(.top, -20)
                 
                 HStack {
-                    ForEach(solutions) { solution in
-                        let selected = solution == selectedSolution
-                        let isCorrectAnswer = solution == correctSolution
-                        
+                    ForEach(problem.solutions) { solution in
                         SolutionView(solution: solution,
-                                     isCorrectSolution: isCorrectAnswer,
-                                     selected: selected,
+                                     isCorrectSolution: solution == problem.correctSolution,
+                                     selected: solution == problem.selectedSolution,
                                      solutionSelected: solutionSelected)
                             .frame(width: 100, height: 100)
                             .onTapGesture {
-                                if solution == selectedSolution {
-                                    selectedSolution = nil
-                                    solutionSelected = false
-                                }
-                                else {
-                                    selectedSolution = solution
-                                    solutionSelected = true
+                                withAnimation {
+                                    problem.selectedSolution = solution
                                 }
                             }
                             .padding(.horizontal, 10)
-//                            .padding()
                     }
                     
                 } // HSTACK - Solutions
 
             } // VStack
             .padding(.vertical, 30)
-//            .background(.blue.opacity(0.3))
-//            .background(.white)
             .cornerRadius(10)
             .font(.largeTitle)
             .bold()

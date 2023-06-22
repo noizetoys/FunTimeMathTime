@@ -41,34 +41,20 @@ fileprivate let probSet: [Problem] = [
 
 
 
-//class ProblemSet: ObservableObject {
-//    private(set) var problems: [Problem]
-//    
-//    private(set) var config: ProblemSetConfiguration
-//    
-//    init(config: ProblemSetConfiguration) {
-//        self.config = config
-//        problems = probSet
-//    }
-//    
-//    
-//    var count: Int {
-//        problems.count
-//    }
-//    
-//}
-//
-//
+
+
 struct Scrollala: View {
     
     @StateObject var problemSet: ProblemSet
     @State private var snappedItem = 0.0
     @State private var draggingItem = 0.0
+    @State private var unanswered: [Problem] = []
     
     
     init(config: ProblemSetConfiguration) {
         _problemSet = StateObject(wrappedValue: ProblemSet(config: config))
     }
+    
     
     var body: some View {
         
@@ -88,7 +74,7 @@ struct Scrollala: View {
                 }
             }
         }
-        .border(.red)
+//        .border(.red)
         .gesture(
             DragGesture()
                 .onChanged { value in
@@ -97,7 +83,7 @@ struct Scrollala: View {
                 .onEnded { value in
                     withAnimation {
                         draggingItem = snappedItem + value.predictedEndTranslation.width / 100
-                        draggingItem = round(draggingItem).remainder(dividingBy: Double(problemSet.count))
+                        draggingItem = round(draggingItem).remainder(dividingBy: Double(problemSet.unansweredCount))
                         snappedItem = draggingItem
                     }
                 }
@@ -108,11 +94,11 @@ struct Scrollala: View {
     }
     
     func distance(_ item: Int) -> Double {
-        return (draggingItem - Double(item)).remainder(dividingBy: Double(problemSet.count))
+        return (draggingItem - Double(item)).remainder(dividingBy: Double(problemSet.unansweredCount))
     }
     
     func myXOffset(_ item: Int) -> Double {
-        let angle = Double.pi * 2 / Double(problemSet.count) * distance(item)
+        let angle = Double.pi * 2 / Double(problemSet.unansweredCount) * distance(item)
         return sin(angle) * 700
     }
     

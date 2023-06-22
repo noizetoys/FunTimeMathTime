@@ -11,7 +11,9 @@ import SwiftUI
 struct SolutionView: View, Identifiable {
     var id = UUID()
     
-    var solution: Solution
+//    @Binding private var selectedSolution: Solution?
+    
+    @State var solution: Solution
     var selected: Bool
     var isCorrectAnswer: Bool
     private let dim: Bool
@@ -36,7 +38,7 @@ struct SolutionView: View, Identifiable {
     
     
     init(solution: Solution, isCorrectSolution: Bool, selected: Bool, solutionSelected: Bool) {
-        self.solution = solution
+        _solution = State(initialValue: solution)
         self.selected = selected
         dim = solutionSelected
         isCorrectAnswer = isCorrectSolution
@@ -48,7 +50,6 @@ struct SolutionView: View, Identifiable {
             RoundedRectangle(cornerRadius: 10)
                 .foregroundColor(foreGroundColor.opacity(0.7))
                 .background(.white)
-//                .background(.orange)
                 .clipShape(RoundedRectangle(cornerRadius: 10))
                 .overlay {
                     RoundedRectangle(cornerRadius: 10)
@@ -81,6 +82,7 @@ fileprivate struct SolutionPreviewView: View {
     
     @State var selected: Bool
     @State var solutionSelected: Bool
+    @State var selectedSolution: Solution?
     
     var body: some View {
         HStack {

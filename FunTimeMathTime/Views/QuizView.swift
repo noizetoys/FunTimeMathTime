@@ -11,71 +11,80 @@ import SwiftUI
 struct QuizView: View {
     @Environment(\.dismiss) private var dismiss
     
-    @State private var problemSet: [Problem]
-    @State private var currentProblem: Problem?
+    @StateObject private var problemSet: ProblemSet
     
-    @State private var remainingSeconds: Int
-    @State private var hasStarted: Bool = true //false
-    @State private var hasEnded: Bool = true // false
+    @State private var timer: Timer?
+    @State private var remainingSeconds: Int = 0 {
+        didSet { print("RemainingSeconds: \(remainingSeconds)")}
+    }
+    @State private var hasStarted: Bool = false
+    @State private var hasEnded: Bool = false
     
     private let config: ProblemSetConfiguration
     
-    private var needsTimer: Bool = false
-    
-    private var remainingProblemCount: Int {
-        let workedProblems = problemSet.filter( { $0.selectedSolution != nil })
-        return problemSet.count - workedProblems.count
+    private var needsTimer: Bool { config.timeLimit != nil }
+    private var timeString: String {
+        let minutes = remainingSeconds / 60
+        let seconds = remainingSeconds % 60
+        let secondsString = seconds > 9 ? "\(seconds)" : "0\(seconds)"
+        
+        return "\(minutes):\(secondsString)"
     }
+
+    // Temp
+    private var unsolved: Int { problemSet.problems.reduce(0) { partialResult, prob in
+        partialResult + (prob.selectedSolution == nil ? 1 : 0)
+    }}
     
-    private let dateFormatter: DateFormatter
+    private var solved: Int { problemSet.problems.reduce(0) { partialResult, prob in
+        partialResult + (prob.selectedSolution != nil ? 1 : 0)
+    }}
+    
+    
+    private var correctlyAnswered: Int { problemSet.problems.reduce(0) { partialResult, prob in
+        partialResult + (prob.correctSolutionChosen ? 1 : 0)
+    }}
     
     
         // MARK: - LifeCycle -
 
     init(config: ProblemSetConfiguration) {
-        print("Quizview: config: \(config)")
         self.config = config
-        dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "M:s"
 
-        let generatedProblems = ProblemGenerator.problemSet(for: config)
-        print("QuizView:  generated count == \(generatedProblems.count)")
-        _problemSet = .init(initialValue: generatedProblems)
+        _problemSet = StateObject(wrappedValue: ProblemSet(config: config))
+    }
+    
+    
+    private func configTimer() {
         
-        if let timeLimit = config.timeLimit, timeLimit > 0 {
-            _remainingSeconds = .init(initialValue: timeLimit * 60)
-            needsTimer = true
-        }
-        else {
-            _remainingSeconds = .init(initialValue: 0)
-        }
-
-        print("QuizView:  ProblemSet count == \(problemSet.count)")
     }
     
    
     var body: some View {
         VStack {
-//            Spacer()
             
-            if hasStarted {
-                HStack {
-                    if needsTimer {
-                        Spacer()
-                        Text("Time Remaining")
-                    }
-                    
-                    Spacer()
-                    
-                    Text("\(remainingProblemCount) Problems Remaining")
-                    Spacer()
-                }
-                .font(.title)
-                .bold()
+            HStack {
+                Spacer()
+                Text("\(timeString) Remaining")
+                    .foregroundStyle(hasStarted ? .black : .gray.opacity(0.3))
+                    .font(.largeTitle)
+                    .bold()
+                
+                Spacer()
             }
             
-            QuizProblemSetView(config: config)
-            
+            ScrollView(.horizontal) {
+                
+                HStack {
+                    ForEach(problemSet.problems) { problem in
+                        if problem.selectedSolution == nil {
+                            ProblemView(problem: problem)
+                        }
+                    }
+                }
+            }
+            .frame(width: 450, height: 350)
+                
             HStack {
                 Spacer()
                 
@@ -83,48 +92,82 @@ struct QuizView: View {
                     dismiss()
                 } label: {
                     Text("Cancel")
+                        .foregroundColor(.white)
+                        .font(.title)
+                        .bold()
+                        .padding()
+                }
+                .buttonBorderShape(.roundedRectangle)
+                .frame(width: 200)
+                .background(.red)
+                .clipShape(RoundedRectangle(cornerRadius: 15))
+                .overlay {
+                    RoundedRectangle(cornerRadius: 15)
+                        .stroke(.black, lineWidth: 6)
                 }
                 
                 Spacer()
                 
-                Button("Start") {
-                    
+                Button(action: {
+                    hasStarted.toggle()
+                    hasStarted ? end() : start()
+                }, label: {
+                    Text(hasStarted ? "End" : "Start")
+                        .foregroundStyle(Color.black)
+                        .font(.title)
+                        .bold()
+                        .padding()
+                })
+                .buttonBorderShape(.roundedRectangle)
+                .frame(width: 200)
+                .overlay {
+                    RoundedRectangle(cornerRadius: 15)
+                        .stroke(.black, lineWidth: 6)
                 }
                 
                 Spacer()
             }
+            .padding()
+            
+            
+            VStack {
+                Text("Problem Count: \(problemSet.problems.count)")
+                Text("Unsolved Problem Count: \(unsolved)")
+                Text("Solved Problem Count: \(solved)")
+            }
+            .font(.title)
             
         }
+        .environmentObject(problemSet)
         .safeAreaPadding(.horizontal)
-            //        .padding()
-//        .border(.blue)
     }
     
     
     private func start() {
+        if let timeLimit = config.timeLimit, timeLimit > 0 {
+            remainingSeconds = timeLimit * 60
+            timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { _ in
+                if remainingSeconds == 0 {
+                    end()
+                }
+                else {
+                    remainingSeconds -= 1
+                }
+            })
+            timer?.fire()
+            
+        }
+            
+        // Tell Problem Set time remains
         
     }
     
     
-    private var problemSetView: some View {
-        ScrollView(.horizontal) {
-            HStack {
-                ForEach(problemSet) { problem in
-                    ProblemView(problem: problem)
-                        .scrollTarget()
-                        .padding()
-                        .border(.red)
-                }
-            }
-            .scrollTargetLayout()
-            
-            Spacer()
-        }
-        .scrollTargetBehavior(.viewAligned)
-        .scrollIndicators(.hidden)
-        .frame(maxHeight: 250)
-        .padding()
-        .border(.red)
+    private func end() {
+        timer?.invalidate()
+        timer = nil
+        // End timer
+        // Tell Problem Set time is up
     }
     
 }
