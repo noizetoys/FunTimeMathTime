@@ -8,29 +8,30 @@
 import Foundation
 
 
-class ProblemSetConfiguration: Identifiable {
+class ProblemSetConfiguration: ObservableObject, Identifiable {
     private(set) var id = UUID()
     
+    @Published var problemCount: Float
+    @Published var timeLimit: Float
+    
+    @Published var valueRange: ClosedRange<Int>
+    @Published var selectedValues: [Int]
     var problemType: ProblemType
-    var problemCount: Int
-    
-    var timeLimit: Int?
-    
-    var valueRange: ClosedRange<Int>
-    var selectedValues: [Int]
     var randomize: Bool
     
-    
-    init(problemType: ProblemType,
-         problemCount: Int,
-         timeLimit: Int? = nil,
-         valueRange: ClosedRange<Int>,
-         selectedValues: [Int],
+   
+        // MARK: - Lifecycle -
+
+    init(problemType: ProblemType = .addition,
+         problemCount: Float = 30,
+         timeLimit: Float = 3,
+         valueRange: ClosedRange<Int> = 1...12,
+         selectedValues: [Int] = [],
          randomize: Bool = true)
     {
         self.problemType = problemType
         self.problemCount = problemCount
-        self.timeLimit = timeLimit ?? nil
+        self.timeLimit = timeLimit
         self.valueRange = valueRange
         self.selectedValues = selectedValues
         self.randomize = randomize
@@ -46,13 +47,20 @@ extension ProblemSetConfiguration: Equatable {
 }
 
 
+extension ProblemSetConfiguration: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+}
+
+
 extension ProblemSetConfiguration: CustomDebugStringConvertible {
     var debugDescription: String {
         """
         ProblemSetConfiguration:
         type: \(problemType)
         count: \(problemCount)
-        timeLimit: \(timeLimit ?? 0)
+        timeLimit: \(timeLimit)
         range: \(valueRange)
         values: \(selectedValues)
         randomize: \(randomize)

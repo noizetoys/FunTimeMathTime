@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		8504A6062A3FDA0F00990F00 /* FunTimeMathTimeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8504A6052A3FDA0F00990F00 /* FunTimeMathTimeApp.swift */; };
-		8504A6082A3FDA0F00990F00 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8504A6072A3FDA0F00990F00 /* ContentView.swift */; };
+		8504A6082A3FDA0F00990F00 /* Dashboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8504A6072A3FDA0F00990F00 /* Dashboard.swift */; };
 		8504A60A2A3FDA1000990F00 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8504A6092A3FDA1000990F00 /* Assets.xcassets */; };
 		8504A60D2A3FDA1000990F00 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8504A60C2A3FDA1000990F00 /* Preview Assets.xcassets */; };
 		8504A6172A3FDA1000990F00 /* FunTimeMathTimeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8504A6162A3FDA1000990F00 /* FunTimeMathTimeTests.swift */; };
@@ -29,6 +29,9 @@
 		8572EE662A40C33B00BD3905 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8572EE652A40C33B00BD3905 /* SettingsView.swift */; };
 		85A20FBA2A4144640089F1A9 /* ProblemSetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85A20FB92A4144640089F1A9 /* ProblemSetView.swift */; };
 		85A20FBC2A414A880089F1A9 /* Scrollala.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85A20FBB2A414A880089F1A9 /* Scrollala.swift */; };
+		85CB4E322A44D6D8003854BE /* CountDownSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CB4E312A44D6D8003854BE /* CountDownSheet.swift */; };
+		85CB4E342A44D9F2003854BE /* QuizCompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CB4E332A44D9F1003854BE /* QuizCompleteView.swift */; };
+		85CB4E362A44FB4D003854BE /* HistoryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CB4E352A44FB4D003854BE /* HistoryListView.swift */; };
 		85DAEDDA2A4281E9002941B8 /* ProblemSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DAEDD92A4281E9002941B8 /* ProblemSet.swift */; };
 /* End PBXBuildFile section */
 
@@ -52,7 +55,7 @@
 /* Begin PBXFileReference section */
 		8504A6022A3FDA0F00990F00 /* FunTimeMathTime.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FunTimeMathTime.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8504A6052A3FDA0F00990F00 /* FunTimeMathTimeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FunTimeMathTimeApp.swift; sourceTree = "<group>"; };
-		8504A6072A3FDA0F00990F00 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		8504A6072A3FDA0F00990F00 /* Dashboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dashboard.swift; sourceTree = "<group>"; };
 		8504A6092A3FDA1000990F00 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8504A60C2A3FDA1000990F00 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		8504A6122A3FDA1000990F00 /* FunTimeMathTimeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FunTimeMathTimeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -75,6 +78,9 @@
 		8572EE652A40C33B00BD3905 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		85A20FB92A4144640089F1A9 /* ProblemSetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProblemSetView.swift; sourceTree = "<group>"; };
 		85A20FBB2A414A880089F1A9 /* Scrollala.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scrollala.swift; sourceTree = "<group>"; };
+		85CB4E312A44D6D8003854BE /* CountDownSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountDownSheet.swift; sourceTree = "<group>"; };
+		85CB4E332A44D9F1003854BE /* QuizCompleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizCompleteView.swift; sourceTree = "<group>"; };
+		85CB4E352A44FB4D003854BE /* HistoryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryListView.swift; sourceTree = "<group>"; };
 		85DAEDD92A4281E9002941B8 /* ProblemSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProblemSet.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -165,12 +171,15 @@
 		8504A6332A3FDA8800990F00 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				8504A6072A3FDA0F00990F00 /* ContentView.swift */,
+				8504A6072A3FDA0F00990F00 /* Dashboard.swift */,
 				8504A62F2A3FDA8200990F00 /* ProblemTypePickerView.swift */,
 				8504A6492A3FDB3B00990F00 /* ProblemsConfigView.swift */,
 				8504A6592A40B64700990F00 /* QuizView.swift */,
 				85A20FB92A4144640089F1A9 /* ProblemSetView.swift */,
 				8572EE652A40C33B00BD3905 /* SettingsView.swift */,
+				85CB4E312A44D6D8003854BE /* CountDownSheet.swift */,
+				85CB4E332A44D9F1003854BE /* QuizCompleteView.swift */,
+				85CB4E352A44FB4D003854BE /* HistoryListView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -329,6 +338,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				85CB4E322A44D6D8003854BE /* CountDownSheet.swift in Sources */,
 				8572EE662A40C33B00BD3905 /* SettingsView.swift in Sources */,
 				8572EE642A40C1F800BD3905 /* QuizData.swift in Sources */,
 				8504A64A2A3FDB3B00990F00 /* ProblemsConfigView.swift in Sources */,
@@ -337,11 +347,13 @@
 				85A20FBA2A4144640089F1A9 /* ProblemSetView.swift in Sources */,
 				8504A65A2A40B64700990F00 /* QuizView.swift in Sources */,
 				85A20FBC2A414A880089F1A9 /* Scrollala.swift in Sources */,
+				85CB4E362A44FB4D003854BE /* HistoryListView.swift in Sources */,
 				8504A6422A3FDAF700990F00 /* ProblemView.swift in Sources */,
-				8504A6082A3FDA0F00990F00 /* ContentView.swift in Sources */,
+				8504A6082A3FDA0F00990F00 /* Dashboard.swift in Sources */,
 				8504A63F2A3FDAF700990F00 /* EquationView.swift in Sources */,
 				8504A6622A40B8E900990F00 /* Solution.swift in Sources */,
 				8504A63C2A3FDAF700990F00 /* Problem.swift in Sources */,
+				85CB4E342A44D9F2003854BE /* QuizCompleteView.swift in Sources */,
 				8504A6302A3FDA8200990F00 /* ProblemTypePickerView.swift in Sources */,
 				8504A6552A3FDCD500990F00 /* ProblemSetConfiguration.swift in Sources */,
 				8504A65E2A40B77400990F00 /* ProblemType.swift in Sources */,

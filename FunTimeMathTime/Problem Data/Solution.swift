@@ -6,20 +6,25 @@
 //
 
 import Foundation
+import SwiftData
 
 
-struct Solution: Identifiable, Equatable {
-    let id = UUID()
+//@Model
+struct Solution: Identifiable, Equatable, Codable {
+    let id: UUID
     
     let result: Int
     let remainder: Int?
-    let problemType: ProblemType
     
-    init(result: Int, remainder: Int? = nil, type: ProblemType) {
+    init(result: Int, remainder: Int? = nil) {
         self.result = result
         self.remainder = remainder
-        self.problemType = type
+        id = UUID()
     }
+    
+//    init(from decoder: Decoder) throws {
+//        
+//    }
 }
 
 

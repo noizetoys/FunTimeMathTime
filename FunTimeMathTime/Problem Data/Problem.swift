@@ -13,13 +13,9 @@ import Combine
 // TODO: Add way to store for future reference
 
 class Problem: Identifiable, ObservableObject {
-    @Published var selectedSolution: Solution? {
-        didSet {
-            print("Problem:  selectedSolution?  \(selectedSolution)")
-        }
-    }
+    @Published var selectedSolution: Solution?
     
-    let id = UUID()
+    let id: UUID
     
     let topValue: Int
     let bottomValue: Int
@@ -38,15 +34,18 @@ class Problem: Identifiable, ObservableObject {
             return ""
         }
         
-        return remainder > 0 ? "Remainder \(remainder)" : ""
+        return "Remainder \(remainder)"
     }
     
     // Used for animation
     var index: Int = 0
     
+    
         // MARK: - Lifecycle
     
     init(topValue: Int, bottomValue: Int, problemType: ProblemType) {
+        id = UUID()
+        
         self.topValue = topValue
         self.bottomValue = bottomValue
         self.problemType = problemType
@@ -66,7 +65,6 @@ class Problem: Identifiable, ObservableObject {
     func duplicate() -> Problem {
         Problem(topValue: topValue, bottomValue: bottomValue, problemType: problemType)
     }
-    
     
 }
 

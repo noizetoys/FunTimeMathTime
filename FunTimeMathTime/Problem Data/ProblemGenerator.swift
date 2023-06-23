@@ -10,8 +10,6 @@ import Foundation
 
 class ProblemGenerator {
     static func problemSet(for config: ProblemSetConfiguration) -> [Problem] {
-        print("\nProblemGenerator: generating problem sets for config: \(config)")
-        
         var allProblems: Set<Problem> = []
         
         for topValue in config.selectedValues {
@@ -22,14 +20,9 @@ class ProblemGenerator {
             }
         }
         
-        print("\nProblemGenerator: allProblems = \(allProblems.count)")
-//        guard
-//            config.randomize
-//        else { return allProblems }
-//        
         var problemSet = Set<Problem>()
         
-        for _ in 1...config.problemCount {
+        for _ in 1...Int(config.problemCount) {
             guard
                 let selectedProblem = allProblems.randomElement()
             else {
@@ -37,14 +30,12 @@ class ProblemGenerator {
             }
             
             let isDupe = problemSet.contains(selectedProblem)
-//            print("ProblemGenerator: It's a dupe!!!")
             
             problemSet.insert(isDupe ? selectedProblem.duplicate() : selectedProblem)
         }
         
         
-        print("\nProblemGenerator: problemSet = \(problemSet.count)")
-        var shuffledSet = Array(problemSet).shuffled().shuffled()
+        let shuffledSet = Array(problemSet).shuffled().shuffled()
         
         var index = 0
         

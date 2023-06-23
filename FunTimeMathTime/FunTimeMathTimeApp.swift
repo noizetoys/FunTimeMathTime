@@ -13,13 +13,13 @@ struct FunTimeMathTimeApp: App {
     
     var body: some Scene {
         WindowGroup {
-//            ContentView()
-            QuizView(config: ProblemSetConfiguration(problemType: .addition,
-                                                     problemCount: 30,
-                                                     timeLimit: 3,
-                                                     valueRange: 2...12,
-                                                     selectedValues: [3, 7, 9],
-                                                     randomize: true))
+            Dashboard()
+//            QuizView(config: ProblemSetConfiguration(problemType: .addition,
+//                                                     problemCount: 30,
+//                                                     timeLimit: 0.15,
+//                                                     valueRange: 2...12,
+//                                                     selectedValues: [3, 7, 9],
+//                                                     randomize: true))
 
         }
     }

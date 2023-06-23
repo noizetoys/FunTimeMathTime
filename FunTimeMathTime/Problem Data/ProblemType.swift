@@ -8,12 +8,11 @@
 import SwiftUI
 
 
-enum ProblemType: String, CaseIterable {
+enum ProblemType: String, CaseIterable, Codable {
     case addition = "Addition"
     case subtraction = "Subtraction"
     case multiplication = "Multiplication"
     case division = "Division"
-    
     
     var sign: Image {
         switch self {
@@ -34,13 +33,13 @@ enum ProblemType: String, CaseIterable {
     
     func solution(topValue: Int, bottomValue: Int) -> Solution {
         switch self {
-            case .addition: return Solution(result: topValue + bottomValue, type: self)
-            case .subtraction: return Solution(result: topValue - bottomValue, type: self)
-            case .multiplication: return Solution(result: topValue * bottomValue, type: self)
+            case .addition: return Solution(result: topValue + bottomValue)
+            case .subtraction: return Solution(result: topValue - bottomValue)
+            case .multiplication: return Solution(result: topValue * bottomValue)
             case .division:
                 let mantissa = Int(topValue / bottomValue)
                 let remainder = Int(topValue % bottomValue)
-                return Solution(result: mantissa, remainder: remainder, type: self)
+                return Solution(result: mantissa, remainder: remainder)
         }
     }
     

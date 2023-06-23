@@ -16,14 +16,15 @@ class ProblemSet: ObservableObject {
     private let config: ProblemSetConfiguration
     
     var totalCount: Int { problems.count }
+    var answeredCount: Int { problems.reduce(into: 0) { $0 += $1.selectedSolution == nil ? 0 : 1 } }
     var unansweredCount: Int { problems.count - answeredCount }
-    var completionTime: TimeInterval = 0
+    var correctlyAnswered: Int { problems.reduce(0) { $0 + ($1.correctSolutionChosen ? 1 : 0) } }
+
+    // For saving in Document
+    var startTime: Date = .now
+    var endTime: Date = .now
     
-    var answeredCount: Int {
-        problems.reduce(into: 0) { number, problem in
-            number += problem.selectedSolution == nil ? 0 : 1
-        }
-    }
+    var completionTime: TimeInterval { endTime.timeIntervalSince(startTime) }
     
     private var cancellables = [AnyCancellable]()
    
@@ -39,22 +40,44 @@ class ProblemSet: ObservableObject {
                 .$selectedSolution
                 .sink { solution in
                     if solution == nil { return }
-                    print("ProblemSet: selectedSolution == \(solution)")
                     self.objectWillChange.send()
                 }
                 .store(in: &cancellables)
         }
     }
     
-    
-    func startTimer() {
+}
+
+
+extension ProblemSet {
+    func configForTesting() {
+        let endTime = Date.now
+        let startTime = endTime.addingTimeInterval(-(3 * 60))
+        let halfOfProblems = totalCount / 2
         
-    }
-    
-    
-    func stopTimer() {
+        for index in 0...(halfOfProblems) {
+            let problem = problems[index]
+            problem.selectedSolution = problem.correctSolution
+        }
         
+        for index in halfOfProblems...(totalCount - 1) {
+            let problem = problems[index]
+            problem.selectedSolution = problem.solutions.first { $0 != problem.correctSolution }
+            
+        }
     }
+}
+
+
+struct ProblemSetConversion {
+    // Create Saveable data
+    var problems: [Problem] = []
     
-    
+    let config: ProblemSetConfiguration
+    var startTime: Date = .now
+    var completionTime: TimeInterval
+
+    var problemType: ProblemType
+    var problemCount: Int
+
 }

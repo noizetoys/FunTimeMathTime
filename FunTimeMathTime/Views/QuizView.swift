@@ -13,16 +13,20 @@ struct QuizView: View {
     
     @StateObject private var problemSet: ProblemSet
     
-    @State private var timer: Timer?
-    @State private var remainingSeconds: Int = 0 {
-        didSet { print("RemainingSeconds: \(remainingSeconds)")}
-    }
-    @State private var hasStarted: Bool = false
-    @State private var hasEnded: Bool = false
+    @State private var timer = Timer.publish(every: 1, on: .main, in: .common)
+    @State private var timerRunning: Bool = false
+    @State private var remainingSeconds: Int = 0
+    
+    @State private var canAnswerQuestions: Bool = true
+    
+    @State private var showCountdownSheet = false
+    @State private var countdownSheetAlreadyShown = false
+    @State private var showQuizCompleteSheet = false
+    
     
     private let config: ProblemSetConfiguration
     
-    private var needsTimer: Bool { config.timeLimit != nil }
+    private var needsTimer: Bool { config.timeLimit > 0 }
     private var timeString: String {
         let minutes = remainingSeconds / 60
         let seconds = remainingSeconds % 60
@@ -31,20 +35,6 @@ struct QuizView: View {
         return "\(minutes):\(secondsString)"
     }
 
-    // Temp
-    private var unsolved: Int { problemSet.problems.reduce(0) { partialResult, prob in
-        partialResult + (prob.selectedSolution == nil ? 1 : 0)
-    }}
-    
-    private var solved: Int { problemSet.problems.reduce(0) { partialResult, prob in
-        partialResult + (prob.selectedSolution != nil ? 1 : 0)
-    }}
-    
-    
-    private var correctlyAnswered: Int { problemSet.problems.reduce(0) { partialResult, prob in
-        partialResult + (prob.correctSolutionChosen ? 1 : 0)
-    }}
-    
     
         // MARK: - LifeCycle -
 
@@ -55,23 +45,10 @@ struct QuizView: View {
     }
     
     
-    private func configTimer() {
-        
-    }
-    
-   
     var body: some View {
         VStack {
             
-            HStack {
-                Spacer()
-                Text("\(timeString) Remaining")
-                    .foregroundStyle(hasStarted ? .black : .gray.opacity(0.3))
-                    .font(.largeTitle)
-                    .bold()
-                
-                Spacer()
-            }
+            timerView
             
             ScrollView(.horizontal) {
                 
@@ -88,86 +65,158 @@ struct QuizView: View {
             HStack {
                 Spacer()
                 
-                Button(role: .cancel) {
-                    dismiss()
-                } label: {
-                    Text("Cancel")
-                        .foregroundColor(.white)
-                        .font(.title)
-                        .bold()
-                        .padding()
-                }
-                .buttonBorderShape(.roundedRectangle)
-                .frame(width: 200)
-                .background(.red)
-                .clipShape(RoundedRectangle(cornerRadius: 15))
-                .overlay {
-                    RoundedRectangle(cornerRadius: 15)
-                        .stroke(.black, lineWidth: 6)
-                }
+                cancelButton
                 
                 Spacer()
                 
-                Button(action: {
-                    hasStarted.toggle()
-                    hasStarted ? end() : start()
-                }, label: {
-                    Text(hasStarted ? "End" : "Start")
-                        .foregroundStyle(Color.black)
-                        .font(.title)
-                        .bold()
-                        .padding()
-                })
-                .buttonBorderShape(.roundedRectangle)
-                .frame(width: 200)
-                .overlay {
-                    RoundedRectangle(cornerRadius: 15)
-                        .stroke(.black, lineWidth: 6)
-                }
+                startButton
                 
                 Spacer()
             }
             .padding()
             
             
-            VStack {
-                Text("Problem Count: \(problemSet.problems.count)")
-                Text("Unsolved Problem Count: \(unsolved)")
-                Text("Solved Problem Count: \(solved)")
-            }
-            .font(.title)
+//            VStack(alignment: .leading) {
+//                Text("Problems: \(problemSet.totalCount)")
+//                Text("UnAnswered Problem: \(problemSet.unansweredCount)")
+//                Text("Answered Problem: \(problemSet.answeredCount)")
+//                Text("Correctly Answered: \(problemSet.correctlyAnswered)")
+//            }
+//            .font(.title)
+//            .bold()
             
         }
         .environmentObject(problemSet)
         .safeAreaPadding(.horizontal)
-    }
-    
-    
-    private func start() {
-        if let timeLimit = config.timeLimit, timeLimit > 0 {
-            remainingSeconds = timeLimit * 60
-            timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { _ in
-                if remainingSeconds == 0 {
-                    end()
-                }
-                else {
-                    remainingSeconds -= 1
-                }
-            })
-            timer?.fire()
-            
+        .onAppear {
+            self.timerRunning = false
+//            if countdownSheetAlreadyShown == false {
+//                showCountdownSheet = true
+//            }
+            timer.connect().cancel()
         }
-            
-        // Tell Problem Set time remains
+        .allowsHitTesting(canAnswerQuestions)
+        .sheet(isPresented: $showCountdownSheet, onDismiss: {
+            countdownSheetAlreadyShown = true
+            timer.connect().cancel()
+            canAnswerQuestions = false
+            timerRunning = true
+            start()
+        }, content: {
+            CountDownSheet()
+        })
+        .sheet(isPresented: $showQuizCompleteSheet) {
+            dismiss()
+        } content: {
+            QuizCompleteView(problemSet: problemSet)
+                .clipShape(RoundedRectangle(cornerRadius: 35))
+//                .onTapGesture {
+//                    dismiss()
+//                }
+        }
+
         
     }
     
     
+        // MARK: - Custom Views -
+    
+    private var timerView: some View {
+        HStack {
+            Spacer()
+            
+            Text("\(timeString) Remaining")
+                .foregroundStyle(timerRunning ? .black : .gray.opacity(0.3))
+                .font(.largeTitle)
+                .bold()
+                .onReceive(timer) { _ in
+                    self.remainingSeconds -= 1
+                    if remainingSeconds <= 0 {
+                        end()
+                    }
+                }
+            
+            Spacer()
+        }
+    }
+    
+    
+    private var startButton: some View {
+        Button(action: {
+            print("startButton: Start/End Button Pressed")
+            timerRunning.toggle()
+            print("startButton: timerRunning = \(timerRunning)")
+            timerRunning ? start() : end()
+        }, label: {
+            Text(timerRunning ? "End" : "Start")
+                .foregroundStyle(Color.black)
+                .font(.title)
+                .bold()
+                .padding()
+        })
+        .buttonBorderShape(.roundedRectangle)
+        .frame(width: 200)
+        .overlay {
+            RoundedRectangle(cornerRadius: 15)
+                .stroke(.black, lineWidth: 6)
+        }
+    }
+    
+    
+    private var cancelButton: some View {
+        Button(role: .cancel) {
+            dismiss()
+        } label: {
+            Text("Cancel")
+                .foregroundColor(.white)
+                .font(.title)
+                .bold()
+                .padding()
+        }
+        .buttonBorderShape(.roundedRectangle)
+        .frame(width: 200)
+        .background(.red)
+        .clipShape(RoundedRectangle(cornerRadius: 15))
+        .overlay {
+            RoundedRectangle(cornerRadius: 15)
+                .stroke(.black, lineWidth: 6)
+        }
+    }
+    
+    
+        // MARK: - Private Methods -
+
+    private func start() {
+        print("Start Called")
+        
+        if countdownSheetAlreadyShown  {
+//            if let timeLimit = config.timeLimit, timeLimit > 0 {
+            if config.timeLimit > 0 {
+                remainingSeconds = Int(config.timeLimit * 60.0)
+                timer = Timer.publish(every: 1, on: .main, in: .common)
+                _ = timer.connect()
+            }
+            canAnswerQuestions = true
+        }
+        else {
+            showCountdownSheet = true
+        }
+    }
+    
+    
     private func end() {
-        timer?.invalidate()
-        timer = nil
+        print("End called")
+        timer.connect().cancel()
+        timerRunning = false
+        canAnswerQuestions = false
+        
+        problemSet.endTime = .now
+        
+        showQuizCompleteSheet = true
         // End timer
-        // Tell Problem Set time is up
+        // Show Alert
+        // Save Data for History
+        // Dismiss View back to Dahboard
     }
     
 }
@@ -176,7 +225,8 @@ struct QuizView: View {
 #Preview {
     QuizView(config: ProblemSetConfiguration(problemType: .addition,
                                              problemCount: 30,
-                                             timeLimit: 3,
+//                                             timeLimit: 3,
+                                             timeLimit: 0.05,
                                              valueRange: 2...12,
                                              selectedValues: [3, 7, 9],
                                              randomize: true))

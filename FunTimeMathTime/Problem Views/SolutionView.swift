@@ -11,9 +11,8 @@ import SwiftUI
 struct SolutionView: View, Identifiable {
     var id = UUID()
     
-//    @Binding private var selectedSolution: Solution?
-    
     @State var solution: Solution
+    
     var selected: Bool
     var isCorrectAnswer: Bool
     private let dim: Bool
@@ -99,9 +98,7 @@ fileprivate struct SolutionPreviewView: View {
             }
             .frame(width: 300)
             
-            SolutionView(solution: Solution(result: result,
-                                            remainder: remainder,
-                                            type: type),
+            SolutionView(solution: Solution(result: result, remainder: remainder),
                          isCorrectSolution: isCorrectSolution,
                          selected: selected,
                          solutionSelected: solutionSelected)
