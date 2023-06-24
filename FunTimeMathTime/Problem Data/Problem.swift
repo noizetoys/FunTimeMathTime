@@ -70,7 +70,6 @@ class Problem: Identifiable, ObservableObject {
 
     
 extension Problem: Equatable, Hashable {
-        // Protocol
     static func == (lhs: Problem, rhs: Problem) -> Bool {
         lhs.id == rhs.id
     }
@@ -78,7 +77,6 @@ extension Problem: Equatable, Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
-    
 }
 
 
@@ -86,7 +84,34 @@ extension Problem: CustomStringConvertible {
     var description: String {
         "\n\(topValue) \(problemType) \(bottomValue) = \(correctSolution.result) (\(correctSolution.remainder ?? 0))"
     }
+}
+
+
+extension Problem {
+    static func sampleProblem(top: Int = 7, type: ProblemType = .addition) -> Problem {
+        let bottomValue = Int.random(in: 2...12)
+        let sample = Problem(topValue: top, bottomValue: bottomValue, problemType: type)
+        let correctSolution = sample.correctSolution
+        let incorrectSolution = sample.solutions.first(where: { $0.id != correctSolution.id })
+        
+        var possibileSolutions: [Solution?] = [correctSolution, incorrectSolution, nil]
+        var selected: Solution? { possibileSolutions.randomElement() ?? nil }
+
+        sample.selectedSolution = selected
+        
+        return sample
+    }
     
+    
+    static func sampleProblems(top: Int = 7, type: ProblemType = .addition, count: Int = 20) -> [Problem] {
+        var problems = [Problem]()
+        
+        for _ in 1...20 {
+            problems.append(sampleProblem(top: top, type: type))
+        }
+        
+        return problems
+    }
 }
 
 

@@ -9,13 +9,15 @@ import Foundation
 
 
 class ProblemSetConfiguration: ObservableObject, Identifiable {
-    private(set) var id = UUID()
+    private(set) var id: UUID
     
     @Published var problemCount: Float
     @Published var timeLimit: Float
     
     @Published var valueRange: ClosedRange<Int>
     @Published var selectedValues: [Int]
+    @Published var autoStartQuiz: Bool
+    
     var problemType: ProblemType
     var randomize: Bool
     
@@ -27,6 +29,7 @@ class ProblemSetConfiguration: ObservableObject, Identifiable {
          timeLimit: Float = 3,
          valueRange: ClosedRange<Int> = 1...12,
          selectedValues: [Int] = [],
+         autoStart: Bool = true,
          randomize: Bool = true)
     {
         self.problemType = problemType
@@ -34,7 +37,10 @@ class ProblemSetConfiguration: ObservableObject, Identifiable {
         self.timeLimit = timeLimit
         self.valueRange = valueRange
         self.selectedValues = selectedValues
+        self.autoStartQuiz = autoStart
         self.randomize = randomize
+    
+        id = UUID()
     }
     
 }
@@ -54,6 +60,31 @@ extension ProblemSetConfiguration: Hashable {
 }
 
 
+extension ProblemSetConfiguration {
+    static func sampleConfig(from problem: HistoricalProblem, count: Int = 20) -> ProblemSetConfiguration {
+        sampleConfig(top: problem.topValue, type: problem.problemType, count: count)
+    }
+    
+    
+    static func sampleConfig(from problem: Problem, count: Int = 20) -> ProblemSetConfiguration {
+        sampleConfig(top: problem.topValue, type: problem.problemType, count: count)
+    }
+    
+    
+    
+    static func sampleConfig(top: Int = 7, type: ProblemType = .addition, count: Int = 20) -> ProblemSetConfiguration {
+        ProblemSetConfiguration(problemType: type,
+                                problemCount: Float(count),
+                                timeLimit: 3.0,
+                                valueRange: 2...12,
+                                selectedValues: [top],
+                                autoStart: true,
+                                randomize: true)
+    }
+    
+}
+
+
 extension ProblemSetConfiguration: CustomDebugStringConvertible {
     var debugDescription: String {
         """
@@ -63,6 +94,7 @@ extension ProblemSetConfiguration: CustomDebugStringConvertible {
         timeLimit: \(timeLimit)
         range: \(valueRange)
         values: \(selectedValues)
+        autoStart: \(autoStartQuiz)
         randomize: \(randomize)
         """
     }

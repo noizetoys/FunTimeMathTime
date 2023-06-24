@@ -10,41 +10,20 @@ import SwiftUI
 struct Dashboard: View {
     @StateObject var problemSetConfig: ProblemSetConfiguration = ProblemSetConfiguration()
     
+    
     var body: some View {
-//        NavigationStack {
+        GeometryReader { geo in
             
-            GeometryReader { geo in
-                HStack {
-                    
-                    VStack {
-                        List {
-                            Section {
-                                ForEach(1...20, id:\.self) { num in
-                                    HStack {
-                                        Text("Quiz \(num)")
-                                        Spacer()
-                                    }
-                                }
-                            } header: {
-                                Text("Previous Quizes")
-                            } footer: {
-                                    //                            EmptyView()
-                            }
-                            
-                        }
-                    }
-                    .frame(maxWidth: geo.size.width / 4.0)
-                    
-                    ProblemTypePickerView()
-//                        .navigationDestination(for: ProblemSetConfiguration.self) { config in
-//                            QuizView(config: config)
-//                        }
-                } // H
+            HStack {
+                HistoryListView(problemSets: [HistoricalProbSet.sampleHistoricalSet()])
+                    .frame(maxWidth: geo.size.width / 4)
                 
-            } // Geo
+                ProblemTypePickerView()
+            }
             .padding()
-            .environmentObject(problemSetConfig)
-//        } // Nav
+            
+        } // Geo
+        .environmentObject(problemSetConfig)
         
     }
     

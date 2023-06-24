@@ -16,7 +16,6 @@ struct QuizCompleteView: View {
             Text("Time's Up!")
                 .font(.system(size: 64, weight: .black))
                 .italic()
-//                .bold()
             
             Spacer()
                 .frame(height: 50)
@@ -32,12 +31,9 @@ struct QuizCompleteView: View {
                 .frame(height: 50)
             
             Text("Correctly Answered: \(problemSet.correctlyAnswered)")
-//                .font(.system(size: 44))
                 .font(.system(size: 52, weight: .black, design: .none))
-//                .bold()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-//        .padding(40)
         .background(.green.opacity(0.5))
         .clipShape(RoundedRectangle(cornerRadius: 15))
         .onTapGesture {
@@ -54,7 +50,7 @@ struct QuizCompleteView: View {
                                                                   valueRange: 2...12,
                                                                   selectedValues: [5, 9])
     var problemSet: ProblemSet = ProblemSet(config: config)
-    problemSet.configForTesting()
+//    problemSet.configForTesting()
     
     return QuizCompleteView(problemSet: problemSet)
 }

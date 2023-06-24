@@ -13,9 +13,14 @@ struct CountDownSheet: View {
     @State private var timer = Timer.publish(every: 1, on: .main, in: .common)
     @State private var time: Int = 3
     
+    private var timerMessage: String {
+        time > 0 ? "Quiz Begins in \(time)" : "Begin"
+    }
+    
+    
     var body: some View {
         VStack {
-            Text("Quiz Begins in \(time)")
+            Text(timerMessage)
                 .font(.system(size: 48))
                 .bold()
                 .italic()

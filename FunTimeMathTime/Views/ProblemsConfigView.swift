@@ -67,15 +67,18 @@ struct ProblemsConfigView: View {
             // Sliders, etc.
             VStack {
                 VStack {
-                    Text("Number of Problem:  \(Int(problemSetConfig.problemCount))")
+                    Text("Total Problem:  \(Int(problemSetConfig.problemCount))")
+                    
                     problemCountSlider
-                        .padding(.horizontal, 60)
+                        .frame(width: 300)
                 }
+                .padding()
                 
                 VStack {
                     Text(timeLimitText)
+                    
                     timerSlider
-                        .padding(.horizontal, 60)
+                        .frame(width: 300)
                 }
                 .padding(.top)
             }
@@ -223,23 +226,50 @@ struct ValueGridItem: View, Identifiable {
 }
 
 
+struct ContentView_Previews: PreviewProvider {
+    @StateObject static var problemSetConfiguration: ProblemSetConfiguration = ProblemSetConfiguration(problemType: .addition,
+                                                                                                    problemCount: 30,
+                                                                                                    valueRange: 1...12,
+                                                                                                    selectedValues: [],
+                                                                                                    randomize: true)
+    
+    @State static var showSheet = true
+    
+    
+    static var previews: some View {
+        VStack {
+            Rectangle()
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(.green)
+                .sheet(isPresented: $showSheet) {
+                    ProblemsConfigView()
+                }
+                .environmentObject(problemSetConfiguration)
+        }
+        
+    }
+}
+
 
 //#Preview {
 //    @StateObject var problemSetConfiguration: ProblemSetConfiguration? = ProblemSetConfiguration(problemType: .addition,
+//    @ObservedObject var problemSetConfiguration: ProblemSetConfiguration? = ProblemSetConfiguration(problemType: .addition,
 //                                                                                                 problemCount: 20,
 //                                                                                                 valueRange: 2...12,
 //                                                                                                 selectedValues: [],
 //                                                                                                 randomize: true)
-//    
+    
 //    @State var showSheet = true
-//    
-//    return Rectangle()
+    
+//    return VStack {
+//        Rectangle()
 //            .frame(maxWidth: .infinity, maxHeight: .infinity)
 //            .background(.green)
 //            .sheet(isPresented: $showSheet) {
-////                ProblemsConfigView(type: .addition, config: $config)
+//                    //                ProblemsConfigView(type: .addition, config: $config)
 //                ProblemsConfigView()
 //            }
-////            .environmentObject(problemSetConfiguration)
-////    ProblemsConfigView(type: .addition, config: ProblemSetConfiguration(problemType: .addition, problemCount: 20, valueRange: 2...12, selectedValues: [], randomize: true))
+//            .environmentObject(problemSetConfiguration)
+//    }
+//    ProblemsConfigView(type: .addition, config: ProblemSetConfiguration(problemType: .addition, problemCount: 20, valueRange: 2...12, selectedValues: [], randomize: true))
 //}

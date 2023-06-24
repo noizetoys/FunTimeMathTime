@@ -27,11 +27,12 @@
 		8504A6622A40B8E900990F00 /* Solution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8504A6612A40B8E900990F00 /* Solution.swift */; };
 		8572EE642A40C1F800BD3905 /* QuizData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8572EE632A40C1F800BD3905 /* QuizData.swift */; };
 		8572EE662A40C33B00BD3905 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8572EE652A40C33B00BD3905 /* SettingsView.swift */; };
-		85A20FBA2A4144640089F1A9 /* ProblemSetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85A20FB92A4144640089F1A9 /* ProblemSetView.swift */; };
 		85A20FBC2A414A880089F1A9 /* Scrollala.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85A20FBB2A414A880089F1A9 /* Scrollala.swift */; };
 		85CB4E322A44D6D8003854BE /* CountDownSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CB4E312A44D6D8003854BE /* CountDownSheet.swift */; };
 		85CB4E342A44D9F2003854BE /* QuizCompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CB4E332A44D9F1003854BE /* QuizCompleteView.swift */; };
 		85CB4E362A44FB4D003854BE /* HistoryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CB4E352A44FB4D003854BE /* HistoryListView.swift */; };
+		85CDB4062A4602C300971E66 /* HistoricalProblem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CDB4052A4602C300971E66 /* HistoricalProblem.swift */; };
+		85CDB4072A46466700971E66 /* HistoricalProbSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CDB4022A45FB1D00971E66 /* HistoricalProbSet.swift */; };
 		85DAEDDA2A4281E9002941B8 /* ProblemSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DAEDD92A4281E9002941B8 /* ProblemSet.swift */; };
 /* End PBXBuildFile section */
 
@@ -76,11 +77,12 @@
 		8504A6612A40B8E900990F00 /* Solution.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Solution.swift; sourceTree = "<group>"; };
 		8572EE632A40C1F800BD3905 /* QuizData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizData.swift; sourceTree = "<group>"; };
 		8572EE652A40C33B00BD3905 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
-		85A20FB92A4144640089F1A9 /* ProblemSetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProblemSetView.swift; sourceTree = "<group>"; };
 		85A20FBB2A414A880089F1A9 /* Scrollala.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scrollala.swift; sourceTree = "<group>"; };
 		85CB4E312A44D6D8003854BE /* CountDownSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountDownSheet.swift; sourceTree = "<group>"; };
 		85CB4E332A44D9F1003854BE /* QuizCompleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizCompleteView.swift; sourceTree = "<group>"; };
 		85CB4E352A44FB4D003854BE /* HistoryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryListView.swift; sourceTree = "<group>"; };
+		85CDB4022A45FB1D00971E66 /* HistoricalProbSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoricalProbSet.swift; sourceTree = "<group>"; };
+		85CDB4052A4602C300971E66 /* HistoricalProblem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoricalProblem.swift; sourceTree = "<group>"; };
 		85DAEDD92A4281E9002941B8 /* ProblemSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProblemSet.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -134,6 +136,7 @@
 			isa = PBXGroup;
 			children = (
 				8504A6052A3FDA0F00990F00 /* FunTimeMathTimeApp.swift */,
+				85CDB4042A46029500971E66 /* History */,
 				8504A6332A3FDA8800990F00 /* Views */,
 				8504A6482A3FDB1A00990F00 /* Problem Views */,
 				8504A6582A3FDD4E00990F00 /* Problem Data */,
@@ -175,11 +178,9 @@
 				8504A62F2A3FDA8200990F00 /* ProblemTypePickerView.swift */,
 				8504A6492A3FDB3B00990F00 /* ProblemsConfigView.swift */,
 				8504A6592A40B64700990F00 /* QuizView.swift */,
-				85A20FB92A4144640089F1A9 /* ProblemSetView.swift */,
-				8572EE652A40C33B00BD3905 /* SettingsView.swift */,
 				85CB4E312A44D6D8003854BE /* CountDownSheet.swift */,
 				85CB4E332A44D9F1003854BE /* QuizCompleteView.swift */,
-				85CB4E352A44FB4D003854BE /* HistoryListView.swift */,
+				8572EE652A40C33B00BD3905 /* SettingsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -206,6 +207,16 @@
 				85DAEDD92A4281E9002941B8 /* ProblemSet.swift */,
 			);
 			path = "Problem Data";
+			sourceTree = "<group>";
+		};
+		85CDB4042A46029500971E66 /* History */ = {
+			isa = PBXGroup;
+			children = (
+				85CB4E352A44FB4D003854BE /* HistoryListView.swift */,
+				85CDB4022A45FB1D00971E66 /* HistoricalProbSet.swift */,
+				85CDB4052A4602C300971E66 /* HistoricalProblem.swift */,
+			);
+			path = History;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -340,11 +351,11 @@
 			files = (
 				85CB4E322A44D6D8003854BE /* CountDownSheet.swift in Sources */,
 				8572EE662A40C33B00BD3905 /* SettingsView.swift in Sources */,
+				85CDB4072A46466700971E66 /* HistoricalProbSet.swift in Sources */,
 				8572EE642A40C1F800BD3905 /* QuizData.swift in Sources */,
 				8504A64A2A3FDB3B00990F00 /* ProblemsConfigView.swift in Sources */,
 				8504A64E2A3FDB4900990F00 /* ProblemGenerator.swift in Sources */,
 				85DAEDDA2A4281E9002941B8 /* ProblemSet.swift in Sources */,
-				85A20FBA2A4144640089F1A9 /* ProblemSetView.swift in Sources */,
 				8504A65A2A40B64700990F00 /* QuizView.swift in Sources */,
 				85A20FBC2A414A880089F1A9 /* Scrollala.swift in Sources */,
 				85CB4E362A44FB4D003854BE /* HistoryListView.swift in Sources */,
@@ -358,6 +369,7 @@
 				8504A6552A3FDCD500990F00 /* ProblemSetConfiguration.swift in Sources */,
 				8504A65E2A40B77400990F00 /* ProblemType.swift in Sources */,
 				8504A6062A3FDA0F00990F00 /* FunTimeMathTimeApp.swift in Sources */,
+				85CDB4062A4602C300971E66 /* HistoricalProblem.swift in Sources */,
 				8504A6452A3FDAF700990F00 /* SolutionView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

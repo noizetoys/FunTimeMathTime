@@ -46,75 +46,64 @@ struct QuizView: View {
     
     
     var body: some View {
-        VStack {
+        HStack {
+            Spacer()
             
-            timerView
-            
-            ScrollView(.horizontal) {
+            VStack(spacing: 40) {
+                timerView
                 
-                HStack {
-                    ForEach(problemSet.problems) { problem in
-                        if problem.selectedSolution == nil {
-                            ProblemView(problem: problem)
+                ScrollView(.horizontal) {
+                    HStack {
+                        
+                        ForEach(problemSet.problems) { problem in
+                            if problem.selectedSolution == nil {
+                                ProblemView(problem: problem)
+                            }
                         }
                     }
                 }
+                .frame(width: 450, height: 350)
+                
+                HStack {
+                    Spacer()
+                    cancelButton
+                    
+                    Spacer()
+                        .frame(width: 55)
+                    
+                    startButton
+                    Spacer()
+                }
+                .fixedSize()
             }
-            .frame(width: 450, height: 350)
-                
-            HStack {
-                Spacer()
-                
-                cancelButton
-                
-                Spacer()
-                
-                startButton
-                
-                Spacer()
+            .environmentObject(problemSet)
+            .safeAreaPadding(.horizontal)
+            .onAppear {
+                self.timerRunning = false
+                    //            if countdownSheetAlreadyShown == false {
+                    //                showCountdownSheet = true
+                    //            }
+                timer.connect().cancel()
             }
-            .padding()
+            .allowsHitTesting(canAnswerQuestions)
+            .sheet(isPresented: $showCountdownSheet, onDismiss: {
+                countdownSheetAlreadyShown = true
+                timer.connect().cancel()
+                canAnswerQuestions = false
+                timerRunning = true
+                start()
+            }, content: {
+                CountDownSheet()
+            })
+            .sheet(isPresented: $showQuizCompleteSheet) {
+                dismiss()
+            } content: {
+                QuizCompleteView(problemSet: problemSet)
+                    .clipShape(RoundedRectangle(cornerRadius: 35))
+            }
             
-            
-//            VStack(alignment: .leading) {
-//                Text("Problems: \(problemSet.totalCount)")
-//                Text("UnAnswered Problem: \(problemSet.unansweredCount)")
-//                Text("Answered Problem: \(problemSet.answeredCount)")
-//                Text("Correctly Answered: \(problemSet.correctlyAnswered)")
-//            }
-//            .font(.title)
-//            .bold()
-            
+            Spacer()
         }
-        .environmentObject(problemSet)
-        .safeAreaPadding(.horizontal)
-        .onAppear {
-            self.timerRunning = false
-//            if countdownSheetAlreadyShown == false {
-//                showCountdownSheet = true
-//            }
-            timer.connect().cancel()
-        }
-        .allowsHitTesting(canAnswerQuestions)
-        .sheet(isPresented: $showCountdownSheet, onDismiss: {
-            countdownSheetAlreadyShown = true
-            timer.connect().cancel()
-            canAnswerQuestions = false
-            timerRunning = true
-            start()
-        }, content: {
-            CountDownSheet()
-        })
-        .sheet(isPresented: $showQuizCompleteSheet) {
-            dismiss()
-        } content: {
-            QuizCompleteView(problemSet: problemSet)
-                .clipShape(RoundedRectangle(cornerRadius: 35))
-//                .onTapGesture {
-//                    dismiss()
-//                }
-        }
-
         
     }
     
@@ -125,10 +114,9 @@ struct QuizView: View {
         HStack {
             Spacer()
             
-            Text("\(timeString) Remaining")
+            Text("\(timeString)")
+                .font(.system(size: 96, weight: .bold, design: .none))
                 .foregroundStyle(timerRunning ? .black : .gray.opacity(0.3))
-                .font(.largeTitle)
-                .bold()
                 .onReceive(timer) { _ in
                     self.remainingSeconds -= 1
                     if remainingSeconds <= 0 {
@@ -137,7 +125,14 @@ struct QuizView: View {
                 }
             
             Spacer()
+                .frame(width: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/)
+            
+            Text("\(problemSet.totalCount - problemSet.answeredCount)")
+                .font(.system(size: 96, weight: .bold, design: .none))
+
+            Spacer()
         }
+        .fixedSize()
     }
     
     

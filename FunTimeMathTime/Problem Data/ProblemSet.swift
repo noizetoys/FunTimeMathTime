@@ -50,6 +50,7 @@ class ProblemSet: ObservableObject {
 
 
 extension ProblemSet {
+    
     func configForTesting() {
         let endTime = Date.now
         let startTime = endTime.addingTimeInterval(-(3 * 60))
@@ -63,21 +64,8 @@ extension ProblemSet {
         for index in halfOfProblems...(totalCount - 1) {
             let problem = problems[index]
             problem.selectedSolution = problem.solutions.first { $0 != problem.correctSolution }
-            
         }
     }
 }
 
 
-struct ProblemSetConversion {
-    // Create Saveable data
-    var problems: [Problem] = []
-    
-    let config: ProblemSetConfiguration
-    var startTime: Date = .now
-    var completionTime: TimeInterval
-
-    var problemType: ProblemType
-    var problemCount: Int
-
-}
