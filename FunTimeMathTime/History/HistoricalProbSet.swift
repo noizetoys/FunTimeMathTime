@@ -10,39 +10,37 @@ import Foundation
 
 
 //@Model
-class HistoricalProbSet: Identifiable {
+class HistoricalProbSet: BasicProblemSet {
 //    @Attribute(.uniue) var id: UUID
     var id: UUID
-    
+    var configuration: ProblemSetConfiguration
     private(set) var problems: [HistoricalProblem]
-    let timeStamp: Date
+    
+    
+    let startTime: Date
+    var endTime: Date
+    
     var completionTime: TimeInterval
+    var completionTimeString: String { completionTime.minutesSeconds }
     
-    let problemType: ProblemType
     
-    let timeLimit: Float
-    let valueRange: ClosedRange<Int>
-    let selectedValues: [Int]
-    
-
         // MARK: - Lifecycle -
     
     init(problemSet: ProblemSet, config: ProblemSetConfiguration) {
+        self.configuration = config
         self.id = UUID()
     
-        self.problems = problemSet.problems.map { HistoricalProblem.new(from: $0)}
-        self.timeStamp = problemSet.endTime
+        self.problems = problemSet.problems.map { HistoricalProblem.new(from: $0) }
+        self.startTime = problemSet.startTime
+        self.endTime = problemSet.endTime
         self.completionTime = problemSet.completionTime
-        
-        self.problemType = config.problemType
-        self.timeLimit = config.timeLimit
-        self.valueRange = config.valueRange
-        self.selectedValues = config.selectedValues
     }
     
     
+        // MARK: - Static  -
+    
     static func sampleSet(for problem: HistoricalProblem, count: Int = 20) -> HistoricalProbSet {
-        let config = ProblemSetConfiguration.sampleConfig(from: problem)
+        let config = ProblemSetConfiguration.sampleConfig(from: problem, count: count)
         let problemSet = ProblemSet(config: config)
         problemSet.configForTesting()
         
@@ -50,8 +48,8 @@ class HistoricalProbSet: Identifiable {
     }
     
     
-    static func sampleSet(for problem: Problem, count: Int = 20) -> HistoricalProbSet {
-        let config = ProblemSetConfiguration.sampleConfig(from: problem)
+    static func sampleSet(for problem: QuizProblem, count: Int = 20) -> HistoricalProbSet {
+        let config = ProblemSetConfiguration.sampleConfig(from: problem, count: count)
         let problemSet = ProblemSet(config: config)
         problemSet.configForTesting()
         
@@ -60,23 +58,41 @@ class HistoricalProbSet: Identifiable {
 
     
     static func sampleHistoricalSet(for topValue: Int = 7, type: ProblemType = .addition) -> HistoricalProbSet {
-        let sampleProblem = HistoricalProblem.new(from: Problem.sampleProblem(top: topValue, type: type))
+        let sampleProblem = HistoricalProblem.new(from: QuizProblem.sampleProblem(top: topValue, type: type))
         return sampleSet(for: sampleProblem)
     }
     
 }
 
 
-    // MARK: - Calculated -
-extension HistoricalProbSet {
-    var problemCount: Int { problems.count }
-    var answeredCount: Int { problems.reduce(into: 0) { $0 += $1.selectedSolution == nil ? 0 : 1 } }
-    var unansweredCount: Int { problems.count - answeredCount }
-    var correctlyAnswered: Int { problems.reduce(0) { $0 + ($1.correctlyAnswered ? 1 : 0) } }
-    var dateString: String { timeStamp.formatted(date: .numeric, time: .omitted) }
-    var selectedValuesString: String { selectedValues.map( { "\($0)" }).joined(separator: ", ")  }
+extension TimeInterval {
+    var hourMinuteSecondMS: String {
+        String(format:"%d:%02d:%02d.%03d", hour, minute, second, millisecond)
+    }
+    
+    var minuteSecondMS: String {
+        String(format:"%d:%02d.%03d", minute, second, millisecond)
+    }
+    
+    var hour: Int {
+        Int((self/3600).truncatingRemainder(dividingBy: 3600))
+    }
+    
+    var minute: Int {
+        Int((self/60).truncatingRemainder(dividingBy: 60))
+    }
+    
+    var second: Int {
+        Int(truncatingRemainder(dividingBy: 60))
+    }
+    
+    var millisecond: Int {
+        Int((self*1000).truncatingRemainder(dividingBy: 1000))
+    }
+    
+    var minutesSeconds: String {
+        "\(minute > 0 ? "\(minute):" : "")\(second)\(minute < 1 ? " seconds" : "")"
+    }
+    
 }
-
-
-
 

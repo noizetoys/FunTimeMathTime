@@ -26,7 +26,7 @@ enum ProblemType: String, CaseIterable, Codable {
     
         // MARK: - Public -
     
-    func solution(from equation: Problem) -> Solution {
+    func solution(from equation: QuizProblem) -> Solution {
         solution(topValue: equation.topValue, bottomValue: equation.bottomValue)
     }
     

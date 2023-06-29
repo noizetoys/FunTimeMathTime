@@ -59,9 +59,8 @@ struct SolutionView: View, Identifiable {
                 Text("\(solution.result)")
                     .font(.title)
                 
-                if let remainder = solution.remainder, remainder > 0 {
-                    Text("R: \(remainder)")
-                        .font(.title)
+                if solution.containsRemainder {
+                    Text(solution.remainderText)
                 }
             }
             

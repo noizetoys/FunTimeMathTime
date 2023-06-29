@@ -10,29 +10,24 @@ import SwiftUI
 import Combine
 
 
-class ProblemSet: ObservableObject {
-    @Published var problems: [Problem] = []
+class ProblemSet: BasicProblemSet, ObservableObject {
+    @Published var problems: [QuizProblem] = []
     
-    private let config: ProblemSetConfiguration
+    var id: UUID
+    var configuration: ProblemSetConfiguration
     
-    var totalCount: Int { problems.count }
-    var answeredCount: Int { problems.reduce(into: 0) { $0 += $1.selectedSolution == nil ? 0 : 1 } }
-    var unansweredCount: Int { problems.count - answeredCount }
-    var correctlyAnswered: Int { problems.reduce(0) { $0 + ($1.correctSolutionChosen ? 1 : 0) } }
-
-    // For saving in Document
     var startTime: Date = .now
     var endTime: Date = .now
     
-    var completionTime: TimeInterval { endTime.timeIntervalSince(startTime) }
-    
     private var cancellables = [AnyCancellable]()
+    
    
         // MARK: - Lifecycle -
     
     init(config: ProblemSetConfiguration) {
-        self.config = config
+        id = UUID()
         
+        configuration = config
         problems = ProblemGenerator.problemSet(for: config)
         
         problems.forEach { problem in 
@@ -54,14 +49,14 @@ extension ProblemSet {
     func configForTesting() {
         let endTime = Date.now
         let startTime = endTime.addingTimeInterval(-(3 * 60))
-        let halfOfProblems = totalCount / 2
+        let halfOfProblems = Int(problemCount / 2)
         
         for index in 0...(halfOfProblems) {
             let problem = problems[index]
             problem.selectedSolution = problem.correctSolution
         }
         
-        for index in halfOfProblems...(totalCount - 1) {
+        for index in halfOfProblems...(problemCount - 1) {
             let problem = problems[index]
             problem.selectedSolution = problem.solutions.first { $0 != problem.correctSolution }
         }

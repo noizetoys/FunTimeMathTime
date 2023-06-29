@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct EquationView: View {
-    let problem: Problem
+    let problem: any BasicProblem
     
     var body: some View {
         VStack(alignment: .trailing) {
@@ -27,5 +27,5 @@ struct EquationView: View {
 
 
 #Preview {
-    EquationView(problem: Problem(topValue: 9, bottomValue: 9, problemType: .addition))
+    EquationView(problem: QuizProblem(topValue: 9, bottomValue: 9, problemType: .addition))
 }

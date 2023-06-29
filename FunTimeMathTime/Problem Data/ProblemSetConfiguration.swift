@@ -66,7 +66,7 @@ extension ProblemSetConfiguration {
     }
     
     
-    static func sampleConfig(from problem: Problem, count: Int = 20) -> ProblemSetConfiguration {
+    static func sampleConfig(from problem: QuizProblem, count: Int = 20) -> ProblemSetConfiguration {
         sampleConfig(top: problem.topValue, type: problem.problemType, count: count)
     }
     

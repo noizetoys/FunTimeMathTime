@@ -1,5 +1,5 @@
 //
-//  Problem.swift
+//  QuizProblem.swift
 //  MathTime
 //
 //  Created by Apple User on 6/17/23.
@@ -12,9 +12,7 @@ import Combine
 
 // TODO: Add way to store for future reference
 
-class Problem: Identifiable, ObservableObject {
-    @Published var selectedSolution: Solution?
-    
+class QuizProblem: BasicProblem, ObservableObject {
     let id: UUID
     
     let topValue: Int
@@ -22,9 +20,10 @@ class Problem: Identifiable, ObservableObject {
     let problemType: ProblemType
     
     let correctSolution: Solution
-    var solutions: [Solution] = []
+    @Published var selectedSolution: Solution?
+
     
-    var correctSolutionChosen: Bool { correctSolution == selectedSolution }
+    var solutions: [Solution] = []
     
     private var remainderText: String {
         guard
@@ -62,15 +61,15 @@ class Problem: Identifiable, ObservableObject {
     }
     
     
-    func duplicate() -> Problem {
-        Problem(topValue: topValue, bottomValue: bottomValue, problemType: problemType)
+    func duplicate() -> QuizProblem {
+        QuizProblem(topValue: topValue, bottomValue: bottomValue, problemType: problemType)
     }
     
 }
 
     
-extension Problem: Equatable, Hashable {
-    static func == (lhs: Problem, rhs: Problem) -> Bool {
+extension QuizProblem: Equatable, Hashable {
+    static func == (lhs: QuizProblem, rhs: QuizProblem) -> Bool {
         lhs.id == rhs.id
     }
     
@@ -80,17 +79,17 @@ extension Problem: Equatable, Hashable {
 }
 
 
-extension Problem: CustomStringConvertible {
+extension QuizProblem: CustomStringConvertible {
     var description: String {
         "\n\(topValue) \(problemType) \(bottomValue) = \(correctSolution.result) (\(correctSolution.remainder ?? 0))"
     }
 }
 
 
-extension Problem {
-    static func sampleProblem(top: Int = 7, type: ProblemType = .addition) -> Problem {
+extension QuizProblem {
+    static func sampleProblem(top: Int = 7, type: ProblemType = .addition) -> QuizProblem {
         let bottomValue = Int.random(in: 2...12)
-        let sample = Problem(topValue: top, bottomValue: bottomValue, problemType: type)
+        let sample = QuizProblem(topValue: top, bottomValue: bottomValue, problemType: type)
         let correctSolution = sample.correctSolution
         let incorrectSolution = sample.solutions.first(where: { $0.id != correctSolution.id })
         
@@ -103,8 +102,8 @@ extension Problem {
     }
     
     
-    static func sampleProblems(top: Int = 7, type: ProblemType = .addition, count: Int = 20) -> [Problem] {
-        var problems = [Problem]()
+    static func sampleProblems(top: Int = 7, type: ProblemType = .addition, count: Int = 20) -> [QuizProblem] {
+        var problems = [QuizProblem]()
         
         for _ in 1...20 {
             problems.append(sampleProblem(top: top, type: type))

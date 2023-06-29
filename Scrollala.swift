@@ -8,18 +8,18 @@
 import SwiftUI
 
 
-fileprivate let probSet: [Problem] = [
-    Problem(topValue: 5, bottomValue: 2, problemType: .addition),
-    Problem(topValue: 5, bottomValue: 3, problemType: .addition),
-    Problem(topValue: 5, bottomValue: 4, problemType: .addition),
-    Problem(topValue: 5, bottomValue: 5, problemType: .addition),
-    Problem(topValue: 5, bottomValue: 6, problemType: .addition),
-    Problem(topValue: 5, bottomValue: 7, problemType: .addition),
-    Problem(topValue: 5, bottomValue: 8, problemType: .addition),
-    Problem(topValue: 5, bottomValue: 9, problemType: .addition),
-    Problem(topValue: 5, bottomValue: 10, problemType: .addition),
-    Problem(topValue: 5, bottomValue: 11, problemType: .addition),
-    Problem(topValue: 5, bottomValue: 12, problemType: .addition),
+fileprivate let probSet: [QuizProblem] = [
+    QuizProblem(topValue: 5, bottomValue: 2, problemType: .addition),
+    QuizProblem(topValue: 5, bottomValue: 3, problemType: .addition),
+    QuizProblem(topValue: 5, bottomValue: 4, problemType: .addition),
+    QuizProblem(topValue: 5, bottomValue: 5, problemType: .addition),
+    QuizProblem(topValue: 5, bottomValue: 6, problemType: .addition),
+    QuizProblem(topValue: 5, bottomValue: 7, problemType: .addition),
+    QuizProblem(topValue: 5, bottomValue: 8, problemType: .addition),
+    QuizProblem(topValue: 5, bottomValue: 9, problemType: .addition),
+    QuizProblem(topValue: 5, bottomValue: 10, problemType: .addition),
+    QuizProblem(topValue: 5, bottomValue: 11, problemType: .addition),
+    QuizProblem(topValue: 5, bottomValue: 12, problemType: .addition),
 ]
 
 #Preview {
@@ -28,7 +28,7 @@ fileprivate let probSet: [Problem] = [
                                          valueRange: 2...12,
                                          selectedValues: [5])
     
-    var probs = [Problem]()
+    var probs = [QuizProblem]()
     var index = 1
     
     for problem in probSet {
@@ -48,7 +48,7 @@ struct Scrollala: View {
     @StateObject var problemSet: ProblemSet
     @State private var snappedItem = 0.0
     @State private var draggingItem = 0.0
-    @State private var unanswered: [Problem] = []
+    @State private var unanswered: [QuizProblem] = []
     
     
     init(config: ProblemSetConfiguration) {

@@ -21,7 +21,7 @@ struct QuizCompleteView: View {
                 .frame(height: 50)
             
             VStack(alignment: .center, spacing: 20) {
-                Text("Total Problems: \(problemSet.totalCount)")
+                Text("Total Problems: \(problemSet.problemCount)")
                 Text("Answered: \(problemSet.answeredCount)")
                 Text("Not Answered: \(problemSet.unansweredCount)")
             }

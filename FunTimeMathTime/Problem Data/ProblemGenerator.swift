@@ -9,18 +9,18 @@ import Foundation
 
 
 class ProblemGenerator {
-    static func problemSet(for config: ProblemSetConfiguration) -> [Problem] {
-        var allProblems: Set<Problem> = []
+    static func problemSet(for config: ProblemSetConfiguration) -> [QuizProblem] {
+        var allProblems: Set<QuizProblem> = []
         
         for topValue in config.selectedValues {
             for bottomValue in config.valueRange {
-                allProblems.insert(Problem(topValue: topValue,
+                allProblems.insert(QuizProblem(topValue: topValue,
                                             bottomValue: bottomValue,
                                             problemType: config.problemType))
             }
         }
         
-        var problemSet = Set<Problem>()
+        var problemSet = Set<QuizProblem>()
         
         for _ in 1...Int(config.problemCount) {
             guard

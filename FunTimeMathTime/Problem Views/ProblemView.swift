@@ -9,7 +9,7 @@ import SwiftUI
 
 
 struct ProblemView: View {
-    @ObservedObject private var problem: Problem
+    @ObservedObject private var problem: QuizProblem
     
     @State private var solutionSelected: Bool = false
     @State private var correctSolutionSelected: Bool = false
@@ -17,7 +17,7 @@ struct ProblemView: View {
     
         // MARK: - Lifecycle -
     
-    init(problem: Problem) {
+    init(problem: QuizProblem) {
         self.problem = problem
     }
     
@@ -78,10 +78,10 @@ struct ProblemView: View {
 
 #Preview {
     ScrollView(.vertical) {
-        ProblemView(problem: Problem(topValue: 10, bottomValue: 10, problemType: .addition))
-        ProblemView(problem: Problem(topValue: 10, bottomValue: 10, problemType: .subtraction))
-        ProblemView(problem: Problem(topValue: 10, bottomValue: 10, problemType: .multiplication))
-        ProblemView(problem: Problem(topValue: 10, bottomValue: 10, problemType: .division))
+        ProblemView(problem: QuizProblem(topValue: 10, bottomValue: 10, problemType: .addition))
+        ProblemView(problem: QuizProblem(topValue: 10, bottomValue: 10, problemType: .subtraction))
+        ProblemView(problem: QuizProblem(topValue: 10, bottomValue: 10, problemType: .multiplication))
+        ProblemView(problem: QuizProblem(topValue: 10, bottomValue: 10, problemType: .division))
             //        EquationView(problem: Problem(topValue: 9, bottomValue: 8, ProblemType: .subtraction))
             //        EquationView(problem: Equation(topValue: 8, bottomValue: 7, ProblemType: .multiplication))
             //        EquationView(problem: Equation(topValue: 10, bottomValue: 10, ProblemType: .division))

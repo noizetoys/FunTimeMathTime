@@ -27,7 +27,11 @@ struct HistoryListView: View {
                 List {
                     Section {
                         ForEach(problemSets) { set in
-                            HistoryListCellView(problemSet: set)
+                            NavigationLink {
+                            } label: {
+                                HistoryListCellView(problemSet: set)
+                            }
+
                         }
                     } header: {
                         Text("Previous Quizes")
@@ -66,7 +70,6 @@ struct HistoryListCellView: View {
             
             HStack {
                 Text("\(problemSet.dateString)")
-//                    .bold()
             }
         }
         
@@ -109,7 +112,7 @@ struct HistoryListCellView: View {
                     .frame(width: 20)
                 
                 HStack {
-                    if problem.correctlyAnswered {
+                    if problem.correctSolutionChosen {
                         Text("Solution: \(problem.correctSolution.result)")
                             .foregroundStyle(.green)
                             .bold()
@@ -144,5 +147,11 @@ struct HistoryListCellView: View {
 //    let sample = HistoricalProbSet.sampleHistoricalSet()
     
 //    return HistoryListView(problemSets: [sampleSet])
-    HistoryListView(problemSets: [HistoricalProbSet.sampleHistoricalSet()])
+    HistoryListView(problemSets: [
+        HistoricalProbSet.sampleHistoricalSet(),
+        HistoricalProbSet.sampleHistoricalSet(),
+        HistoricalProbSet.sampleHistoricalSet(),
+        HistoricalProbSet.sampleHistoricalSet(),
+        HistoricalProbSet.sampleHistoricalSet()
+    ])
 }

@@ -12,6 +12,7 @@ struct QuizView: View {
     @Environment(\.dismiss) private var dismiss
     
     @StateObject private var problemSet: ProblemSet
+//    @StateObject private var proctor: QuizProctor
     
     @State private var timer = Timer.publish(every: 1, on: .main, in: .common)
     @State private var timerRunning: Bool = false
@@ -23,6 +24,28 @@ struct QuizView: View {
     @State private var countdownSheetAlreadyShown = false
     @State private var showQuizCompleteSheet = false
     
+    private var remainingQuestions: Int {
+        let remaining = problemSet.problemCount - problemSet.answeredCount
+        
+//        if remaining == 0 {
+//            print("End called")
+//            timer.connect().cancel()
+//            timerRunning = false
+//            canAnswerQuestions = false
+//            
+//            problemSet.endTime = .now
+//            
+//            showQuizCompleteSheet = true
+//                // End timer
+//                // Show Alert
+//                // Save Data for History
+//                // Dismiss View back to Dahboard
+//            return 0
+//        }
+        
+        return remaining
+    }
+        // MARK: - Private -
     
     private let config: ProblemSetConfiguration
     
@@ -40,8 +63,8 @@ struct QuizView: View {
 
     init(config: ProblemSetConfiguration) {
         self.config = config
-
         _problemSet = StateObject(wrappedValue: ProblemSet(config: config))
+//        _proctor = StateObject(wrappedValue: QuizProctor(config: config))
     }
     
     
@@ -53,9 +76,14 @@ struct QuizView: View {
                 timerView
                 
                 ScrollView(.horizontal) {
+                    
                     HStack {
-                        
+//                        ProblemView(problem: proctor.currentProblem)
                         ForEach(problemSet.problems) { problem in
+                            if problem.index == problemSet.problemCount {
+                                
+                            }
+                                
                             if problem.selectedSolution == nil {
                                 ProblemView(problem: problem)
                             }
@@ -76,7 +104,7 @@ struct QuizView: View {
                 }
                 .fixedSize()
             }
-            .environmentObject(problemSet)
+//            .environmentObject(problemSet)
             .safeAreaPadding(.horizontal)
             .onAppear {
                 self.timerRunning = false
@@ -119,7 +147,9 @@ struct QuizView: View {
                 .foregroundStyle(timerRunning ? .black : .gray.opacity(0.3))
                 .onReceive(timer) { _ in
                     self.remainingSeconds -= 1
+                    
                     if remainingSeconds <= 0 {
+                        print("QUIZVIEW:  remainingSeconds = \(remainingSeconds)")
                         end()
                     }
                 }
@@ -127,7 +157,7 @@ struct QuizView: View {
             Spacer()
                 .frame(width: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/)
             
-            Text("\(problemSet.totalCount - problemSet.answeredCount)")
+            Text("\(remainingQuestions)")
                 .font(.system(size: 96, weight: .bold, design: .none))
 
             Spacer()
