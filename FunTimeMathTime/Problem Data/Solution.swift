@@ -56,3 +56,11 @@ extension Solution {
 }
 
 
+extension Solution: CustomStringConvertible {
+    var description: String {
+        fullText
+    }
+    
+    
+}
+

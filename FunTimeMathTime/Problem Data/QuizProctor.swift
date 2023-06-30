@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 // Config Related
 //    @Published var problemCount: Float
@@ -34,6 +35,7 @@ import Foundation
     // Auto-start
     // Button Start
     // Cancel Button
+    // Skipt Button
 
 
     // Time runs out
@@ -50,7 +52,8 @@ class QuizProctor: ObservableObject {
     @Published var remainProblemCountText: String = ""
     @Published private var remainingSeconds: Int = 0
     
-    
+    private var cancellables = [AnyCancellable]()
+
     private var timer = Timer.publish(every: 1, on: .main, in: .common)
     private var timerRunning: Bool = false
     
@@ -76,15 +79,36 @@ class QuizProctor: ObservableObject {
         // MARK: - Public -
 
     func start() {
+        // Start Timer
+        // Select First problem
+        // Update counter (when selected)
         
     }
     
     
     func end() {
-        
+        // Stop Timer
+        // Generate info to
     }
     
     
+//    func next() {
+//        currentProblem = problemSet.problems.removeFirst()
+//        currentProblem?
+//            .$selectedSolution
+//            .sink { solution in
+//                if solution == nil { return }
+//                
+//                
+//            }
+//            .store(in: &cancellables)
+//
+//    }
+    
+    
+    func skip() {
+        
+    }
     
 }
 

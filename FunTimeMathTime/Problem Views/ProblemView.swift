@@ -17,8 +17,8 @@ struct ProblemView: View {
     
         // MARK: - Lifecycle -
     
-    init(problem: QuizProblem) {
-        self.problem = problem
+    init(problem: QuizProblem?) {
+        self.problem = problem ?? QuizProblem(topValue: 0, bottomValue: 0, problemType: .addition)
     }
     
     
@@ -72,7 +72,6 @@ struct ProblemView: View {
         .frame(width: 450)
     }
     
-    
 }
 
 
@@ -86,5 +85,5 @@ struct ProblemView: View {
             //        EquationView(problem: Equation(topValue: 8, bottomValue: 7, ProblemType: .multiplication))
             //        EquationView(problem: Equation(topValue: 10, bottomValue: 10, ProblemType: .division))
     }
-    .background(.orange)
+//    .background(.orange)
 }

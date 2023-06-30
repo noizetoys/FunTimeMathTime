@@ -81,7 +81,7 @@ extension QuizProblem: Equatable, Hashable {
 
 extension QuizProblem: CustomStringConvertible {
     var description: String {
-        "\n\(topValue) \(problemType) \(bottomValue) = \(correctSolution.result) (\(correctSolution.remainder ?? 0))"
+        "\(topValue) \(problemType) \(bottomValue) = \(correctSolution) --> Selected \(selectedSolution)"
     }
 }
 
