@@ -25,19 +25,19 @@
 		8504A65A2A40B64700990F00 /* QuizView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8504A6592A40B64700990F00 /* QuizView.swift */; };
 		8504A65E2A40B77400990F00 /* ProblemType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8504A65D2A40B77400990F00 /* ProblemType.swift */; };
 		8504A6622A40B8E900990F00 /* Solution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8504A6612A40B8E900990F00 /* Solution.swift */; };
+		8539579C2A4F352800828228 /* HistoricalProbSetConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8539579B2A4F352800828228 /* HistoricalProbSetConfiguration.swift */; };
 		85491C762A4B966B009D52A7 /* HistoryDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85491C752A4B966B009D52A7 /* HistoryDetailView.swift */; };
 		85491C782A4B9771009D52A7 /* BasicProblem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85491C772A4B9771009D52A7 /* BasicProblem.swift */; };
-		85491C7B2A4B9E17009D52A7 /* BasicProblemSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85491C7A2A4B9E17009D52A7 /* BasicProblemSet.swift */; };
+		85491C7B2A4B9E17009D52A7 /* ProblemSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85491C7A2A4B9E17009D52A7 /* ProblemSet.swift */; };
 		85491C7D2A4BA05B009D52A7 /* HistoricalProblemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85491C7C2A4BA05B009D52A7 /* HistoricalProblemView.swift */; };
 		8572EE662A40C33B00BD3905 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8572EE652A40C33B00BD3905 /* SettingsView.swift */; };
-		85A20FBC2A414A880089F1A9 /* Scrollala.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85A20FBB2A414A880089F1A9 /* Scrollala.swift */; };
-		85C748EF2A4D1335001998BC /* QuizProctor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85C748EE2A4D1335001998BC /* QuizProctor.swift */; };
+		859FF5F92A4F634D00337E45 /* QuizEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859FF5F82A4F634D00337E45 /* QuizEngine.swift */; };
 		85CB4E322A44D6D8003854BE /* CountDownSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CB4E312A44D6D8003854BE /* CountDownSheet.swift */; };
 		85CB4E342A44D9F2003854BE /* QuizCompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CB4E332A44D9F1003854BE /* QuizCompleteView.swift */; };
 		85CB4E362A44FB4D003854BE /* HistoryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CB4E352A44FB4D003854BE /* HistoryListView.swift */; };
 		85CDB4062A4602C300971E66 /* HistoricalProblem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CDB4052A4602C300971E66 /* HistoricalProblem.swift */; };
 		85CDB4072A46466700971E66 /* HistoricalProbSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CDB4022A45FB1D00971E66 /* HistoricalProbSet.swift */; };
-		85DAEDDA2A4281E9002941B8 /* ProblemSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DAEDD92A4281E9002941B8 /* ProblemSet.swift */; };
+		85DAEDDA2A4281E9002941B8 /* QuizProblemSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DAEDD92A4281E9002941B8 /* QuizProblemSet.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,19 +79,19 @@
 		8504A6592A40B64700990F00 /* QuizView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizView.swift; sourceTree = "<group>"; };
 		8504A65D2A40B77400990F00 /* ProblemType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProblemType.swift; sourceTree = "<group>"; };
 		8504A6612A40B8E900990F00 /* Solution.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Solution.swift; sourceTree = "<group>"; };
+		8539579B2A4F352800828228 /* HistoricalProbSetConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoricalProbSetConfiguration.swift; sourceTree = "<group>"; };
 		85491C752A4B966B009D52A7 /* HistoryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryDetailView.swift; sourceTree = "<group>"; };
 		85491C772A4B9771009D52A7 /* BasicProblem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicProblem.swift; sourceTree = "<group>"; };
-		85491C7A2A4B9E17009D52A7 /* BasicProblemSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicProblemSet.swift; sourceTree = "<group>"; };
+		85491C7A2A4B9E17009D52A7 /* ProblemSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProblemSet.swift; sourceTree = "<group>"; };
 		85491C7C2A4BA05B009D52A7 /* HistoricalProblemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoricalProblemView.swift; sourceTree = "<group>"; };
 		8572EE652A40C33B00BD3905 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
-		85A20FBB2A414A880089F1A9 /* Scrollala.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scrollala.swift; sourceTree = "<group>"; };
-		85C748EE2A4D1335001998BC /* QuizProctor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizProctor.swift; sourceTree = "<group>"; };
+		859FF5F82A4F634D00337E45 /* QuizEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizEngine.swift; sourceTree = "<group>"; };
 		85CB4E312A44D6D8003854BE /* CountDownSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountDownSheet.swift; sourceTree = "<group>"; };
 		85CB4E332A44D9F1003854BE /* QuizCompleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizCompleteView.swift; sourceTree = "<group>"; };
 		85CB4E352A44FB4D003854BE /* HistoryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryListView.swift; sourceTree = "<group>"; };
 		85CDB4022A45FB1D00971E66 /* HistoricalProbSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoricalProbSet.swift; sourceTree = "<group>"; };
 		85CDB4052A4602C300971E66 /* HistoricalProblem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoricalProblem.swift; sourceTree = "<group>"; };
-		85DAEDD92A4281E9002941B8 /* ProblemSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProblemSet.swift; sourceTree = "<group>"; };
+		85DAEDD92A4281E9002941B8 /* QuizProblemSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizProblemSet.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,7 +122,6 @@
 		8504A5F92A3FDA0F00990F00 = {
 			isa = PBXGroup;
 			children = (
-				85A20FBB2A414A880089F1A9 /* Scrollala.swift */,
 				8504A6042A3FDA0F00990F00 /* FunTimeMathTime */,
 				8504A6152A3FDA1000990F00 /* FunTimeMathTimeTests */,
 				8504A61F2A3FDA1000990F00 /* FunTimeMathTimeUITests */,
@@ -144,11 +143,12 @@
 			isa = PBXGroup;
 			children = (
 				8504A6052A3FDA0F00990F00 /* FunTimeMathTimeApp.swift */,
-				85491C792A4B9802009D52A7 /* Protocols */,
-				85CDB4042A46029500971E66 /* History */,
+				859FF5F82A4F634D00337E45 /* QuizEngine.swift */,
 				8504A6332A3FDA8800990F00 /* Views */,
 				8504A6482A3FDB1A00990F00 /* Problem Views */,
+				85CDB4042A46029500971E66 /* History */,
 				8504A6582A3FDD4E00990F00 /* Problem Data */,
+				85491C792A4B9802009D52A7 /* Protocols */,
 				8504A6092A3FDA1000990F00 /* Assets.xcassets */,
 				8504A60B2A3FDA1000990F00 /* Preview Content */,
 			);
@@ -207,10 +207,9 @@
 		8504A6582A3FDD4E00990F00 /* Problem Data */ = {
 			isa = PBXGroup;
 			children = (
-				85C748EE2A4D1335001998BC /* QuizProctor.swift */,
+				85DAEDD92A4281E9002941B8 /* QuizProblemSet.swift */,
 				8504A6382A3FDAF700990F00 /* QuizProblem.swift */,
 				8504A6612A40B8E900990F00 /* Solution.swift */,
-				85DAEDD92A4281E9002941B8 /* ProblemSet.swift */,
 				8504A65D2A40B77400990F00 /* ProblemType.swift */,
 				8504A64D2A3FDB4900990F00 /* ProblemGenerator.swift */,
 				8504A6542A3FDCD500990F00 /* ProblemSetConfiguration.swift */,
@@ -222,7 +221,7 @@
 			isa = PBXGroup;
 			children = (
 				85491C772A4B9771009D52A7 /* BasicProblem.swift */,
-				85491C7A2A4B9E17009D52A7 /* BasicProblemSet.swift */,
+				85491C7A2A4B9E17009D52A7 /* ProblemSet.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -233,6 +232,7 @@
 				85CB4E352A44FB4D003854BE /* HistoryListView.swift */,
 				85CDB4022A45FB1D00971E66 /* HistoricalProbSet.swift */,
 				85CDB4052A4602C300971E66 /* HistoricalProblem.swift */,
+				8539579B2A4F352800828228 /* HistoricalProbSetConfiguration.swift */,
 				85491C752A4B966B009D52A7 /* HistoryDetailView.swift */,
 				85491C7C2A4BA05B009D52A7 /* HistoricalProblemView.swift */,
 			);
@@ -376,25 +376,25 @@
 				85CDB4072A46466700971E66 /* HistoricalProbSet.swift in Sources */,
 				8504A64A2A3FDB3B00990F00 /* ProblemsConfigView.swift in Sources */,
 				8504A64E2A3FDB4900990F00 /* ProblemGenerator.swift in Sources */,
-				85491C7B2A4B9E17009D52A7 /* BasicProblemSet.swift in Sources */,
-				85DAEDDA2A4281E9002941B8 /* ProblemSet.swift in Sources */,
+				85491C7B2A4B9E17009D52A7 /* ProblemSet.swift in Sources */,
+				85DAEDDA2A4281E9002941B8 /* QuizProblemSet.swift in Sources */,
 				8504A65A2A40B64700990F00 /* QuizView.swift in Sources */,
-				85A20FBC2A414A880089F1A9 /* Scrollala.swift in Sources */,
 				85CB4E362A44FB4D003854BE /* HistoryListView.swift in Sources */,
 				8504A6422A3FDAF700990F00 /* ProblemView.swift in Sources */,
 				8504A6082A3FDA0F00990F00 /* Dashboard.swift in Sources */,
 				8504A63F2A3FDAF700990F00 /* EquationView.swift in Sources */,
 				8504A6622A40B8E900990F00 /* Solution.swift in Sources */,
+				8539579C2A4F352800828228 /* HistoricalProbSetConfiguration.swift in Sources */,
 				8504A63C2A3FDAF700990F00 /* QuizProblem.swift in Sources */,
 				85CB4E342A44D9F2003854BE /* QuizCompleteView.swift in Sources */,
 				8504A6302A3FDA8200990F00 /* ProblemTypePickerView.swift in Sources */,
 				8504A6552A3FDCD500990F00 /* ProblemSetConfiguration.swift in Sources */,
 				8504A65E2A40B77400990F00 /* ProblemType.swift in Sources */,
-				85C748EF2A4D1335001998BC /* QuizProctor.swift in Sources */,
 				8504A6062A3FDA0F00990F00 /* FunTimeMathTimeApp.swift in Sources */,
 				85CDB4062A4602C300971E66 /* HistoricalProblem.swift in Sources */,
 				85491C7D2A4BA05B009D52A7 /* HistoricalProblemView.swift in Sources */,
 				8504A6452A3FDAF700990F00 /* SolutionView.swift in Sources */,
+				859FF5F92A4F634D00337E45 /* QuizEngine.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -6,20 +6,22 @@
 //
 
 import Foundation
+import Observation
 
 
-class ProblemSetConfiguration: ObservableObject, Identifiable {
-    private(set) var id: UUID
+@Observable
+class ProblemSetConfiguration: Identifiable {
+    private(set) var id: UUID = UUID()
     
-    @Published var problemCount: Float
-    @Published var timeLimit: Float
+    var problemType: ProblemType = .addition
+    var problemCount: Float = 30
+    var timeLimit: Float = 3
     
-    @Published var valueRange: ClosedRange<Int>
-    @Published var selectedValues: [Int]
-    @Published var autoStartQuiz: Bool
+    var valueRange: ClosedRange<Int> = 1...12
+    var selectedValues: [Int] = []
+    var autoStartQuiz: Bool = false
     
-    var problemType: ProblemType
-    var randomize: Bool
+    var randomize: Bool = true
     
    
         // MARK: - Lifecycle -
@@ -69,7 +71,6 @@ extension ProblemSetConfiguration {
     static func sampleConfig(from problem: QuizProblem, count: Int = 20) -> ProblemSetConfiguration {
         sampleConfig(top: problem.topValue, type: problem.problemType, count: count)
     }
-    
     
     
     static func sampleConfig(top: Int = 7, type: ProblemType = .addition, count: Int = 20) -> ProblemSetConfiguration {

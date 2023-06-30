@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+
 struct HistoricalProblemView: View {
     @State private var visibleSolution: Solution
     @State private var showingCorrectAnswer: Bool = false

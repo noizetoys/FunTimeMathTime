@@ -9,12 +9,15 @@ import SwiftUI
 
 
 struct ProblemTypePickerView: View {
-    @EnvironmentObject var problemSetConfig: ProblemSetConfiguration
-    
+    @Environment(QuizEngine.self) private var quizEngine: QuizEngine
+
     @State private var selectedType: ProblemType = .addition
     @State private var showConfigView: Bool = false
     
     @State private var paths: [ProblemSetConfiguration] = []
+    
+    
+//    init() { }
     
     var body: some View {
         NavigationStack(path: $paths) {
@@ -36,14 +39,16 @@ struct ProblemTypePickerView: View {
             }
             .padding()
             .sheet(isPresented: $showConfigView) {
-                paths.append(problemSetConfig)
+                quizEngine.newProblemSet()
+                paths.append(quizEngine.problemSetConfig)
             } content: {
                 ProblemsConfigView()
             }
             .navigationDestination(for: ProblemSetConfiguration.self) { config in
-                QuizView(config: config)
+                QuizView()
             }
         }
+//        .environmentObject(quizEngine)
         
     }
     
@@ -62,7 +67,7 @@ struct ProblemTypePickerView: View {
         .padding()
         .onTapGesture {
             selectedType = type
-            problemSetConfig.problemType = type
+            quizEngine.problemSetConfig.problemType = type
             showConfigView.toggle()
         }
         

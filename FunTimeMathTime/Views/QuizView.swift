@@ -10,26 +10,21 @@ import SwiftUI
 
 struct QuizView: View {
     @Environment(\.dismiss) private var dismiss
-    
-    @StateObject private var problemSet: ProblemSet
-    
+    @Environment(QuizEngine.self) private var quizEngine: QuizEngine
+
     @State private var showCountdownSheet = false
     @State private var quizInProgress = false
+    @State private var quizComplete = false
     
     
         // MARK: - Private -
     
-    private let config: ProblemSetConfiguration
-    
-    private var needsTimer: Bool { config.timeLimit > 0 }
+    private var needsTimer: Bool { quizEngine.problemSetConfig.timeLimit > 0 }
     
     
         // MARK: - LifeCycle -
 
-    init(config: ProblemSetConfiguration) {
-        self.config = config
-        _problemSet = StateObject(wrappedValue: ProblemSet(config: config))
-    }
+//    init() { }
     
     
     var body: some View {
@@ -41,7 +36,7 @@ struct QuizView: View {
                     
                     HStack {
                         if quizInProgress {
-                            ProblemView(problem: problemSet.currentProblem)
+                            ProblemView(problem: quizEngine.problemSet.currentProblem)
                         }
                         else {
                             tapToBeginButton
@@ -72,17 +67,17 @@ struct QuizView: View {
                 withAnimation {
                     quizInProgress = true
                 }
-                problemSet.start()
+                quizEngine.problemSet.start()
             }, content: {
                 CountDownSheet()
             })
-            .sheet(isPresented: $problemSet.quizComplete) {
+            .sheet(isPresented: $quizComplete) {
                 withAnimation {
                     quizInProgress = false
                 }
                 dismiss()
             } content: {
-                QuizCompleteView(problemSet: problemSet)
+                QuizCompleteView()
                     .clipShape(RoundedRectangle(cornerRadius: 35))
             }
         }
@@ -119,14 +114,14 @@ struct QuizView: View {
         HStack {
             Spacer()
             
-            Text("\(problemSet.timeString)")
+            Text("\(quizEngine.problemSet.timeString)")
                 .font(.system(size: 96, weight: .bold, design: .none))
                 .foregroundStyle(quizInProgress ? .black : .gray.opacity(0.3))
             
             Spacer()
                 .frame(width: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/)
             
-            Text("\(problemSet.questionsCountString)")
+            Text("\(quizEngine.problemSet.questionsCountString)")
                 .font(.system(size: 96, weight: .bold, design: .none))
 
             Spacer()
@@ -139,7 +134,7 @@ struct QuizView: View {
         Button(action: {
             print("Skip Buttom Pressed")
             withAnimation {
-                problemSet.skip()
+                quizEngine.problemSet.skip()
             }
         }, label: {
             Text("Skip")
@@ -160,7 +155,9 @@ struct QuizView: View {
     private var endButton: some View {
         Button(action: {
             withAnimation {
-                problemSet.end()
+                quizComplete = true
+                quizEngine.problemSet.end()
+                quizEngine.saveProblemSet()
             }
         }, label: {
             Text("End")
@@ -206,11 +203,12 @@ struct QuizView: View {
 
 
 #Preview {
-    QuizView(config: ProblemSetConfiguration(problemType: .addition,
-                                             problemCount: 30,
-                                             timeLimit: 3,
-//                                             timeLimit: 0.05,
-                                             valueRange: 2...12,
-                                             selectedValues: [3, 7, 9],
-                                             randomize: true))
+//    QuizView(config: ProblemSetConfiguration(problemType: .addition,
+//                                             problemCount: 30,
+//                                             timeLimit: 3,
+////                                             timeLimit: 0.05,
+//                                             valueRange: 2...12,
+//                                             selectedValues: [3, 7, 9],
+//                                             randomize: true))
+    QuizView()
 }

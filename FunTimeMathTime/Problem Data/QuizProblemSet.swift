@@ -1,31 +1,31 @@
 //
-//  ProblemSet.swift
+//  QuizProblemSet.swift
 //  FunTimeMathTime
 //
 //  Created by Apple User on 6/20/23.
 //
 
-//import Foundation
+
 import SwiftUI
 import Combine
+import Observation
 
 
-class ProblemSet: BasicProblemSet, ObservableObject {
-    @Published var currentProblem: QuizProblem?
-    @Published var remainingSeconds: TimeInterval = 0
-    @Published var quizComplete: Bool = false
-//    @Published var quizInProgress: Bool = false
-    @Published var showCountdownSheet: Bool = false
+@Observable
+class QuizProblemSet: ProblemSet {
+    var currentProblem: QuizProblem? = nil
+    var remainingSeconds: TimeInterval = 0
+    var showCountdownSheet: Bool = false
     
-    var id: UUID
-    var configuration: ProblemSetConfiguration
+    var id: UUID = UUID()
+    var configuration: ProblemSetConfiguration = ProblemSetConfiguration()
     // Kept clean to save
-    private(set) var problems: [QuizProblem]
+    private(set) var problems: [QuizProblem] = []
     // Used in Quiz View
-    private var unansweredProblems: [QuizProblem]
+    private var unansweredProblems: [QuizProblem] = []
     private var answeredProblems: [QuizProblem] = []
 
-    private var timer: Timer?
+    private var timer: Timer? = nil
     
     var timeString: String {
         let minutes = Int(remainingSeconds / 60)
@@ -43,7 +43,6 @@ class ProblemSet: BasicProblemSet, ObservableObject {
     var endTime: Date = .now
     
     private var cancellables = [AnyCancellable]()
-//    private var cancellables: AnyCancellable? = nil
     private var problemCountCancellable = [AnyCancellable]()
     
    
@@ -64,6 +63,7 @@ class ProblemSet: BasicProblemSet, ObservableObject {
         showCountdownSheet = true
     }
     
+    
     func start() {
         if configuration.timeLimit > 0 {
             remainingSeconds = TimeInterval(configuration.timeLimit * 60.0)
@@ -77,7 +77,6 @@ class ProblemSet: BasicProblemSet, ObservableObject {
             timer?.fire()
         }
         
-//        quizInProgress = true
         next()
     }
     
@@ -86,18 +85,8 @@ class ProblemSet: BasicProblemSet, ObservableObject {
         timer?.invalidate()
         endTime = .now
         
-//        quizInProgress = false
-        quizComplete = true
         cancellables.forEach { $0.cancel() }
         cancellables = []
-        
-        print("\n>>>>>>>>>>> END <<<<<<<<<<<<<")
-        print("\nanswered: \(answeredProblems.count)")
-        answeredProblems.forEach { print($0)}
-        print("\nunanswered: \(unansweredProblems.count)")
-        unansweredProblems.forEach { print($0)}
-        print("\noriginal: \(problems.count)")
-        problems.forEach { print($0)}
     }
     
     
@@ -117,7 +106,7 @@ class ProblemSet: BasicProblemSet, ObservableObject {
                 if solution == nil { return }
                 
                 if let problem = self.currentProblem {
-                    self.moveToAnswered(problem)
+                    self.answeredProblems.append(problem)
                     
                     if self.unansweredProblems.isEmpty == false {
                         self.next()
@@ -128,9 +117,9 @@ class ProblemSet: BasicProblemSet, ObservableObject {
             .store(in: &cancellables)
     }
     
+    
     func skip() {
-        guard
-            let currentProblem
+        guard let currentProblem
         else { return }
         
         unansweredProblems.append(currentProblem)
@@ -138,11 +127,6 @@ class ProblemSet: BasicProblemSet, ObservableObject {
     }
     
 
-    func moveToAnswered(_ problem: QuizProblem) {
-       answeredProblems.append(problem)
-    }
-    
-    
     func skipProblem() {
         guard let problem = currentProblem
         else { return }
@@ -153,7 +137,25 @@ class ProblemSet: BasicProblemSet, ObservableObject {
 }
 
 
-extension ProblemSet {
+extension QuizProblemSet: CustomStringConvertible {
+    var description: String {
+        """
+        problemType: \(problemType.rawValue)
+        valueRange: \(valueRange)
+        selectedValues: \(selectedValues)
+        selectedValues: \(selectedValues)
+        
+        problemCount: \(problemCount)
+        answered: \(answeredProblems.count)
+        unanswered: \(unansweredProblems.count)
+        
+        time: \(endTime.timeIntervalSince(startTime).minutesSeconds)
+        """
+    }
+}
+
+
+extension QuizProblemSet {
     
     func configForTesting() {
 //        let endTime = Date.now

@@ -6,17 +6,20 @@
 //
 
 import Foundation
-//import SwiftData
+import SwiftData
 
 
 //@Model
 class HistoricalProblem: BasicProblem {
-//    @Attribute(.unique) var id: UUID
-    var id: UUID
+    var problemType: ProblemType
     
+//class HistoricalProblem: Identifiable {
+//    @Attribute(.unique) var id: UUID
+    
+    var id: UUID
     let topValue: Int
     let bottomValue: Int
-    let problemType: ProblemType
+//    let problemType: String
     
     let correctSolution: Solution
     let selectedSolution: Solution?

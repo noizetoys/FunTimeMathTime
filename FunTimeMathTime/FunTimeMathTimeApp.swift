@@ -11,18 +11,27 @@ import SwiftData
 
 @main
 struct FunTimeMathTimeApp: App {
-    
+    @State var quizEngine: QuizEngine = QuizEngine()
+
     var body: some Scene {
         WindowGroup {
             Dashboard()
-//            QuizView(config: ProblemSetConfiguration(problemType: .addition,
-//                                                     problemCount: 30,
-//                                                     timeLimit: 0.15,
-//                                                     valueRange: 2...12,
-//                                                     selectedValues: [3, 7, 9],
-//                                                     randomize: true))
+                .environment(quizEngine)
+//                .modelContainer(for: [HistoricalProbSet.self, HistoricalProblem.self])
 
         }
     }
     
 }
+
+//extension EnvironmentValues {
+//    var library: Library {
+//        get { self[LibraryKey.self] }
+//        set { self[LibraryKey.self] = newValue }
+//    }
+//}
+//
+//
+//private struct LibraryKey: EnvironmentKey {
+//    static var defaultValue: Library = Library()
+//}

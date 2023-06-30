@@ -1,5 +1,5 @@
 //
-//  BasicProblemSet.swift
+//  ProblemSet.swift
 //  FunTimeMathTime
 //
 //  Created by Apple User on 6/27/23.
@@ -8,7 +8,7 @@
 import Foundation
 
 
-protocol BasicProblemSet: Identifiable {
+protocol ProblemSet: Identifiable {
     associatedtype Problem: BasicProblem
     
     var id: UUID { get }
@@ -19,7 +19,7 @@ protocol BasicProblemSet: Identifiable {
 }
 
 
-extension BasicProblemSet {
+extension ProblemSet {
     // Configuration related
     var problemType: ProblemType { configuration.problemType }
     var timeLimit: Float { configuration.timeLimit }

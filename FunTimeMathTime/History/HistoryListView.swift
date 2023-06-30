@@ -6,13 +6,13 @@
 //
 
 import SwiftUI
-//import SwiftData
+import SwiftData
 
 
 struct HistoryListView: View {
     @State private var problemSets: [HistoricalProbSet]
 //    @Environment(\.modelContext) private var modelContext
-//    @Query var problemSets: [HistoricalProblemSet]
+//    @Query var problemSets: [HistoricalProbSet]
     
     
     init(problemSets: [HistoricalProbSet]) {

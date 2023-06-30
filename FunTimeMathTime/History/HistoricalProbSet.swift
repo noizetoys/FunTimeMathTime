@@ -6,34 +6,54 @@
 //
 
 import Foundation
-//import SwiftData
+import SwiftData
 
 
 //@Model
-class HistoricalProbSet: BasicProblemSet {
-//    @Attribute(.uniue) var id: UUID
-    var id: UUID
-    var configuration: ProblemSetConfiguration
-    private(set) var problems: [HistoricalProblem]
+class HistoricalProbSet: ProblemSet, Identifiable  {
     
+//class HistoricalProbSet: Identifiable {
+//    @Attribute(.unique) var id: UUID
+    var id: UUID
+    private(set) var problems: [HistoricalProblem]
+    var configuration: ProblemSetConfiguration
     
     let startTime: Date
     var endTime: Date
     
-    var completionTime: TimeInterval
-    var completionTimeString: String { completionTime.minutesSeconds }
-    
+    var completionTimeString: String { endTime.timeIntervalSince(startTime).minutesSeconds }
+   
+    // Configuration
+//   var problemCount: Float
+//   var timeLimit: Float
+//   
+//   var valueRange: ClosedRange<Int>
+//   var selectedValues: [Int]
+//   var autoStartQuiz: Bool
+//    
+//    var problemType: ProblemType
+//    var randomize: Bool
+
     
         // MARK: - Lifecycle -
     
-    init(problemSet: ProblemSet, config: ProblemSetConfiguration) {
+    init(problemSet: QuizProblemSet, config: ProblemSetConfiguration) {
+        self.id = problemSet.id
         self.configuration = config
-        self.id = UUID()
     
         self.problems = problemSet.problems.map { HistoricalProblem.new(from: $0) }
         self.startTime = problemSet.startTime
         self.endTime = problemSet.endTime
-        self.completionTime = problemSet.completionTime
+        
+        
+            // Configuration
+//        problemCount = config.problemCount
+//        timeLimit = config.timeLimit
+//        valueRange = config.valueRange
+//        selectedValues = config.selectedValues
+//        autoStartQuiz = config.autoStartQuiz
+//        problemType = config.problemType
+//        randomize = config.randomize
     }
     
     
@@ -41,7 +61,7 @@ class HistoricalProbSet: BasicProblemSet {
     
     static func sampleSet(for problem: HistoricalProblem, count: Int = 20) -> HistoricalProbSet {
         let config = ProblemSetConfiguration.sampleConfig(from: problem, count: count)
-        let problemSet = ProblemSet(config: config)
+        let problemSet = QuizProblemSet(config: config)
         problemSet.configForTesting()
         
         return .init(problemSet: problemSet, config: config)
@@ -50,7 +70,7 @@ class HistoricalProbSet: BasicProblemSet {
     
     static func sampleSet(for problem: QuizProblem, count: Int = 20) -> HistoricalProbSet {
         let config = ProblemSetConfiguration.sampleConfig(from: problem, count: count)
-        let problemSet = ProblemSet(config: config)
+        let problemSet = QuizProblemSet(config: config)
         problemSet.configForTesting()
         
         return .init(problemSet: problemSet, config: config)

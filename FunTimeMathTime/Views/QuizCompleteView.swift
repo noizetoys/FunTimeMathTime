@@ -9,8 +9,10 @@ import SwiftUI
 
 struct QuizCompleteView: View {
     @Environment(\.dismiss) private var dismiss
-    var problemSet: ProblemSet
-    
+//    var problemSet: QuizProblemSet
+//    @EnvironmentObject private var quizEngine: QuizEngine
+    @Environment(QuizEngine.self) private var quizEngine: QuizEngine
+
     var body: some View {
         VStack {
             Text("Time's Up!")
@@ -21,16 +23,16 @@ struct QuizCompleteView: View {
                 .frame(height: 50)
             
             VStack(alignment: .center, spacing: 20) {
-                Text("Total Problems: \(problemSet.problemCount)")
-                Text("Answered: \(problemSet.answeredCount)")
-                Text("Not Answered: \(problemSet.unansweredCount)")
+                Text("Total Problems: \(quizEngine.problemSet.problemCount)")
+                Text("Answered: \(quizEngine.problemSet.answeredCount)")
+                Text("Not Answered: \(quizEngine.problemSet.unansweredCount)")
             }
             .font(.system(size: 38, weight: .bold))
 
             Spacer()
                 .frame(height: 50)
             
-            Text("Correctly Answered: \(problemSet.correctlyAnswered)")
+            Text("Correctly Answered: \(quizEngine.problemSet.correctlyAnswered)")
                 .font(.system(size: 52, weight: .black, design: .none))
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -49,8 +51,8 @@ struct QuizCompleteView: View {
                                                                   problemCount: 30,
                                                                   valueRange: 2...12,
                                                                   selectedValues: [5, 9])
-    var problemSet: ProblemSet = ProblemSet(config: config)
-//    problemSet.configForTesting()
+    var problemSet: QuizProblemSet = QuizProblemSet(config: config)
+//    quizEngine.problemSet.configForTesting()
     
-    return QuizCompleteView(problemSet: problemSet)
+    return QuizCompleteView()
 }
