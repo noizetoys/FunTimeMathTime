@@ -15,7 +15,7 @@ struct HistoryDetailView: View {
     var rows: [GridItem] {
         var theRows = [GridItem]()
         
-        for _ in 1...8 {
+        for _ in 1...6 {
             let item = GridItem(.flexible(), alignment: .center)
             theRows.append(item)
         }
@@ -30,16 +30,19 @@ struct HistoryDetailView: View {
     
     
     var body: some View {
-        ScrollView(.vertical) {
+        VStack {
             headerView
             
-            LazyVGrid(columns: rows) {
-                ForEach(problemSet.problems) { problem in
-                    HistoricalProblemView(problem: problem)
-                        .padding()
+            ScrollView(.vertical) {
+                LazyVGrid(columns: rows) {
+                    ForEach(problemSet.problems) { problem in
+                        HistoricalProblemView(problem: problem)
+                            .padding(10)
+                    }
                 }
             }
         }
+        .padding()
     
     }
     
@@ -58,13 +61,14 @@ struct HistoryDetailView: View {
 }
 
 
-#Preview {
-    let randomTop = Int.random(in: 2...12)
-    let randomBottom = Int.random(in: 2...12)
-    let randomType = ProblemType.allCases.randomElement()!
-    let problemCount = [20, 30, 40, 50].randomElement()!
-    
-    let problem = HistoricalProblem.sampleProblem(top: randomTop, bottom: randomBottom, type: randomType)
-    
-    return HistoryDetailView(problemSet: HistoricalProbSet.sampleSet(for: problem, count: problemCount))
-}
+//#Preview {
+//    let randomTop = Int.random(in: 2...12)
+//    let randomBottom = Int.random(in: 2...12)
+////    let randomType = ProblemType.allCases.randomElement()!
+//    let randomType = ProblemType.division
+//    let problemCount = [20, 30, 40, 50].randomElement()!
+//    
+//    let problem = HistoricalProblem.sampleProblem(top: randomTop, bottom: randomBottom, type: randomType)
+//    
+//    return HistoryDetailView(problemSet: HistoricalProbSet.sampleSet(for: problem, count: problemCount))
+//}

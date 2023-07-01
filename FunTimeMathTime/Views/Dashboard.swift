@@ -10,8 +10,6 @@ import SwiftUI
 struct Dashboard: View {
     @Environment(QuizEngine.self) private var quizEngine: QuizEngine
 
-//    @EnvironmentObject private var quizEngine: QuizEngine
-
     
     var body: some View {
         GeometryReader { geo in
@@ -25,7 +23,6 @@ struct Dashboard: View {
             .padding()
             
         } // Geo
-//        .environmentObject(quizEngine)
         
     }
     

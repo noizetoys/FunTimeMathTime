@@ -6,15 +6,18 @@
 //
 
 import Foundation
-import SwiftData
+//import SwiftData
 
 
 //@Model
-struct Solution: Identifiable, Equatable, Codable {
-    let id: UUID
+//struct Solution: Identifiable, Equatable, Codable {
+//struct Solution: Identifiable, Equatable {
+class Solution: Identifiable, Codable {
+//    @Attribute(.unique) var id: UUID
+    var id: UUID
     
-    let result: Int
-    let remainder: Int?
+    var result: Int
+    var remainder: Int?
     
     
     init(result: Int, remainder: Int? = nil) {
@@ -23,6 +26,12 @@ struct Solution: Identifiable, Equatable, Codable {
         id = UUID()
     }
     
+}
+
+extension Solution: Equatable {
+    static func == (lhs: Solution, rhs: Solution) -> Bool {
+        lhs.id == rhs.id
+    }
 }
 
 

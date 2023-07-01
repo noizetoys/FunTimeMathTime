@@ -10,6 +10,7 @@ import SwiftData
 
 
 struct HistoryListView: View {
+//    @Environment(QuizEngine.self) private var quizEngine: QuizEngine
     @State private var problemSets: [HistoricalProbSet]
 //    @Environment(\.modelContext) private var modelContext
 //    @Query var problemSets: [HistoricalProbSet]
@@ -17,7 +18,7 @@ struct HistoryListView: View {
     
     init(problemSets: [HistoricalProbSet]) {
         _problemSets = State(initialValue: problemSets)
-//        self.problemSets = problemSets
+        self.problemSets = problemSets
     }
     
     
@@ -40,6 +41,7 @@ struct HistoryListView: View {
                 }
         }
     }
+    
 }
 
 
@@ -68,34 +70,34 @@ struct HistoryListCellView: View {
                 Spacer()
             }
             
-            HStack {
-                Text("\(problemSet.dateString)")
-            }
+//            HStack {
+//                Text("\(problemSet.dateString)")
+//            }
         }
         
     }
     
     
-    var dataView: some View {
-        VStack(alignment: .leading) {
-            Text("TimeStamp: \(problemSet.dateString)")
-            Text("Completion time: \(problemSet.completionTime)")
-            Text("Time Limit: \(problemSet.timeLimit)")
-            Text("Value Range: \(problemSet.valueRange.lowerBound)...\(problemSet.valueRange.upperBound)")
-            Text("Count: \(problemSet.problemCount)")
-            Text("Problem Type: \(problemSet.problemType.rawValue)")
-            Text("Correct: \(problemSet.correctlyAnswered)")
-            Text("Unanswered: \(problemSet.unansweredCount)")
-            
-            VStack(alignment: .leading) {
-                ForEach(problemSet.selectedValues, id: \.self) { value in
-                    Text("Selected Value: \(value)")
-                }
-            }
-            
-            problemsView
-        }
-    }
+//    var dataView: some View {
+//        VStack(alignment: .leading) {
+//            Text("TimeStamp: \(problemSet.dateString)")
+//            Text("Completion time: \(problemSet.completionTime)")
+//            Text("Time Limit: \(problemSet.timeLimit)")
+//            Text("Value Range: \(problemSet.valueRange.lowerBound)...\(problemSet.valueRange.upperBound)")
+//            Text("Count: \(problemSet.problemCount)")
+//            Text("Problem Type: \(problemSet.problemType.rawValue)")
+//            Text("Correct: \(problemSet.correctlyAnswered)")
+//            Text("Unanswered: \(problemSet.unansweredCount)")
+//            
+//            VStack(alignment: .leading) {
+//                ForEach(problemSet.selectedValues, id: \.self) { value in
+//                    Text("Selected Value: \(value)")
+//                }
+//            }
+//            
+//            problemsView
+//        }
+//    }
     
     
     var problemsView: some View {

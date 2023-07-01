@@ -17,7 +17,6 @@ struct ProblemTypePickerView: View {
     @State private var paths: [ProblemSetConfiguration] = []
     
     
-//    init() { }
     
     var body: some View {
         NavigationStack(path: $paths) {
@@ -48,7 +47,6 @@ struct ProblemTypePickerView: View {
                 QuizView()
             }
         }
-//        .environmentObject(quizEngine)
         
     }
     

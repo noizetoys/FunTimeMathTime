@@ -7,11 +7,11 @@
 
 import SwiftUI
 
+
 struct QuizCompleteView: View {
     @Environment(\.dismiss) private var dismiss
-//    var problemSet: QuizProblemSet
-//    @EnvironmentObject private var quizEngine: QuizEngine
     @Environment(QuizEngine.self) private var quizEngine: QuizEngine
+    
 
     var body: some View {
         VStack {

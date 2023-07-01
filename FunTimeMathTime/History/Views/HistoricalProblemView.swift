@@ -12,7 +12,7 @@ struct HistoricalProblemView: View {
     @State private var visibleSolution: Solution
     @State private var showingCorrectAnswer: Bool = false
     
-    private let problem: any BasicProblem
+    private let problem: HistoricalProblem
     
     private let correctColor = Color.green.opacity(0.5)
     private let incorrectColor = Color.red.opacity(0.5)
@@ -20,13 +20,22 @@ struct HistoricalProblemView: View {
     private var incorrectText: String { problem.selectedSolution?.fullText ?? "N/A" }
     
     
-    init(problem: any BasicProblem) {
+    init(problem: HistoricalProblem) {
         self.problem = problem
         _visibleSolution = State(initialValue: problem.selectedSolution ?? problem.correctSolution)
     }
                              
     
     var body: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 10)
+                .foregroundColor(.white)
+                .overlay {
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(.black, lineWidth: 10.0)
+                }
+//                .padding(5)
+
             VStack(alignment: .center) {
                 
                 HStack {
@@ -37,7 +46,7 @@ struct HistoricalProblemView: View {
                 
                 Rectangle()
                     .frame(width: 80, height: 4)
-                    .padding(.top, -10)
+//                    .padding(.top, -10)
                 
                 HStack {
                     if problem.selectedSolution != nil {
@@ -54,14 +63,16 @@ struct HistoricalProblemView: View {
                     else {
                         Text("---")
                     }
-
+                    
                 } // HSTACK - Solutions
                 
             } // VStack
             .frame(width: 100)
             .cornerRadius(10)
+            .padding()
             .font(.title)
             .bold()
+        }
             
     }
     
@@ -77,10 +88,11 @@ struct HistoricalProblemView: View {
             
             VStack {
                 Text(correctText)
+                    .padding(.horizontal, 10)
             }
             
         }
-        .frame(width: 80, height: 80)
+        .frame(width: 100, height: 80)
         
     }
 
@@ -96,53 +108,55 @@ struct HistoricalProblemView: View {
             }
             
         }
-        .frame(width: 80, height: 80)
+        .frame(width: 100, height: 80)
 
     }
     
 }
 
 
-#Preview {
-    let correctSolution = Solution(result: 1, remainder: 1)
-    let correctProblem = HistoricalProblem(id: UUID(),
-                                           topValue: 9,
-                                           bottomValue: 8,
-                                           problemType: .division,
-                                           correctSolution: correctSolution,
-                                           selectedSolution: correctSolution)
-    let incorrectSolution = Solution(result: 3)
-    let inCorrectProblem = HistoricalProblem(id: UUID(),
-                                           topValue: 9,
-                                           bottomValue: 8,
-                                           problemType: .division,
-                                           correctSolution: correctSolution,
-                                           selectedSolution: incorrectSolution)
-    
-    let numberOfProblems = 40
-//    let maxNumberOfItems = 10
-    
-    var rows: [GridItem] {
-        var theRows = [GridItem]()
-        
-        let numberOfProblems = 40
-        let maxNumberOfItems = 8
-
-        let numOfRows = Int(numberOfProblems/maxNumberOfItems)
-
-        for _ in 1...numOfRows {
-            let item = GridItem(.flexible(), spacing: 20, alignment: .center)
-            theRows.append(item)
-        }
-        return theRows
-    }
-    
-    
-    return ScrollView(.vertical) {
-        LazyHGrid(rows: rows, spacing: 30) {
-            ForEach(1...numberOfProblems, id: \.self) { _ in
-                HistoricalProblemView(problem: Bool.random() ? correctProblem : inCorrectProblem)
-            }
-        }
-    }
-}
+//#Preview {
+//    let correctSolution = Solution(result: 1, remainder: 1)
+//    let correctProblem = HistoricalProblem(id: UUID(),
+//                                           topValue: 9,
+//                                           bottomValue: 8,
+//                                           problemType: .division,
+//                                           correctSolution: correctSolution,
+//                                           selectedSolution: correctSolution)
+//    let incorrectSolution = Solution(result: 3)
+//    let inCorrectProblem = HistoricalProblem(id: UUID(),
+//                                           topValue: 9,
+//                                           bottomValue: 8,
+//                                           problemType: .division,
+//                                           correctSolution: correctSolution,
+//                                           selectedSolution: incorrectSolution)
+//    
+//    let numberOfProblems = 40
+////    let maxNumberOfItems = 10
+//    
+//    var rows: [GridItem] {
+//        var theRows = [GridItem]()
+//        
+//        let numberOfProblems = 40
+//        let maxNumberOfItems = 6
+//
+//        let numOfRows = Int(numberOfProblems/maxNumberOfItems)
+//
+//        for _ in 1...numOfRows {
+//            let item = GridItem(.flexible(), spacing: 20, alignment: .center)
+//            theRows.append(item)
+//        }
+//        return theRows
+//    }
+//    
+//    
+//    return ScrollView(.vertical) {
+////        LazyHGrid(rows: rows, spacing: 30) {
+//        LazyVGrid(columns: rows, spacing: 30) {
+//            ForEach(1...numberOfProblems, id: \.self) { _ in
+//                HistoricalProblemView(problem: Bool.random() ? correctProblem : inCorrectProblem)
+//            }
+//        }
+//        .padding()
+//    }
+//}

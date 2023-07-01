@@ -33,7 +33,7 @@ extension ProblemSet {
     var correctlyAnswered: Int { problems.reduce(0) { $0 + ($1.correctSolutionChosen ? 1 : 0) } }
     
     var dateString: String { timeStamp.formatted(date: .numeric, time: .omitted) }
-    var selectedValuesString: String { selectedValues.map( { "\($0)" }).joined(separator: ", ")  }
+//    var selectedValuesString: String { selectedValues.map( { "\($0)" }).joined(separator: ", ")  }
     
     var timeStamp: Date { endTime }
     var completionTime: TimeInterval { endTime.timeIntervalSince(startTime) }

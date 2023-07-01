@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import SwiftData
+//import SwiftData
 
 
 @main
@@ -17,7 +17,7 @@ struct FunTimeMathTimeApp: App {
         WindowGroup {
             Dashboard()
                 .environment(quizEngine)
-//                .modelContainer(for: [HistoricalProbSet.self, HistoricalProblem.self])
+//                .modelContainer(for: [HistoricalProbSet.self, HistoricalProblem.self, Solution.self])
 
         }
     }

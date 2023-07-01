@@ -34,26 +34,18 @@ struct ProblemsConfigView: View {
         GridItem(.flexible(minimum: 40, maximum: 80), spacing: 10, alignment: .center),
     ]
     
-   @State var problemCount: Float = 30
+    @State var problemCount: Float = 30
     @State var timeLimit: Float = 3.0
-   @State var valueRange: ClosedRange<Int> = 1...12
-   @State var selectedValues: [Int] = []
-   @State var autoStartQuiz: Bool = false
-   @State var problemType: ProblemType = .addition
-   @State var randomize: Bool = true
-
+    @State var valueRange: ClosedRange<Int> = 1...12
+    @State var selectedValues: [Int] = []
+    @State var autoStartQuiz: Bool = false
+    @State var problemType: ProblemType = .addition
+    @State var randomize: Bool = true
     
-    // MARK: - View
     
-    init() {
-//        self.problemCount = quizEngine.problemSetConfig.problemCount
-//        self.timeLimit =  quizEngine.problemSetConfig.timeLimit
-//        self.valueRange = quizEngine.problemSetConfig.valueRange
-//        self.selectedValues = quizEngine.problemSetConfig.selectedValues
-//        self.autoStartQuiz = quizEngine.problemSetConfig.autoStartQuiz
-//        self.problemType = quizEngine.problemSetConfig.problemType
-//        self.randomize = quizEngine.problemSetConfig.randomize
-    }
+        // MARK: - View
+    
+    init() { }
     
     
     var body: some View {
