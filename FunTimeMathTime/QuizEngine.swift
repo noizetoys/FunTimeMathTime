@@ -7,52 +7,128 @@
 
 import Foundation
 import SwiftData
+import Combine
+import Observation
 
 
 @Observable
 class QuizEngine {
     var problemSetConfig: ProblemSetConfiguration = ProblemSetConfiguration()
-    var problemSet: QuizProblemSet = QuizProblemSet(config: ProblemSetConfiguration())
+    var problems: [QuizProblem] = []
+    var startTime: Date = .now
+    var endTime: Date = .now
+    
+    // For QuizView updates
     var quizReady: Bool = false
+    var quizInProgress = false
+
+    var problemCount: Int { problems.count }
+    var correctlyAnswered: Int { problems.reduce(into: 0) { $0 = $0 + ($1.correctlyAnswered == true ? 1 : 0) } }
+
+    var currentProblem: QuizProblem? = nil
     
+    var unansweredCount: Int { unansweredProblems.count }
+    var unansweredProblems: [QuizProblem] = []
     
-    init() {
-        print("\nQuizEngine: INIT problemSetConfig = \(problemSetConfig)")
-        print("\nQuizEngine: INIT problemSet = \(problemSet)")
+    var answeredCount: Int { answeredProblems.count }
+    private var answeredProblems: [QuizProblem] = []
+    
+    var timeLimit: TimeInterval { TimeInterval(problemSetConfig.timeLimit) }
+    
+    var questionsCountString: String {
+        "\(answeredProblems.count)/\(problemCount)"
     }
     
+    private var cancellables = [AnyCancellable]()
+    private var problemCountCancellable = [AnyCancellable]()
+
+    
+    init() {
+//        print("\nQuizEngine: INIT problemSetConfig = \(problemSetConfig)")
+    }
     
     
         // MARK: - Public -
-
-    @discardableResult
-    func newProblemSetConfig() -> ProblemSetConfiguration {
-        print("\n🔥 QuizEngine:  newProblemSetConfig Called")
-        problemSetConfig = ProblemSetConfiguration()
-        return problemSetConfig
+    
+    private var doneCallback: (() -> Void)? = nil
+    
+    func setDoneCallback(_ callback: @escaping () -> Void) {
+        doneCallback = callback
     }
     
     
-    @discardableResult
-    func newProblemSet() -> QuizProblemSet {
-        problemSet = QuizProblemSet(config: problemSetConfig)
-        return problemSet
-    }
-    
-    
-    @discardableResult
-    func newProblemSet(from config: ProblemSetConfiguration) -> QuizProblemSet {
-        problemSet = QuizProblemSet(config: config)
-        return problemSet
+    func newQuiz(using config: ProblemSetConfiguration) {
+        problemSetConfig = config
+        
+        answeredProblems = []
+        unansweredProblems = []
+        problems = []
+        
+        problems = ProblemGenerator.problemSet(for: config)
     }
 
+    func start() {
+        answeredProblems = []
+        unansweredProblems = []
+        unansweredProblems = problems
+        quizReady = true
+
+        next()
+    }
+    
+    
+    func end() {
+        endTime = .now
+        
+        cancellables.forEach { $0.cancel() }
+        cancellables = []
+        
+        doneCallback?()
+    }
+    
+    
+    func next() {
+        cancellables.forEach { $0.cancel() }
+        
+        if unansweredProblems.isEmpty {
+            end()
+        }
+        else {
+            currentProblem = unansweredProblems.removeFirst()
+            currentProblem?
+                .$selectedSolution
+                .sink { solution in
+                    if solution == nil { return }
+                    
+                    if let problem = self.currentProblem {
+                        self.answeredProblems.append(problem)
+                        
+                        if self.unansweredProblems.isEmpty == false {
+                            self.next()
+                        }
+                        else { self.end() }
+                    }
+                }
+                .store(in: &cancellables)
+        }
+    }
+    
+    
+    func skip() {
+        guard let currentProblem
+        else { return }
+        
+        unansweredProblems.append(currentProblem)
+        next()
+    }
+    
     
     func saveProblemSet(to context: ModelContext) {
         // Save to Historical Data
-        print("\n🔥 QuizEngine:  saveProblemSet \nSaving \(problemSet)")
-        
-        let historical = HistoricalProbSet(problemSet: self.problemSet, config: self.problemSetConfig)
-        context.insert(object: historical)
+//        print("\n🔥 QuizEngine:  saveProblemSet \nSaving \(problemSet)")
+//        
+//        let historical = HistoricalProbSet(problemSet: self.problemSet, config: self.problemSetConfig)
+//        context.insert(object: historical)
         
     }
     

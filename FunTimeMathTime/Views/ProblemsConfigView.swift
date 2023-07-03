@@ -12,14 +12,24 @@ struct ProblemsConfigView: View {
     @Environment(QuizEngine.self) private var quizEngine: QuizEngine
     @Environment(\.dismiss) private var dismiss
     
+    /// Numbers to use as TOP value
     @State private var allValues: [ValueGridItem] = []
+    /// No TOP values selected
     @State private var showAlert: Bool = false
+    
+    // Used to generate Config
+    @State var problemType: ProblemType = .addition
+    @State var problemCount: Float = 30
+    @State var timeLimit: Float = 3.0
+    @State var valueRange: ClosedRange<Int> = 1...12
+    @State var selectedValues: [Int] = []
+    @State var autoStartQuiz: Bool = false
+    @State var randomize: Bool = true
     
     private var timeLimitText: String {
         let limit = timeLimit
         return limit > 0 ? "Time Limit:  \(limit) Minutes" : "No Time Limit"
     }
-    
     private let problemCountRange: ClosedRange<Float> = 20...50
     
     private var rows: [GridItem] = [
@@ -29,21 +39,18 @@ struct ProblemsConfigView: View {
     ]
     
     
-    @State var problemCount: Float = 30
-    @State var timeLimit: Float = 3.0
-    @State var valueRange: ClosedRange<Int> = 1...12
-    @State var selectedValues: [Int] = []
-    @State var autoStartQuiz: Bool = false
-    @State var randomize: Bool = true
-    
-    
         // MARK: - View
     
     var body: some View {
         VStack {
-            Text("\(quizEngine.problemSetConfig.problemType.rawValue) Problems")
-                .font(.title)
-                .bold()
+            HStack {
+                ForEach(ProblemType.allCases, id:\.self) { type in
+                    ProblemTypeCell(selectedType: $problemType, type: type)
+                        .onTapGesture {
+                            problemType = type
+                        }
+                }
+            }
             
             LazyVGrid(columns: rows, alignment: .center, spacing: 10, pinnedViews: [], content: {
                 ForEach(valueRange, id: \.self) { value in
@@ -107,21 +114,27 @@ struct ProblemsConfigView: View {
             allValues.append(ValueGridItem(selected: false, value: value))
         }
         
+        problemType = .addition
         problemCount = 30
-        timeLimit = 3
+        timeLimit = 3.0
+        valueRange = 1...12
         selectedValues = []
+        autoStartQuiz = false
         randomize = true
     }
     
     
-    private func configTheConfig() {
-        quizEngine.problemSetConfig.problemCount = self.problemCount
-        quizEngine.problemSetConfig.timeLimit = self.timeLimit
-        quizEngine.problemSetConfig.valueRange = self.valueRange
-        quizEngine.problemSetConfig.selectedValues = self.selectedValues
-        quizEngine.problemSetConfig.autoStartQuiz = self.autoStartQuiz
-        quizEngine.problemSetConfig.randomize = self.randomize
-        quizEngine.newProblemSet()
+    private func createConfig() {
+        let config = ProblemSetConfiguration()
+        
+        config.problemCount = self.problemCount
+        config.timeLimit = self.timeLimit
+        config.valueRange = self.valueRange
+        config.selectedValues = self.selectedValues
+        config.autoStartQuiz = self.autoStartQuiz
+        config.randomize = self.randomize
+        
+        quizEngine.newQuiz(using: config)
     }
     
     
@@ -169,8 +182,7 @@ struct ProblemsConfigView: View {
             Spacer()
             
                 // TODO: HOw to cancel and go back to Problem Type Picker
-            cuteButton(title: "Cancel", color: .red) {
-                dismiss()
+            cuteButton(title: "Reset", color: .red) {
                 resetAllValues()
             }
             
@@ -186,7 +198,7 @@ struct ProblemsConfigView: View {
                     return
                 }
                 
-                configTheConfig()
+                createConfig()
 
                 withAnimation {
                     dismiss()
@@ -221,6 +233,7 @@ struct ValueGridItem: View, Identifiable {
     
     var id = UUID()
     var value: Int
+    
     
     init(selected: Bool, value: Int) {
         self.selected = selected
@@ -274,15 +287,15 @@ struct ContentView_Previews: PreviewProvider {
 
 
 //#Preview {
-//    @StateObject var problemSetConfiguration: ProblemSetConfiguration? = ProblemSetConfiguration(problemType: .addition,
-//    @ObservedObject var problemSetConfiguration: ProblemSetConfiguration? = ProblemSetConfiguration(problemType: .addition,
-//                                                                                                 problemCount: 20,
-//                                                                                                 valueRange: 2...12,
-//                                                                                                 selectedValues: [],
-//                                                                                                 randomize: true)
-    
+////    @StateObject var problemSetConfiguration: ProblemSetConfiguration? = ProblemSetConfiguration(problemType: .addition,
+////    @ObservedObject var problemSetConfiguration: ProblemSetConfiguration? = ProblemSetConfiguration(problemType: .addition,
+////                                                                                                 problemCount: 20,
+////                                                                                                 valueRange: 2...12,
+////                                                                                                 selectedValues: [],
+////                                                                                                 randomize: true)
+//    
 //    @State var showSheet = true
-    
+//    
 //    return VStack {
 //        Rectangle()
 //            .frame(maxWidth: .infinity, maxHeight: .infinity)

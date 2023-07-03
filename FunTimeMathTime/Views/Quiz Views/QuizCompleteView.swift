@@ -23,16 +23,16 @@ struct QuizCompleteView: View {
                 .frame(height: 50)
             
             VStack(alignment: .center, spacing: 20) {
-                Text("Total Problems: \(quizEngine.problemSet.problemCount)")
-                Text("Answered: \(quizEngine.problemSet.answeredCount)")
-                Text("Not Answered: \(quizEngine.problemSet.unansweredCount)")
+                Text("Total Problems: \(quizEngine.problemCount)")
+                Text("Answered: \(quizEngine.answeredCount)")
+                Text("Not Answered: \(quizEngine.unansweredCount)")
             }
             .font(.system(size: 38, weight: .bold))
 
             Spacer()
                 .frame(height: 50)
             
-            Text("Correctly Answered: \(quizEngine.problemSet.correctlyAnswered)")
+            Text("Correctly Answered: \(quizEngine.correctlyAnswered)")
                 .font(.system(size: 52, weight: .black, design: .none))
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)

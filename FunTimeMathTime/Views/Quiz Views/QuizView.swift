@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import Combine
 
 
 struct QuizView: View {
@@ -15,18 +16,28 @@ struct QuizView: View {
     @Environment(\.modelContext) private var context
     
     @State private var showCountdownSheet = false
-    @State private var quizInProgress = false
-    @State private var quizComplete = false
+    @State private var showQuizCompleteSheet = false
     
+    @State private var timer: Timer? = nil
+
+    @State var remainingSeconds: TimeInterval = 0
+    var timeString: String {
+        let minutes = Int(remainingSeconds / 60)
+        let seconds = Int(remainingSeconds.truncatingRemainder(dividingBy: 60))
+        let secondsString = seconds > 9 ? "\(seconds)" : "0\(seconds)"
+        
+        return "\(minutes):\(secondsString)"
+    }
+
     
         // MARK: - Private -
-    
-    private var needsTimer: Bool { quizEngine.problemSetConfig.timeLimit > 0 }
     
     
         // MARK: - LifeCycle -
 
-//    init() { }
+    init() {
+     print("QuizView: init called.....")
+    }
     
     
     var body: some View {
@@ -37,8 +48,8 @@ struct QuizView: View {
                 ScrollView(.horizontal) {
                     
                     HStack {
-                        if quizInProgress {
-                            ProblemView(problem: quizEngine.problemSet.currentProblem)
+                        if quizEngine.quizInProgress {
+                            ProblemView(problem: quizEngine.currentProblem)
                         }
                         else {
                             tapToBeginButton
@@ -52,10 +63,13 @@ struct QuizView: View {
             HStack {
                 Spacer()
                 
-                if quizInProgress {
+                if quizEngine.quizInProgress {
                     endButton
                     Spacer()
                     skipButton
+                    Button("Show") {
+                        showQuizCompleteSheet = true
+                    }
                 }
                 else {
                     cancelButton
@@ -64,24 +78,35 @@ struct QuizView: View {
                 Spacer()
                 
             }
-            .safeAreaPadding(.horizontal)
-            .sheet(isPresented: $showCountdownSheet, onDismiss: {
-                withAnimation {
-                    quizInProgress = true
-                }
-                quizEngine.problemSet.start()
-            }, content: {
-                CountDownSheet()
-            })
-            .sheet(isPresented: $quizComplete) {
-                withAnimation {
-                    quizInProgress = false
-                }
-                dismiss()
-            } content: {
-                QuizCompleteView()
-                    .clipShape(RoundedRectangle(cornerRadius: 35))
+        }
+        .safeAreaPadding(.horizontal)
+        .sheet(isPresented: $showCountdownSheet, onDismiss: {
+            startTimer()
+            withAnimation {
+                quizEngine.quizInProgress = true
             }
+            self.quizEngine.setDoneCallback {
+                self.showQuizCompleteSheet.toggle()
+            }
+            quizEngine.start()
+        }, content: {
+            CountDownSheet()
+        })
+        .sheet(isPresented: $showQuizCompleteSheet) {
+            withAnimation {
+                quizEngine.saveProblemSet(to: context)
+                quizEngine.end()
+                quizEngine.quizReady = false
+            }
+        } content: {
+            QuizCompleteView()
+                .clipShape(RoundedRectangle(cornerRadius: 35))
+        }
+        .onDisappear {
+            timer?.invalidate()
+            timer = nil
+            remainingSeconds = 0
+            
         }
     }
     
@@ -112,18 +137,34 @@ struct QuizView: View {
     }
     
     
+    private func startTimer() {
+        if quizEngine.timeLimit > 0 {
+            remainingSeconds = quizEngine.timeLimit * 60.0
+            
+            timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+                self.remainingSeconds -= 1
+                
+                if self.remainingSeconds <= 0 {
+                    self.quizEngine.end()
+                    self.showQuizCompleteSheet.toggle()
+                }
+            }
+            timer?.fire()
+        }
+    }
+    
     private var timerView: some View {
         HStack {
             Spacer()
             
-            Text("\(quizEngine.problemSet.timeString)")
+            Text("\(timeString)")
                 .font(.system(size: 96, weight: .bold, design: .none))
-                .foregroundStyle(quizInProgress ? .black : .gray.opacity(0.3))
+                .foregroundStyle(quizEngine.quizInProgress ? .black : .gray.opacity(0.3))
             
             Spacer()
                 .frame(width: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/)
             
-            Text("\(quizEngine.problemSet.questionsCountString)")
+            Text("\(quizEngine.questionsCountString)")
                 .font(.system(size: 96, weight: .bold, design: .none))
 
             Spacer()
@@ -136,7 +177,7 @@ struct QuizView: View {
         Button(action: {
             print("Skip Buttom Pressed")
             withAnimation {
-                quizEngine.problemSet.skip()
+                quizEngine.skip()
             }
         }, label: {
             Text("Skip")
@@ -156,13 +197,7 @@ struct QuizView: View {
     
     private var endButton: some View {
         Button(action: {
-            withAnimation {
-                quizComplete = true
-                quizEngine.problemSet.end()
-                quizEngine.quizReady = false
-                
-                quizEngine.saveProblemSet(to: context)
-            }
+            showQuizCompleteSheet = true
         }, label: {
             Text("End")
                 .foregroundStyle(Color.black)
@@ -184,9 +219,7 @@ struct QuizView: View {
     private var cancelButton: some View {
         Button(role: .cancel) {
             withAnimation {
-                quizComplete = true
-                quizEngine.problemSet.end()
-                quizEngine.quizReady = false
+                quizEngine.end()
                 dismiss()
             }
         } label: {

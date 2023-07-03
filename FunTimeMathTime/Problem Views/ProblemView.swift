@@ -9,7 +9,7 @@ import SwiftUI
 
 
 struct ProblemView: View {
-    @ObservedObject private var problem: QuizProblem
+    private var problem: QuizProblem
     
     @State private var solutionSelected: Bool = false
     @State private var correctSolutionSelected: Bool = false

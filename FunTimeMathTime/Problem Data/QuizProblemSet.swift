@@ -7,43 +7,19 @@
 
 
 import SwiftUI
-import Combine
-import Observation
 
 
-@Observable
 class QuizProblemSet: ProblemSet {
-    var currentProblem: QuizProblem? = nil
-    var remainingSeconds: TimeInterval = 0
-    var showCountdownSheet: Bool = false
-    
     var id: UUID = UUID()
-    var configuration: ProblemSetConfiguration = ProblemSetConfiguration()
+    
+//    var showCountdownSheet: Bool = false
+    
     // Kept clean to save
     private(set) var problems: [QuizProblem] = []
-    // Used in Quiz View
-    private var unansweredProblems: [QuizProblem] = []
-    private var answeredProblems: [QuizProblem] = []
-
-    private var timer: Timer? = nil
     
-    var timeString: String {
-        let minutes = Int(remainingSeconds / 60)
-        let seconds = Int(remainingSeconds.truncatingRemainder(dividingBy: 60))
-        let secondsString = seconds > 9 ? "\(seconds)" : "0\(seconds)"
-        
-        return "\(minutes):\(secondsString)"
-    }
-
-    var questionsCountString: String {
-        "\(answeredProblems.count)/\(problemCount)"
-    }
-    
+    var configuration: ProblemSetConfiguration
     var startTime: Date = .now
     var endTime: Date = .now
-    
-    private var cancellables = [AnyCancellable]()
-    private var problemCountCancellable = [AnyCancellable]()
     
    
         // MARK: - Lifecycle -
@@ -53,86 +29,14 @@ class QuizProblemSet: ProblemSet {
         
         configuration = config
         problems = ProblemGenerator.problemSet(for: config)
-        unansweredProblems = problems
     }
     
     
         // MARK: - Public -
 
-    func showCountdown() {
-        showCountdownSheet = true
-    }
-    
-    
-    func start() {
-        if configuration.timeLimit > 0 {
-            remainingSeconds = TimeInterval(configuration.timeLimit * 60.0)
-            timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
-                self.remainingSeconds -= 1
-                
-                if self.remainingSeconds <= 0 {
-                    self.end()
-                }
-            }
-            timer?.fire()
-        }
-        
-        next()
-    }
-    
-    
-    func end() {
-        timer?.invalidate()
-        endTime = .now
-        
-        cancellables.forEach { $0.cancel() }
-        cancellables = []
-    }
-    
-    
-    func next() {
-        cancellables.forEach { $0.cancel() }
-        
-        currentProblem = unansweredProblems.removeFirst()
-        
-        currentProblem?
-            .$selectedSolution
-            .sink { solution in
-                if self.unansweredProblems.isEmpty && self.currentProblem == nil {
-                    self.end()
-                    return
-                }
-
-                if solution == nil { return }
-                
-                if let problem = self.currentProblem {
-                    self.answeredProblems.append(problem)
-                    
-                    if self.unansweredProblems.isEmpty == false {
-                        self.next()
-                    }
-                    else { self.end() }
-                }
-            }
-            .store(in: &cancellables)
-    }
-    
-    
-    func skip() {
-        guard let currentProblem
-        else { return }
-        
-        unansweredProblems.append(currentProblem)
-        next()
-    }
-    
-
-    func skipProblem() {
-        guard let problem = currentProblem
-        else { return }
-        
-        problems.append(problem)
-    }
+//    func showCountdown() {
+//        showCountdownSheet = true
+//    }
     
 }
 
@@ -146,12 +50,9 @@ extension QuizProblemSet: CustomStringConvertible {
         selectedValues: \(selectedValues)
         
         problemCount: \(problemCount)
-        answered: \(answeredProblems.count)
-        unanswered: \(unansweredProblems.count)
-        
-        time: \(endTime.timeIntervalSince(startTime).minutesSeconds)
         """
     }
+    
 }
 
 

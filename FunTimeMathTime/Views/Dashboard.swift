@@ -21,7 +21,7 @@ struct Dashboard: View {
                 
                 List(selection: $selectedRow) {
                     NavigationLink {
-                        ProblemTypePickerView()
+                        ProblemsConfigView()
                     } label: {
                         Text("New Quiz")
                     }
@@ -41,7 +41,7 @@ struct Dashboard: View {
                 QuizView()
             }
             else if selectedRow == nil {
-                ProblemTypePickerView()
+                ProblemsConfigView()
             }
         }
         .onAppear {

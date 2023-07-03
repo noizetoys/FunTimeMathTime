@@ -11,7 +11,8 @@ import Combine
 
 // TODO: Add way to store for future reference
 
-class QuizProblem: BasicProblem, ObservableObject {
+//class QuizProblem: BasicProblem, ObservableObject {
+class QuizProblem: BasicProblem {
     let id: UUID
     
     let topValue: Int
@@ -21,6 +22,12 @@ class QuizProblem: BasicProblem, ObservableObject {
     let correctSolution: Solution
     @Published var selectedSolution: Solution?
 
+    var correctlyAnswered: Bool? {
+        guard let selected = selectedSolution
+        else { return nil}
+        
+        return selected == correctSolution
+    }
     
     var solutions: [Solution] = []
     
@@ -50,6 +57,11 @@ class QuizProblem: BasicProblem, ObservableObject {
         
         correctSolution = problemType.solution(topValue: topValue, bottomValue: bottomValue)
         
+        createSolutions()
+    }
+    
+    
+    private func createSolutions() {
         var tempOptions = [Solution]()
         
         tempOptions.append(correctSolution)
@@ -64,8 +76,10 @@ class QuizProblem: BasicProblem, ObservableObject {
         solutions = tempOptions.shuffled().shuffled()
     }
     
+   
+        // MARK: - Public -
     
-    func duplicate() -> QuizProblem {
+ func duplicate() -> QuizProblem {
         QuizProblem(topValue: topValue, bottomValue: bottomValue, problemType: problemType)
     }
     
@@ -120,12 +134,12 @@ extension QuizProblem {
 
     // MARK: - Extension -
 
-extension Int {
-    func inverted() -> Int {
-        let tens = self >= 10 ? self / 10 : 0
-        let singles = self - (tens * 10)
-        print("\(self): \(tens) - \(singles) or \(self) -> \((singles * 10) + tens)")
-        
-        return (singles * 10) + tens
-    }
-}
+//extension Int {
+//    func inverted() -> Int {
+//        let tens = self >= 10 ? self / 10 : 0
+//        let singles = self - (tens * 10)
+//        print("\(self): \(tens) - \(singles) or \(self) -> \((singles * 10) + tens)")
+//        
+//        return (singles * 10) + tens
+//    }
+//}

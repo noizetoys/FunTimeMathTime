@@ -6,10 +6,10 @@
 //
 
 import Foundation
-import Observation
+//import Observation
 
 
-@Observable
+//@Observable
 class ProblemSetConfiguration: Identifiable {
     private(set) var id: UUID = UUID()
     
