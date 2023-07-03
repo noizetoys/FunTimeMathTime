@@ -49,7 +49,8 @@ struct HistoryDetailView: View {
     
     private var headerView: some View {
         HStack {
-            Text("\(problemSet.problemCount) \(problemSet.problemType.rawValue) Problems,")
+//            Text("\(problemSet.problemCount) \(problemSet.problemType.rawValue) Problems,")
+            Text("\(Int(problemSet.problemCount)) \(problemSet.problemType) Problems,")
             Text("\(problemSet.answeredCount) Answered,")
             Text("\(problemSet.correctlyAnswered) Correct,")
             Text("Completed in \(problemSet.completionTimeString)")

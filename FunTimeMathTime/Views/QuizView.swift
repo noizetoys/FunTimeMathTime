@@ -6,12 +6,14 @@
 //
 
 import SwiftUI
+import SwiftData
 
 
 struct QuizView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(QuizEngine.self) private var quizEngine: QuizEngine
-
+    @Environment(\.modelContext) private var context
+    
     @State private var showCountdownSheet = false
     @State private var quizInProgress = false
     @State private var quizComplete = false
@@ -157,7 +159,9 @@ struct QuizView: View {
             withAnimation {
                 quizComplete = true
                 quizEngine.problemSet.end()
-                quizEngine.saveProblemSet()
+                quizEngine.quizReady = false
+                
+                quizEngine.saveProblemSet(to: context)
             }
         }, label: {
             Text("End")
@@ -180,6 +184,9 @@ struct QuizView: View {
     private var cancelButton: some View {
         Button(role: .cancel) {
             withAnimation {
+                quizComplete = true
+                quizEngine.problemSet.end()
+                quizEngine.quizReady = false
                 dismiss()
             }
         } label: {

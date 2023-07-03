@@ -10,16 +10,10 @@ import SwiftUI
 
 struct ProblemsConfigView: View {
     @Environment(QuizEngine.self) private var quizEngine: QuizEngine
-
     @Environment(\.dismiss) private var dismiss
     
     @State private var allValues: [ValueGridItem] = []
     @State private var showAlert: Bool = false
-    
-    // Settings:
-    // Min & Max
-    // Max # of questions
-    // Auto Random
     
     private var timeLimitText: String {
         let limit = timeLimit
@@ -34,23 +28,20 @@ struct ProblemsConfigView: View {
         GridItem(.flexible(minimum: 40, maximum: 80), spacing: 10, alignment: .center),
     ]
     
+    
     @State var problemCount: Float = 30
     @State var timeLimit: Float = 3.0
     @State var valueRange: ClosedRange<Int> = 1...12
     @State var selectedValues: [Int] = []
     @State var autoStartQuiz: Bool = false
-    @State var problemType: ProblemType = .addition
     @State var randomize: Bool = true
     
     
         // MARK: - View
     
-    init() { }
-    
-    
     var body: some View {
         VStack {
-            Text("\(problemType.rawValue) Problems")
+            Text("\(quizEngine.problemSetConfig.problemType.rawValue) Problems")
                 .font(.title)
                 .bold()
             
@@ -102,6 +93,9 @@ struct ProblemsConfigView: View {
             Button("Ok", role: .cancel) { }
         }
         .padding()
+        .onAppear {
+            print("ProblemsConfigView: 'onAppear' quizEngine.problemSetConfig.problemType = \(quizEngine.problemSetConfig.problemType)")
+        }
     }
     
     
@@ -126,8 +120,8 @@ struct ProblemsConfigView: View {
         quizEngine.problemSetConfig.valueRange = self.valueRange
         quizEngine.problemSetConfig.selectedValues = self.selectedValues
         quizEngine.problemSetConfig.autoStartQuiz = self.autoStartQuiz
-        quizEngine.problemSetConfig.problemType = self.problemType
         quizEngine.problemSetConfig.randomize = self.randomize
+        quizEngine.newProblemSet()
     }
     
     
@@ -194,7 +188,10 @@ struct ProblemsConfigView: View {
                 
                 configTheConfig()
 
-                dismiss()
+                withAnimation {
+                    dismiss()
+                    quizEngine.quizReady = true
+                }
             }
             
             Spacer()
@@ -266,6 +263,7 @@ struct ContentView_Previews: PreviewProvider {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .background(.green)
                 .sheet(isPresented: $showSheet) {
+//                    ProblemsConfigView(problemType: .addition)
                     ProblemsConfigView()
                 }
 //                .environmentObject(problemSetConfiguration)

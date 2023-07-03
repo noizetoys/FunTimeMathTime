@@ -6,21 +6,22 @@
 //
 
 import Foundation
-//import SwiftData
+import SwiftData
 
 
-//@Model
-class HistoricalProblem: BasicProblem, Codable {
-//class HistoricalProblem: Identifiable {
-//    @Attribute(.unique) var id: UUID
+@Model
+class HistoricalProblem {
+    @Attribute(.unique) var id: UUID
     
-    var id: UUID
     var topValue: Int
     var bottomValue: Int
-    var problemType: ProblemType
+//    var problemType: ProblemType
+    var problemType: String
     
     var correctSolution: Solution
     var selectedSolution: Solution?
+    
+    var correctSolutionChosen: Bool { selectedSolution == correctSolution }
     
     
         // MARK: - Lifecycle  -
@@ -35,7 +36,7 @@ class HistoricalProblem: BasicProblem, Codable {
         self.id = id
         self.topValue = topValue
         self.bottomValue = bottomValue
-        self.problemType = problemType
+        self.problemType = problemType.rawValue
         self.correctSolution = correctSolution
         self.selectedSolution = selectedSolution
     }
@@ -49,16 +50,8 @@ class HistoricalProblem: BasicProblem, Codable {
                   correctSolution: problem.correctSolution,
                   selectedSolution: problem.selectedSolution)
     }
-//}
-//
-//
-//extension HistoricalProblem {
-//    let total = Int.random(in: 1...10) * 10
-//    private(set) var correct: Int
-//    let type: ProblemType? = .allCases.randomElement()
-//    let month = Int.random(in: 1...12)
-//    let day = Int.random(in: 1...28)
 
+    
     static func sampleProblem(top: Int?, bottom: Int?, type: ProblemType? = .addition) -> HistoricalProblem {
         let topValue = top ?? Int.random(in: 2...12)
         let bottomValue = bottom ?? Int.random(in: 2...12)
@@ -89,6 +82,5 @@ class HistoricalProblem: BasicProblem, Codable {
         
         return problems
     }
-    
     
 }

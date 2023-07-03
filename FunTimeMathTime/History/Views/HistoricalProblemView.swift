@@ -40,7 +40,7 @@ struct HistoricalProblemView: View {
                 
                 HStack {
                     Spacer()
-                    EquationView(problem: problem)
+                    equationView
                     Spacer()
                 }
                 
@@ -78,6 +78,19 @@ struct HistoricalProblemView: View {
     
    
         // MARK: - Private Views -
+    
+    var equationView: some View {
+        VStack(alignment: .trailing) {
+            HStack {
+                Text("\(problem.topValue)")
+            }
+            
+            HStack {
+                ProblemType(rawValue: problem.problemType)?.sign
+                Text("\(problem.bottomValue)")
+            }
+        }
+    }
     
     private var correctAnswerView: some View {
         ZStack {

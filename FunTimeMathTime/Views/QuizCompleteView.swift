@@ -47,11 +47,11 @@ struct QuizCompleteView: View {
 
 
 #Preview {
-    var config: ProblemSetConfiguration = ProblemSetConfiguration(problemType: .addition,
-                                                                  problemCount: 30,
-                                                                  valueRange: 2...12,
-                                                                  selectedValues: [5, 9])
-    var problemSet: QuizProblemSet = QuizProblemSet(config: config)
+//    let config: ProblemSetConfiguration = ProblemSetConfiguration(problemType: .addition,
+//                                                                  problemCount: 30,
+//                                                                  valueRange: 2...12,
+//                                                                  selectedValues: [5, 9])
+//    var problemSet: QuizProblemSet = QuizProblemSet(config: config)
 //    quizEngine.problemSet.configForTesting()
     
     return QuizCompleteView()

@@ -64,7 +64,10 @@ extension ProblemSetConfiguration: Hashable {
 
 extension ProblemSetConfiguration {
     static func sampleConfig(from problem: HistoricalProblem, count: Int = 20) -> ProblemSetConfiguration {
-        sampleConfig(top: problem.topValue, type: problem.problemType, count: count)
+        let problemType = problem.problemType
+        let type = ProblemType(rawValue: problemType) ?? .addition
+        
+        return sampleConfig(top: problem.topValue, type: type, count: count)
     }
     
     
@@ -99,6 +102,5 @@ extension ProblemSetConfiguration: CustomDebugStringConvertible {
         randomize: \(randomize)
         """
     }
-    
     
 }

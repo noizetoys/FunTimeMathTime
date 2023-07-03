@@ -6,22 +6,28 @@
 //
 
 import Foundation
-import Observation
+import SwiftData
 
 
 @Observable
 class QuizEngine {
     var problemSetConfig: ProblemSetConfiguration = ProblemSetConfiguration()
     var problemSet: QuizProblemSet = QuizProblemSet(config: ProblemSetConfiguration())
+    var quizReady: Bool = false
     
     
-    init() { }
+    init() {
+        print("\nQuizEngine: INIT problemSetConfig = \(problemSetConfig)")
+        print("\nQuizEngine: INIT problemSet = \(problemSet)")
+    }
+    
     
     
         // MARK: - Public -
 
     @discardableResult
     func newProblemSetConfig() -> ProblemSetConfiguration {
+        print("\n🔥 QuizEngine:  newProblemSetConfig Called")
         problemSetConfig = ProblemSetConfiguration()
         return problemSetConfig
     }
@@ -41,24 +47,13 @@ class QuizEngine {
     }
 
     
-    func saveProblemSet() {
+    func saveProblemSet(to context: ModelContext) {
         // Save to Historical Data
-        print("\n\n🔥 QuizEngine:  saveProblemSet \nSaving \(problemSet)")
+        print("\n🔥 QuizEngine:  saveProblemSet \nSaving \(problemSet)")
         
-        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        guard let url = paths.first?.appendingPathComponent("previousQuizes.qzz", conformingTo: .utf8PlainText)
-        else { return }
+        let historical = HistoricalProbSet(problemSet: self.problemSet, config: self.problemSetConfig)
+        context.insert(object: historical)
         
-        let encoder = JSONEncoder()
-        let setToSave = HistoricalProbSet(problemSet: problemSet, config: problemSetConfig)
-        do {
-            let data = try encoder.encode(setToSave)
-            try data.write(to: url)
-            print("Data \(data) written")
-        }
-        catch {
-            print("Error Saving Problem Set: \(error)")
-        }
     }
     
 }

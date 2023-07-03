@@ -6,49 +6,42 @@
 //
 
 import Foundation
-//import SwiftData
+import SwiftData
 
 
-//@Model
-//class HistoricalProbSet: ProblemSet, Identifiable  {
-    
-class HistoricalProbSet: Identifiable, Codable {
-//    @Attribute(.unique) var id: UUID
-    var id: UUID
-//    private(set) var problems: [HistoricalProblem]
+@Model
+class HistoricalProbSet {
+    @Attribute(.unique) var id: UUID
     var problems: [HistoricalProblem]
-//    var configuration: ProblemSetConfiguration
     
     let startTime: Date
     var endTime: Date
     
     var completionTimeString: String { endTime.timeIntervalSince(startTime).minutesSeconds }
-   
-    // Configuration
-   var problemCount: Float
-   var timeLimit: Float
-   
+    
+        // Configuration
+    var problemCount: Float
+    var timeLimit: Float
+    
     var valueRangeLowerBounds: Int
     var valueRangeUpperBounds: Int
-//   var valueRange: ClosedRange<Int>
-   var selectedValues: [Int]
-   var autoStartQuiz: Bool
+    var selectedValues: [Int]
+    var autoStartQuiz: Bool
     
-    var problemType: ProblemType
+    var problemType: String
     var randomize: Bool
-
+    
     var answeredCount: Int { problems.reduce(into: 0) { $0 += $1.selectedSolution == nil ? 0 : 1 } }
     var selectedValuesString: String { selectedValues.map( { "\($0)" }).joined(separator: ", ")  }
     var correctlyAnswered: Int { problems.reduce(0) { $0 + ($1.correctSolutionChosen ? 1 : 0) } }
-
+    
     
     
         // MARK: - Lifecycle -
     
     init(problemSet: QuizProblemSet, config: ProblemSetConfiguration) {
         self.id = problemSet.id
-//        self.configuration = config
-    
+        
         self.problems = problemSet.problems.map { HistoricalProblem.new(from: $0) }
         self.startTime = problemSet.startTime
         self.endTime = problemSet.endTime
@@ -59,10 +52,9 @@ class HistoricalProbSet: Identifiable, Codable {
         timeLimit = config.timeLimit
         valueRangeLowerBounds = config.valueRange.lowerBound
         valueRangeUpperBounds = config.valueRange.upperBound
-//        valueRange = config.valueRange
         selectedValues = config.selectedValues
         autoStartQuiz = config.autoStartQuiz
-        problemType = config.problemType
+        problemType = config.problemType.rawValue
         randomize = config.randomize
     }
     

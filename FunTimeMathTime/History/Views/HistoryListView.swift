@@ -6,43 +6,37 @@
 //
 
 import SwiftUI
-import SwiftData
+//import SwiftData
 
 
-struct HistoryListView: View {
-//    @Environment(QuizEngine.self) private var quizEngine: QuizEngine
-    @State private var problemSets: [HistoricalProbSet]
+//struct HistoryListView: View {
 //    @Environment(\.modelContext) private var modelContext
 //    @Query var problemSets: [HistoricalProbSet]
-    
-    
-    init(problemSets: [HistoricalProbSet]) {
-        _problemSets = State(initialValue: problemSets)
-        self.problemSets = problemSets
-    }
-    
-    
-    var body: some View {
-            VStack {
-                
-                List {
-                    Section {
-                        ForEach(problemSets) { set in
-                            NavigationLink {
-                            } label: {
-                                HistoryListCellView(problemSet: set)
-                            }
-
-                        }
-                    } header: {
-                        Text("Previous Quizes")
-                    }
-                    
-                }
-        }
-    }
-    
-}
+//    
+//    
+//    var body: some View {
+//        VStack {
+//            
+//            List {
+//                Section {
+//                    ForEach(problemSets) { set in
+//                        NavigationLink {
+//                            HistoryDetailView(problemSet: set)
+//                        } label: {
+//                            HistoryListCellView(problemSet: set)
+//                        }
+//                    }
+//                    
+//                } header: {
+//                    Text("Previous Quizes")
+//                }
+//                
+//            }
+//        }
+//        
+//    }
+//    
+//}
 
 
 struct HistoryListCellView: View {
@@ -57,10 +51,11 @@ struct HistoryListCellView: View {
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
-                Text("\(problemSet.answeredCount)/\(problemSet.problemCount)")
+                Text("\(problemSet.answeredCount)/\(Int(problemSet.problemCount))")
                     .bold()
                 
-                Text("\(problemSet.problemType.rawValue)")
+//                Text("\(problemSet.problemType.rawValue)")
+                Text("\(problemSet.problemType)")
                     .italic()
                     .bold()
                 
@@ -100,60 +95,61 @@ struct HistoryListCellView: View {
 //    }
     
     
-    var problemsView: some View {
-        ForEach(problemSet.problems) { problem in
-            HStack {
-                HStack {
-                    Text("\(problem.topValue)")
-                    problem.problemType.sign
-                    Text("\(problem.bottomValue)")
-                }
-                .frame(width: 80)
-                
-                Spacer()
-                    .frame(width: 20)
-                
-                HStack {
-                    if problem.correctSolutionChosen {
-                        Text("Solution: \(problem.correctSolution.result)")
-                            .foregroundStyle(.green)
-                            .bold()
-                    }
-                    else {
-                        if let selected = problem.selectedSolution {
-                                //                    Text("Chosen: \(problem.selectedSolution?.result), Correct: \(problem.correctSolution.result)")
-                            Text("Chosen: \(selected.result)")
-                            Spacer()
-                                .frame(width: 20)
-                            Text("Correct: \(problem.correctSolution.result)")
-                        }
-                        else {
-                            Text("No Solution Chosen!")
-                        }
-                    }
-                }
-                
-                Spacer()
-                
-            }
-        }
-
-    }
+//    var problemsView: some View {
+//        ForEach(problemSet.problems) { problem in
+//            HStack {
+//                HStack {
+//                    Text("\(problem.topValue)")
+//                    problem.problemType.sign
+//                    Text("\(problem.bottomValue)")
+//                }
+//                .frame(width: 80)
+//                
+//                Spacer()
+//                    .frame(width: 20)
+//                
+//                HStack {
+//                    if problem.correctSolutionChosen {
+//                        Text("Solution: \(problem.correctSolution.result)")
+//                            .foregroundStyle(.green)
+//                            .bold()
+//                    }
+//                    else {
+//                        if let selected = problem.selectedSolution {
+//                                //                    Text("Chosen: \(problem.selectedSolution?.result), Correct: \(problem.correctSolution.result)")
+//                            Text("Chosen: \(selected.result)")
+//                            Spacer()
+//                                .frame(width: 20)
+//                            Text("Correct: \(problem.correctSolution.result)")
+//                        }
+//                        else {
+//                            Text("No Solution Chosen!")
+//                        }
+//                    }
+//                }
+//                
+//                Spacer()
+//                
+//            }
+//        }
+//
+//    }
 }
 
 
 
-#Preview {
+//#Preview {
 //    let sampleSet = HistoricalProbSet.sampleHistoricalSet()
 //    let aProblem = Problem(topValue: 7, bottomValue: 8, problemType: .addition)
 //    let sample = HistoricalProbSet.sampleHistoricalSet()
     
 //    return HistoryListView(problemSets: [sampleSet])
-    HistoryListView(problemSets: [
-        HistoricalProbSet.sampleHistoricalSet(),
-        HistoricalProbSet.sampleHistoricalSet(),
-        HistoricalProbSet.sampleHistoricalSet(),
-        HistoricalProbSet.sampleHistoricalSet(),
-        HistoricalProbSet.sampleHistoricalSet()
-    ])
-}
+//    HistoryListView()
+//    HistoryListView(problemSets: [
+//        HistoricalProbSet.sampleHistoricalSet(),
+//        HistoricalProbSet.sampleHistoricalSet(),
+//        HistoricalProbSet.sampleHistoricalSet(),
+//        HistoricalProbSet.sampleHistoricalSet(),
+//        HistoricalProbSet.sampleHistoricalSet()
+//    ])
+//}

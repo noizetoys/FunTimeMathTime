@@ -6,24 +6,48 @@
 //
 
 import SwiftUI
+import SwiftData
+
 
 struct Dashboard: View {
     @Environment(QuizEngine.self) private var quizEngine: QuizEngine
+    @Environment(\.modelContext) private var modelContext
+    @Query var problemSets: [HistoricalProbSet]
 
+    @State private var selectedRow: HistoricalProbSet?
     
     var body: some View {
-        GeometryReader { geo in
-            
-            HStack {
-                HistoryListView(problemSets: [HistoricalProbSet.sampleHistoricalSet()])
-                    .frame(maxWidth: geo.size.width / 4)
+        NavigationSplitView {
                 
+                List(selection: $selectedRow) {
+                    NavigationLink {
+                        ProblemTypePickerView()
+                    } label: {
+                        Text("New Quiz")
+                    }
+
+                    ForEach(problemSets) { set in
+                        NavigationLink {
+                            HistoryDetailView(problemSet: set)
+                        } label: {
+                            HistoryListCellView(problemSet: set)
+                        }
+                    }
+                    
+                }
+
+        } detail: {
+            if quizEngine.quizReady {
+                QuizView()
+            }
+            else if selectedRow == nil {
                 ProblemTypePickerView()
             }
-            .padding()
-            
-        } // Geo
-        
+        }
+        .onAppear {
+            selectedRow = nil
+        }
+
     }
     
 }

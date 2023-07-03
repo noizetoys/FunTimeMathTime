@@ -6,15 +6,12 @@
 //
 
 import Foundation
-//import SwiftData
+import SwiftData
 
 
-//@Model
-//struct Solution: Identifiable, Equatable, Codable {
-//struct Solution: Identifiable, Equatable {
-class Solution: Identifiable, Codable {
-//    @Attribute(.unique) var id: UUID
-    var id: UUID
+@Model
+class Solution {
+    @Attribute(.unique) var id: UUID
     
     var result: Int
     var remainder: Int?

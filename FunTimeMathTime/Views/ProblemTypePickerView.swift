@@ -11,15 +11,13 @@ import SwiftUI
 struct ProblemTypePickerView: View {
     @Environment(QuizEngine.self) private var quizEngine: QuizEngine
 
-    @State private var selectedType: ProblemType = .addition
     @State private var showConfigView: Bool = false
-    
-    @State private var paths: [ProblemSetConfiguration] = []
+//    @State private var paths: [ProblemSetConfiguration] = []
     
     
     
     var body: some View {
-        NavigationStack(path: $paths) {
+//        NavigationStack(path: $paths) {
             ZStack {
                 RoundedRectangle(cornerRadius: 15)
                     .foregroundColor(.clear)
@@ -37,16 +35,17 @@ struct ProblemTypePickerView: View {
                 }
             }
             .padding()
+                
             .sheet(isPresented: $showConfigView) {
-                quizEngine.newProblemSet()
-                paths.append(quizEngine.problemSetConfig)
+                // DIMISS
+//                QuizView()
             } content: {
                 ProblemsConfigView()
             }
-            .navigationDestination(for: ProblemSetConfiguration.self) { config in
-                QuizView()
-            }
-        }
+//            .navigationDestination(for: ProblemSetConfiguration.self) { config in
+//                QuizView()
+//            }
+//        }
         
     }
     
@@ -64,8 +63,10 @@ struct ProblemTypePickerView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding()
         .onTapGesture {
-            selectedType = type
+            print("ProblemTypePickerView: type = \(type.rawValue) Selected")
+//            selectedType = type
             quizEngine.problemSetConfig.problemType = type
+            print("ProblemTypePickerView: quizEngine.problemSetConfig.problemType = \(quizEngine.problemSetConfig.problemType)")
             showConfigView.toggle()
         }
         

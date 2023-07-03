@@ -6,9 +6,14 @@
 //
 
 import SwiftUI
+//import SwiftData
 
 
-enum ProblemType: String, CaseIterable, Codable {
+//@Model
+enum ProblemType: String, CaseIterable, Codable, Identifiable {
+    var id: UUID { UUID() }
+    
+    
     case addition = "Addition"
     case subtraction = "Subtraction"
     case multiplication = "Multiplication"

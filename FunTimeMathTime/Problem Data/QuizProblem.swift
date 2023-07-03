@@ -54,7 +54,12 @@ class QuizProblem: BasicProblem, ObservableObject {
         
         tempOptions.append(correctSolution)
         tempOptions.append(problemType.solution(topValue: topValue, bottomValue: bottomValue + 1))
-        tempOptions.append(problemType.solution(topValue: topValue, bottomValue: bottomValue - 1))
+        if problemType == .division && bottomValue == 1 {
+            tempOptions.append(problemType.solution(topValue: topValue, bottomValue: bottomValue + 2))
+        }
+        else {
+            tempOptions.append(problemType.solution(topValue: topValue, bottomValue: bottomValue - 1))
+        }
         
         solutions = tempOptions.shuffled().shuffled()
     }
@@ -80,7 +85,7 @@ extension QuizProblem: Equatable, Hashable {
 
 extension QuizProblem: CustomStringConvertible {
     var description: String {
-        "\(topValue) \(problemType) \(bottomValue) = \(correctSolution) --> Selected \(selectedSolution)"
+        "\(topValue) \(problemType) \(bottomValue) = \(correctSolution) --> Selected \(String(describing: selectedSolution))"
     }
 }
 
@@ -92,7 +97,7 @@ extension QuizProblem {
         let correctSolution = sample.correctSolution
         let incorrectSolution = sample.solutions.first(where: { $0.id != correctSolution.id })
         
-        var possibileSolutions: [Solution?] = [correctSolution, incorrectSolution, nil]
+        let possibileSolutions: [Solution?] = [correctSolution, incorrectSolution, nil]
         var selected: Solution? { possibileSolutions.randomElement() ?? nil }
 
         sample.selectedSolution = selected
