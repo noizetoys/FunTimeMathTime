@@ -42,7 +42,7 @@ struct ProblemView: View {
                 }
                 
                 Rectangle()
-                    .frame(width: 400, height: 4)
+                    .frame(width: 200, height: 4)
                     .padding(.top, -20)
                 
                 HStack {
@@ -51,7 +51,7 @@ struct ProblemView: View {
                                      isCorrectSolution: solution == problem.correctSolution,
                                      selected: solution == problem.selectedSolution,
                                      solutionSelected: solutionSelected)
-                            .frame(width: 100, height: 100)
+                            .frame(width: 60, height: 60)
                             .onTapGesture {
                                 withAnimation {
                                     problem.selectedSolution = solution
@@ -69,7 +69,8 @@ struct ProblemView: View {
             .bold()
             
         } // ZStack
-        .frame(width: 450)
+//        .frame(width: 200)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
     
 }

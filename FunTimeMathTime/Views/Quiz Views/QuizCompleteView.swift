@@ -10,7 +10,8 @@ import SwiftUI
 
 struct QuizCompleteView: View {
     @Environment(\.dismiss) private var dismiss
-    @Environment(QuizEngine.self) private var quizEngine: QuizEngine
+//    @Environment(QuizEngine.self) private var quizEngine: QuizEngine
+    var quizEngine: QuizEngine
     
 
     var body: some View {
@@ -46,7 +47,7 @@ struct QuizCompleteView: View {
 }
 
 
-#Preview {
+//#Preview {
 //    let config: ProblemSetConfiguration = ProblemSetConfiguration(problemType: .addition,
 //                                                                  problemCount: 30,
 //                                                                  valueRange: 2...12,
@@ -54,5 +55,5 @@ struct QuizCompleteView: View {
 //    var problemSet: QuizProblemSet = QuizProblemSet(config: config)
 //    quizEngine.problemSet.configForTesting()
     
-    return QuizCompleteView()
-}
+//    return QuizCompleteView()
+//}

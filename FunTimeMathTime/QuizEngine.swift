@@ -19,7 +19,6 @@ class QuizEngine {
     var endTime: Date = .now
     
     // For QuizView updates
-    var quizReady: Bool = false
     var quizInProgress = false
 
     var problemCount: Int { problems.count }
@@ -43,8 +42,10 @@ class QuizEngine {
     private var problemCountCancellable = [AnyCancellable]()
 
     
-    init() {
-//        print("\nQuizEngine: INIT problemSetConfig = \(problemSetConfig)")
+    init(config: ProblemSetConfiguration) {
+        problemSetConfig = config
+        problems = ProblemGenerator.problemSet(for: config)
+        print("\n🚗 QuizEngine: INIT problemSetConfig = \(problemSetConfig)")
     }
     
     
@@ -57,21 +58,12 @@ class QuizEngine {
     }
     
     
-    func newQuiz(using config: ProblemSetConfiguration) {
-        problemSetConfig = config
-        
-        answeredProblems = []
-        unansweredProblems = []
-        problems = []
-        
-        problems = ProblemGenerator.problemSet(for: config)
-    }
-
     func start() {
         answeredProblems = []
         unansweredProblems = []
         unansweredProblems = problems
-        quizReady = true
+        
+        quizInProgress = true
 
         next()
     }
@@ -82,6 +74,8 @@ class QuizEngine {
         
         cancellables.forEach { $0.cancel() }
         cancellables = []
+        
+        quizInProgress = false
         
         doneCallback?()
     }
@@ -125,8 +119,8 @@ class QuizEngine {
     
     func saveProblemSet(to context: ModelContext) {
         // Save to Historical Data
-//        print("\n🔥 QuizEngine:  saveProblemSet \nSaving \(problemSet)")
-//        
+        print("\n🔥 QuizEngine:  saveProblemSet")// \nSaving \(problemSet)")
+//
 //        let historical = HistoricalProbSet(problemSet: self.problemSet, config: self.problemSetConfig)
 //        context.insert(object: historical)
         

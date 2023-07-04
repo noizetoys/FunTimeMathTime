@@ -37,6 +37,7 @@
 		85CB4E362A44FB4D003854BE /* HistoryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CB4E352A44FB4D003854BE /* HistoryListView.swift */; };
 		85CDB4062A4602C300971E66 /* HistoricalProblem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CDB4052A4602C300971E66 /* HistoricalProblem.swift */; };
 		85CDB4072A46466700971E66 /* HistoricalProbSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CDB4022A45FB1D00971E66 /* HistoricalProbSet.swift */; };
+		85D7325F2A53A22300C35F54 /* QuizStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D7325E2A53A22300C35F54 /* QuizStack.swift */; };
 		85DAEDDA2A4281E9002941B8 /* QuizProblemSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DAEDD92A4281E9002941B8 /* QuizProblemSet.swift */; };
 /* End PBXBuildFile section */
 
@@ -91,6 +92,7 @@
 		85CB4E352A44FB4D003854BE /* HistoryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryListView.swift; sourceTree = "<group>"; };
 		85CDB4022A45FB1D00971E66 /* HistoricalProbSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoricalProbSet.swift; sourceTree = "<group>"; };
 		85CDB4052A4602C300971E66 /* HistoricalProblem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoricalProblem.swift; sourceTree = "<group>"; };
+		85D7325E2A53A22300C35F54 /* QuizStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizStack.swift; sourceTree = "<group>"; };
 		85DAEDD92A4281E9002941B8 /* QuizProblemSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizProblemSet.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -186,6 +188,7 @@
 			children = (
 				8504A6072A3FDA0F00990F00 /* Dashboard.swift */,
 				8504A6492A3FDB3B00990F00 /* ProblemsConfigView.swift */,
+				85D7325E2A53A22300C35F54 /* QuizStack.swift */,
 				8504A62F2A3FDA8200990F00 /* ProblemTypeCell.swift */,
 				85D7325D2A5335F100C35F54 /* Quiz Views */,
 				8572EE652A40C33B00BD3905 /* SettingsView.swift */,
@@ -392,6 +395,7 @@
 				85CDB4072A46466700971E66 /* HistoricalProbSet.swift in Sources */,
 				8504A64A2A3FDB3B00990F00 /* ProblemsConfigView.swift in Sources */,
 				8504A64E2A3FDB4900990F00 /* ProblemGenerator.swift in Sources */,
+				85D7325F2A53A22300C35F54 /* QuizStack.swift in Sources */,
 				85491C7B2A4B9E17009D52A7 /* ProblemSet.swift in Sources */,
 				85DAEDDA2A4281E9002941B8 /* QuizProblemSet.swift in Sources */,
 				8504A65A2A40B64700990F00 /* QuizView.swift in Sources */,
@@ -580,7 +584,8 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -613,7 +618,8 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

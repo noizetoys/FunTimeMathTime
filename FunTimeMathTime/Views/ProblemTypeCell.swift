@@ -30,8 +30,8 @@ struct ProblemTypeCell: View {
                 .scaledToFit()
                 .padding()
         }
-        .frame(width: 100, height: 100)
-        .padding()
+        .frame(width: 60, height: 60)
+//        .padding()
     }
     
 }

@@ -9,7 +9,7 @@ import SwiftUI
 
 
 struct ProblemsConfigView: View {
-    @Environment(QuizEngine.self) private var quizEngine: QuizEngine
+//    @Environment(QuizEngine.self) private var quizEngine: QuizEngine
     @Environment(\.dismiss) private var dismiss
     
     /// Numbers to use as TOP value
@@ -32,18 +32,30 @@ struct ProblemsConfigView: View {
     }
     private let problemCountRange: ClosedRange<Float> = 20...50
     
-    private var rows: [GridItem] = [
-        GridItem(.flexible(minimum: 40, maximum: 80), spacing: 10, alignment: .center),
-        GridItem(.flexible(minimum: 40, maximum: 80), spacing: 10, alignment: .center),
-        GridItem(.flexible(minimum: 40, maximum: 80), spacing: 10, alignment: .center),
+    private var columns: [GridItem] = [
+        GridItem(.flexible(minimum: 40, maximum: 60), spacing: 10, alignment: .center),
+        GridItem(.flexible(minimum: 40, maximum: 60), spacing: 10, alignment: .center),
+        GridItem(.flexible(minimum: 40, maximum: 60), spacing: 10, alignment: .center),
+        GridItem(.flexible(minimum: 40, maximum: 60), spacing: 10, alignment: .center),
     ]
     
     
         // MARK: - View
     
+    @Binding private var paths: [ProblemSetConfiguration]
+    
+    init(paths: Binding<[ProblemSetConfiguration]>) {
+        self._paths = paths
+    }
+        
+    
     var body: some View {
         VStack {
-            HStack {
+            Text("Quiz Configurator")
+                .font(.title)
+                .bold()
+            
+            HStack(spacing: 10) {
                 ForEach(ProblemType.allCases, id:\.self) { type in
                     ProblemTypeCell(selectedType: $problemType, type: type)
                         .onTapGesture {
@@ -51,8 +63,9 @@ struct ProblemsConfigView: View {
                         }
                 }
             }
+            .padding(.vertical)
             
-            LazyVGrid(columns: rows, alignment: .center, spacing: 10, pinnedViews: [], content: {
+            LazyVGrid(columns: columns, alignment: .center, spacing: 10, pinnedViews: [], content: {
                 ForEach(valueRange, id: \.self) { value in
                     let isSelected = selectedValues.contains(where: { $0 == value })
                     
@@ -71,14 +84,15 @@ struct ProblemsConfigView: View {
                         }
                 } // For Each
             })
+            .padding()
             
             // Sliders, etc.
             VStack {
                 VStack {
-                    Text("Total Problem:  \(Int(problemCount))")
+                    Text("Number of Problems:  \(Int(problemCount))")
                     
                     problemCountSlider
-                        .frame(width: 300)
+                        .frame(width: 200)
                 }
                 .padding()
                 
@@ -86,7 +100,7 @@ struct ProblemsConfigView: View {
                     Text(timeLimitText)
                     
                     timerSlider
-                        .frame(width: 300)
+                        .frame(width: 200)
                 }
                 .padding(.top)
             }
@@ -94,14 +108,15 @@ struct ProblemsConfigView: View {
             .padding(.vertical)
             
             buttonsRow
-                .padding(.top)
+//                .padding()
         }
         .alert("No Numbers Selected!", isPresented: $showAlert) {
             Button("Ok", role: .cancel) { }
         }
         .padding()
         .onAppear {
-            print("ProblemsConfigView: 'onAppear' quizEngine.problemSetConfig.problemType = \(quizEngine.problemSetConfig.problemType)")
+//            resetAllValues()
+            print("ProblemsConfigView: 'onAppear' ")
         }
     }
     
@@ -124,7 +139,7 @@ struct ProblemsConfigView: View {
     }
     
     
-    private func createConfig() {
+    private func createConfig() -> ProblemSetConfiguration {
         let config = ProblemSetConfiguration()
         
         config.problemCount = self.problemCount
@@ -134,7 +149,7 @@ struct ProblemsConfigView: View {
         config.autoStartQuiz = self.autoStartQuiz
         config.randomize = self.randomize
         
-        quizEngine.newQuiz(using: config)
+        return config
     }
     
     
@@ -198,12 +213,9 @@ struct ProblemsConfigView: View {
                     return
                 }
                 
-                createConfig()
-
-                withAnimation {
-                    dismiss()
-                    quizEngine.quizReady = true
-                }
+//                withAnimation {
+                    paths.append(createConfig())
+//                }
             }
             
             Spacer()
@@ -254,57 +266,19 @@ struct ValueGridItem: View, Identifiable {
                 .font(.title)
                 .bold()
         }
-        .frame(height: 80)
+        .frame(height: 60)
         
     }
 }
 
 
-struct ContentView_Previews: PreviewProvider {
-//    @StateObject static var problemSetConfiguration: ProblemSetConfiguration = ProblemSetConfiguration(problemType: .addition,
-//                                                                                                       problemCount: 30,
-//                                                                                                       valueRange: 1...12,
-//                                                                                                       selectedValues: [],
-//                                                                                                       randomize: true)
-    
-    @State static var showSheet = true
-    
-    
-    static var previews: some View {
-        VStack {
-            Rectangle()
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(.green)
-                .sheet(isPresented: $showSheet) {
-//                    ProblemsConfigView(problemType: .addition)
-                    ProblemsConfigView()
-                }
-//                .environmentObject(problemSetConfiguration)
-        }
-        
-    }
-}
+//struct ContentView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ProblemsConfigView()
+//    }
+//}
 
 
 //#Preview {
-////    @StateObject var problemSetConfiguration: ProblemSetConfiguration? = ProblemSetConfiguration(problemType: .addition,
-////    @ObservedObject var problemSetConfiguration: ProblemSetConfiguration? = ProblemSetConfiguration(problemType: .addition,
-////                                                                                                 problemCount: 20,
-////                                                                                                 valueRange: 2...12,
-////                                                                                                 selectedValues: [],
-////                                                                                                 randomize: true)
-//    
-//    @State var showSheet = true
-//    
-//    return VStack {
-//        Rectangle()
-//            .frame(maxWidth: .infinity, maxHeight: .infinity)
-//            .background(.green)
-//            .sheet(isPresented: $showSheet) {
-//                    //                ProblemsConfigView(type: .addition, config: $config)
-//                ProblemsConfigView()
-//            }
-//            .environmentObject(problemSetConfiguration)
-//    }
-//    ProblemsConfigView(type: .addition, config: ProblemSetConfiguration(problemType: .addition, problemCount: 20, valueRange: 2...12, selectedValues: [], randomize: true))
+//    ProblemsConfigView()
 //}

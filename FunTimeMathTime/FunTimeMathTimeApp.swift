@@ -11,12 +11,10 @@ import SwiftData
 
 @main
 struct FunTimeMathTimeApp: App {
-    @State var quizEngine: QuizEngine = QuizEngine()
 
     var body: some Scene {
         WindowGroup {
             Dashboard()
-                .environment(quizEngine)
                 .modelContainer(for: [HistoricalProbSet.self, HistoricalProblem.self, Solution.self])
 
         }
