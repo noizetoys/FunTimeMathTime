@@ -26,6 +26,6 @@ struct EquationView: View {
 }
 
 
-#Preview {
-    EquationView(problem: QuizProblem(topValue: 9, bottomValue: 9, problemType: .addition))
-}
+//#Preview {
+//    EquationView(problem: QuizProblem(topValue: 9, bottomValue: 9, problemType: .addition))
+//}

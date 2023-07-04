@@ -12,14 +12,19 @@ import SwiftData
 @Model
 class HistoricalProblem {
     @Attribute(.unique) var id: UUID
+//    var id: UUID
     
     var topValue: Int
     var bottomValue: Int
-//    var problemType: ProblemType
     var problemType: String
     
-    var correctSolution: Solution
     var selectedSolution: Solution?
+    
+    var correctSolution: Solution {
+        ProblemType(rawValue: problemType)?.solution(topValue: topValue, bottomValue: bottomValue) ?? Solution(result: 8)
+    }
+    
+//    var correctSolution: Solution
     
     var correctSolutionChosen: Bool { selectedSolution == correctSolution }
     
@@ -37,7 +42,7 @@ class HistoricalProblem {
         self.topValue = topValue
         self.bottomValue = bottomValue
         self.problemType = problemType.rawValue
-        self.correctSolution = correctSolution
+//        self.correctSolution = correctSolution
         self.selectedSolution = selectedSolution
     }
     
@@ -83,4 +88,10 @@ class HistoricalProblem {
         return problems
     }
     
+}
+
+extension HistoricalProblem: CustomStringConvertible {
+    var description: String {
+        "Historical Problem: \(topValue) \(problemType) \(bottomValue) = \(correctSolution) --> Selected \(String(describing: selectedSolution))"
+    }
 }

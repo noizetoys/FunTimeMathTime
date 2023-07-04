@@ -14,10 +14,12 @@ class Solution {
     @Attribute(.unique) var id: UUID
     
     var result: Int
-    var remainder: Int?
+//    var remainder: Int?
+    var remainder: Int
     
     
-    init(result: Int, remainder: Int? = nil) {
+//    init(result: Int, remainder: Int? = nil) {
+    init(result: Int, remainder: Int = 0) {
         self.result = result
         self.remainder = remainder
         id = UUID()
@@ -37,13 +39,16 @@ extension Solution {
     
     var remainderText: String {
         guard
-            let reminderValue = remainder,
-            reminderValue > 0
+            containsRemainder
+//            let reminderValue = remainder,
+//            reminderValue > 0
+//            reminder > 0
         else {
             return ""
         }
         
-        return "R: \(reminderValue)"
+//        return "R: \(reminderValue)"
+        return "R: \(remainder)"
     }
     
     
@@ -53,7 +58,7 @@ extension Solution {
     
     var containsRemainder: Bool {
         guard
-            let remainder,
+//            let remainder,
             remainder > 0
         else { return false}
         

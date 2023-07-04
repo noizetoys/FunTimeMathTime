@@ -78,18 +78,35 @@ struct QuizView: View {
         .safeAreaPadding(.horizontal)
         .sheet(isPresented: $showCountdownSheet, onDismiss: {
             startTimer()
-            
-            self.quizEngine.setDoneCallback {
-                self.showQuizCompleteSheet.toggle()
-            }
-            
             quizEngine.start()
         }, content: {
             CountDownSheet()
         })
-        .sheet(isPresented: $showQuizCompleteSheet) {
+        
+        .sheet(isPresented: $quizEngine.quizComplete) {
+            var convertedProblems = [HistoricalProblem]()
+            
+            for problem in quizEngine.problems {
+                let histProb = HistoricalProblem(id: problem.id,
+                                                 topValue: problem.topValue,
+                                                 bottomValue: problem.bottomValue,
+                                                 problemType: problem.problemType,
+                                                 correctSolution: problem.correctSolution,
+                                                 selectedSolution: problem.selectedSolution)
+                convertedProblems.append(histProb)
+            }
+            
+            print("\n🔥 QuizEngine:  saveProblemSet: convertedProblems")
+//            for problem in convertedProblems {
+//                print(problem)
+//            }
+            
+            let problemSet = HistoricalProbSet(problems: convertedProblems, start: quizEngine.startTime, end: quizEngine.endTime, config: quizEngine.problemSetConfig)
+
+            context.insert(object: problemSet)
+
+//                quizEngine.saveProblemSet(to: context)
             withAnimation {
-                quizEngine.saveProblemSet(to: context)
                 quizEngine.end()
                 dismiss()
             }
@@ -100,10 +117,10 @@ struct QuizView: View {
         .onDisappear {
             timer?.invalidate()
             timer = nil
-            remainingSeconds = 0
         }
         
     }
+    
     
     
         // MARK: - Custom Views -
@@ -139,13 +156,13 @@ struct QuizView: View {
                 
                 if self.remainingSeconds <= 0 {
                     self.quizEngine.end()
-                    self.showQuizCompleteSheet.toggle()
                 }
             }
             
             timer?.fire()
         }
     }
+    
     
     private var timerView: some View {
         HStack {

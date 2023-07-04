@@ -113,17 +113,17 @@ fileprivate struct SolutionPreviewView: View {
 }
 
 
-#Preview {
-    VStack {
-        SolutionPreviewView(result: 5, remainder: 0, isCorrectSolution: true, type: .addition, selected: false, solutionSelected: false)
-        SolutionPreviewView(result: 5, remainder: 0, isCorrectSolution: true, type: .addition, selected: true, solutionSelected: true)
-        SolutionPreviewView(result: 5, remainder: 0, isCorrectSolution: true, type: .addition, selected: false, solutionSelected: true)
-        
-        SolutionPreviewView(result: 5, remainder: 1, isCorrectSolution: false,  type: .addition, selected: false, solutionSelected: false)
-        SolutionPreviewView(result: 5, remainder: 1, isCorrectSolution: false,  type: .addition, selected: true, solutionSelected: true)
-        SolutionPreviewView(result: 5, remainder: 1, isCorrectSolution: false,  type: .addition, selected: false, solutionSelected: true)
-    }
-    .padding()
-}
-
+//#Preview {
+//    VStack {
+//        SolutionPreviewView(result: 5, remainder: 0, isCorrectSolution: true, type: .addition, selected: false, solutionSelected: false)
+//        SolutionPreviewView(result: 5, remainder: 0, isCorrectSolution: true, type: .addition, selected: true, solutionSelected: true)
+//        SolutionPreviewView(result: 5, remainder: 0, isCorrectSolution: true, type: .addition, selected: false, solutionSelected: true)
+//        
+//        SolutionPreviewView(result: 5, remainder: 1, isCorrectSolution: false,  type: .addition, selected: false, solutionSelected: false)
+//        SolutionPreviewView(result: 5, remainder: 1, isCorrectSolution: false,  type: .addition, selected: true, solutionSelected: true)
+//        SolutionPreviewView(result: 5, remainder: 1, isCorrectSolution: false,  type: .addition, selected: false, solutionSelected: true)
+//    }
+//    .padding()
+//}
+//
 

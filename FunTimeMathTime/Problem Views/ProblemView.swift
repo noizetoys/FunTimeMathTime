@@ -76,15 +76,15 @@ struct ProblemView: View {
 }
 
 
-#Preview {
-    ScrollView(.vertical) {
-        ProblemView(problem: QuizProblem(topValue: 10, bottomValue: 10, problemType: .addition))
-        ProblemView(problem: QuizProblem(topValue: 10, bottomValue: 10, problemType: .subtraction))
-        ProblemView(problem: QuizProblem(topValue: 10, bottomValue: 10, problemType: .multiplication))
-        ProblemView(problem: QuizProblem(topValue: 10, bottomValue: 10, problemType: .division))
-            //        EquationView(problem: Problem(topValue: 9, bottomValue: 8, ProblemType: .subtraction))
-            //        EquationView(problem: Equation(topValue: 8, bottomValue: 7, ProblemType: .multiplication))
-            //        EquationView(problem: Equation(topValue: 10, bottomValue: 10, ProblemType: .division))
-    }
-//    .background(.orange)
-}
+//#Preview {
+//    ScrollView(.vertical) {
+//        ProblemView(problem: QuizProblem(topValue: 10, bottomValue: 10, problemType: .addition))
+//        ProblemView(problem: QuizProblem(topValue: 10, bottomValue: 10, problemType: .subtraction))
+//        ProblemView(problem: QuizProblem(topValue: 10, bottomValue: 10, problemType: .multiplication))
+//        ProblemView(problem: QuizProblem(topValue: 10, bottomValue: 10, problemType: .division))
+//            //        EquationView(problem: Problem(topValue: 9, bottomValue: 8, ProblemType: .subtraction))
+//            //        EquationView(problem: Equation(topValue: 8, bottomValue: 7, ProblemType: .multiplication))
+//            //        EquationView(problem: Equation(topValue: 10, bottomValue: 10, ProblemType: .division))
+//    }
+////    .background(.orange)
+//}

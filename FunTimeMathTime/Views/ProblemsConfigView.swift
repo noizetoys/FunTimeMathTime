@@ -108,14 +108,13 @@ struct ProblemsConfigView: View {
             .padding(.vertical)
             
             buttonsRow
-//                .padding()
         }
         .alert("No Numbers Selected!", isPresented: $showAlert) {
             Button("Ok", role: .cancel) { }
         }
         .padding()
         .onAppear {
-//            resetAllValues()
+            resetAllValues()
             print("ProblemsConfigView: 'onAppear' ")
         }
     }

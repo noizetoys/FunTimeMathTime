@@ -13,6 +13,7 @@ import SwiftData
 class HistoricalProbSet {
     @Attribute(.unique) var id: UUID
     var problems: [HistoricalProblem]
+//    var problems: [QuizProblem]
     
     let startTime: Date
     var endTime: Date
@@ -39,12 +40,22 @@ class HistoricalProbSet {
     
         // MARK: - Lifecycle -
     
-    init(problemSet: QuizProblemSet, config: ProblemSetConfiguration) {
-        self.id = problemSet.id
+    init(problems: [HistoricalProblem], start: Date, end: Date, config: ProblemSetConfiguration) {
+//    init(problems: [QuizProblem], start: Date, end: Date, config: ProblemSetConfiguration) {
+//    init(problemSet: QuizProblemSet, config: ProblemSetConfiguration) {
+        self.id = UUID()
         
-        self.problems = problemSet.problems.map { HistoricalProblem.new(from: $0) }
-        self.startTime = problemSet.startTime
-        self.endTime = problemSet.endTime
+        print("\nHistoricalProbSet: problems:")
+        problems.forEach { print($0) }
+        self.problems = problems
+        
+//        self.problems = problems.map { HistoricalProblem.new(from: $0) }
+        
+        print("\nHistoricalProbSet: Historical problems")
+        self.problems.forEach { print($0) }
+        
+        self.startTime = start
+        self.endTime = end
         
         
             // Configuration
@@ -61,28 +72,28 @@ class HistoricalProbSet {
     
         // MARK: - Static  -
     
-    static func sampleSet(for problem: HistoricalProblem, count: Int = 20) -> HistoricalProbSet {
-        let config = ProblemSetConfiguration.sampleConfig(from: problem, count: count)
-        let problemSet = QuizProblemSet(config: config)
-        problemSet.configForTesting()
-        
-        return .init(problemSet: problemSet, config: config)
-    }
+//    static func sampleSet(for problem: HistoricalProblem, count: Int = 20) -> HistoricalProbSet {
+//        let config = ProblemSetConfiguration.sampleConfig(from: problem, count: count)
+//        let problemSet = QuizProblemSet(config: config)
+//        problemSet.configForTesting()
+//        
+//        return .init(problemSet: problemSet, config: config)
+//    }
     
     
-    static func sampleSet(for problem: QuizProblem, count: Int = 20) -> HistoricalProbSet {
-        let config = ProblemSetConfiguration.sampleConfig(from: problem, count: count)
-        let problemSet = QuizProblemSet(config: config)
-        problemSet.configForTesting()
-        
-        return .init(problemSet: problemSet, config: config)
-    }
+//    static func sampleSet(for problem: QuizProblem, count: Int = 20) -> HistoricalProbSet {
+//        let config = ProblemSetConfiguration.sampleConfig(from: problem, count: count)
+//        let problemSet = QuizProblemSet(config: config)
+//        problemSet.configForTesting()
+//        
+//        return .init(problemSet: problemSet, config: config)
+//    }
 
     
-    static func sampleHistoricalSet(for topValue: Int = 7, type: ProblemType = .addition) -> HistoricalProbSet {
-        let sampleProblem = HistoricalProblem.new(from: QuizProblem.sampleProblem(top: topValue, type: type))
-        return sampleSet(for: sampleProblem)
-    }
+//    static func sampleHistoricalSet(for topValue: Int = 7, type: ProblemType = .addition) -> HistoricalProbSet {
+//        let sampleProblem = HistoricalProblem.new(from: QuizProblem.sampleProblem(top: topValue, type: type))
+//        return sampleSet(for: sampleProblem)
+//    }
     
 }
 

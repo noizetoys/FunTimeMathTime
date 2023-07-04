@@ -24,6 +24,6 @@ struct QuizStack: View {
 }
 
 
-#Preview {
-    QuizStack()
-}
+//#Preview {
+//    QuizStack()
+//}

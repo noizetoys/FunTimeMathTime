@@ -7,12 +7,13 @@
 
 import SwiftUI
 import Combine
-
+//import SwiftData
 
 // TODO: Add way to store for future reference
 
-//class QuizProblem: BasicProblem, ObservableObject {
-class QuizProblem: BasicProblem {
+class QuizProblem: BasicProblem, ObservableObject {
+//@Model
+//class QuizProblem: BasicProblem {
     let id: UUID
     
     let topValue: Int
@@ -29,20 +30,23 @@ class QuizProblem: BasicProblem {
         return selected == correctSolution
     }
     
+//    @Transient
     var solutions: [Solution] = []
     
     private var remainderText: String {
         guard
-            let remainder = correctSolution.remainder,
-            remainder > 0
+            correctSolution.containsRemainder
+//            let remainder = correctSolution.remainder,
+//            remainder > 0
         else {
             return ""
         }
         
-        return "Remainder \(remainder)"
+        return "Remainder \(correctSolution.remainder)"
     }
     
     // Used for animation
+//    @Transient
     var index: Int = 0
     
     
@@ -99,7 +103,7 @@ extension QuizProblem: Equatable, Hashable {
 
 extension QuizProblem: CustomStringConvertible {
     var description: String {
-        "\(topValue) \(problemType) \(bottomValue) = \(correctSolution) --> Selected \(String(describing: selectedSolution))"
+        "QuizProblem: \(topValue) \(problemType) \(bottomValue) = \(correctSolution) --> Selected \(String(describing: selectedSolution))"
     }
 }
 

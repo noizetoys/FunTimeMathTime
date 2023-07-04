@@ -13,6 +13,7 @@ struct HistoricalProblemView: View {
     @State private var showingCorrectAnswer: Bool = false
     
     private let problem: HistoricalProblem
+//    private let problem: QuizProblem
     
     private let correctColor = Color.green.opacity(0.5)
     private let incorrectColor = Color.red.opacity(0.5)
@@ -21,6 +22,7 @@ struct HistoricalProblemView: View {
     
     
     init(problem: HistoricalProblem) {
+//    init(problem: QuizProblem) {
         self.problem = problem
         _visibleSolution = State(initialValue: problem.selectedSolution ?? problem.correctSolution)
     }

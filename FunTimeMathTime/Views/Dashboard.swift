@@ -10,12 +10,6 @@ import SwiftData
 
 
 struct Dashboard: View {
-//    @Environment(QuizEngine.self) private var quizEngine: QuizEngine
-//    @Environment(\.modelContext) private var modelContext
-//    @Query var problemSets: [HistoricalProbSet]
-
-//    @State private var selectedRow: HistoricalProbSet?
-    
     var body: some View {
         
         TabView {
@@ -73,6 +67,6 @@ struct Dashboard: View {
 }
 
 
-#Preview {
-    Dashboard()
-}
+//#Preview {
+//    Dashboard()
+//}
