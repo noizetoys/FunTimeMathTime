@@ -10,7 +10,7 @@ import SwiftData
 
 
 @Model
-class HistoricalProblem {
+class HistoricalProblem: Identifiable {
     @Attribute(.unique) var id: UUID
 //    var id: UUID
     
@@ -19,12 +19,7 @@ class HistoricalProblem {
     var problemType: String
     
     var selectedSolution: Solution?
-    
-    var correctSolution: Solution {
-        ProblemType(rawValue: problemType)?.solution(topValue: topValue, bottomValue: bottomValue) ?? Solution(result: 8)
-    }
-    
-//    var correctSolution: Solution
+    var correctSolution: Solution
     
     var correctSolutionChosen: Bool { selectedSolution == correctSolution }
     
@@ -38,17 +33,26 @@ class HistoricalProblem {
                   correctSolution: Solution,
                   selectedSolution: Solution?)
     {
+    print("\n ---> Historical Problem:  INIT")
         self.id = id
+    print("ID: \(id)")
         self.topValue = topValue
+    print("Top Value: \(topValue)")
         self.bottomValue = bottomValue
+    print("Bottom Value: \(bottomValue)")
         self.problemType = problemType.rawValue
-//        self.correctSolution = correctSolution
+    print("Problem Type: \(problemType)")
+        self.correctSolution = correctSolution
+    print("Correct Solution: \(correctSolution)")
         self.selectedSolution = selectedSolution
+    print("Selected Solution: \(selectedSolution)")
     }
     
     
     static func new(from problem: QuizProblem) -> HistoricalProblem {
-        HistoricalProblem.init(id: problem.id,
+    print("\n ---> Historical Problem:  new from \(problem)")
+        
+        return HistoricalProblem.init(id: problem.id,
                   topValue: problem.topValue,
                   bottomValue: problem.bottomValue,
                   problemType: problem.problemType,
@@ -57,41 +61,41 @@ class HistoricalProblem {
     }
 
     
-    static func sampleProblem(top: Int?, bottom: Int?, type: ProblemType? = .addition) -> HistoricalProblem {
-        let topValue = top ?? Int.random(in: 2...12)
-        let bottomValue = bottom ?? Int.random(in: 2...12)
-        let problemType = type ?? ProblemType.allCases.randomElement() ?? .addition
-        let correctSolution = problemType.solution(from: QuizProblem(topValue: topValue, bottomValue: bottomValue, problemType: problemType))
-        let incorrectSolution = problemType.solution(from: QuizProblem(topValue: topValue, bottomValue: bottomValue + 1, problemType: problemType))
-        
-        let possibileSolutions: [Solution?] = [correctSolution, incorrectSolution, nil]
-        var selected: Solution? { possibileSolutions.randomElement() ?? nil }
-        
-        return HistoricalProblem(id: UUID(),
-                          topValue: topValue,
-                          bottomValue: bottomValue,
-                          problemType: problemType,
-                          correctSolution: correctSolution,
-                          selectedSolution: selected)
-    }
-    
-    
-    static func sampleProblems(_ count: Int, top: Int?, type: ProblemType? = .addition) -> [HistoricalProblem] {
-        var problems = [HistoricalProblem]()
-        let topValue = top ?? Int.random(in: 2...12)
-        let type = type ?? ProblemType.allCases.randomElement() ?? .addition
-        
-        for _ in 0..<count {
-            problems.append(.sampleProblem(top: topValue, bottom: Int.random(in: 2...12), type: type))
-        }
-        
-        return problems
-    }
+//    static func sampleProblem(top: Int?, bottom: Int?, type: ProblemType? = .addition) -> HistoricalProblem {
+//        let topValue = top ?? Int.random(in: 2...12)
+//        let bottomValue = bottom ?? Int.random(in: 2...12)
+//        let problemType = type ?? ProblemType.allCases.randomElement() ?? .addition
+//        let correctSolution = problemType.solution(from: QuizProblem(topValue: topValue, bottomValue: bottomValue, problemType: problemType))
+//        let incorrectSolution = problemType.solution(from: QuizProblem(topValue: topValue, bottomValue: bottomValue + 1, problemType: problemType))
+//        
+//        let possibileSolutions: [Solution?] = [correctSolution, incorrectSolution, nil]
+//        var selected: Solution? { possibileSolutions.randomElement() ?? nil }
+//        
+//        return HistoricalProblem(id: UUID(),
+//                          topValue: topValue,
+//                          bottomValue: bottomValue,
+//                          problemType: problemType,
+//                          correctSolution: correctSolution,
+//                          selectedSolution: selected)
+//    }
+//    
+//    
+//    static func sampleProblems(_ count: Int, top: Int?, type: ProblemType? = .addition) -> [HistoricalProblem] {
+//        var problems = [HistoricalProblem]()
+//        let topValue = top ?? Int.random(in: 2...12)
+//        let type = type ?? ProblemType.allCases.randomElement() ?? .addition
+//        
+//        for _ in 0..<count {
+//            problems.append(.sampleProblem(top: topValue, bottom: Int.random(in: 2...12), type: type))
+//        }
+//        
+//        return problems
+//    }
     
 }
 
-extension HistoricalProblem: CustomStringConvertible {
-    var description: String {
-        "Historical Problem: \(topValue) \(problemType) \(bottomValue) = \(correctSolution) --> Selected \(String(describing: selectedSolution))"
-    }
-}
+//extension HistoricalProblem: CustomStringConvertible {
+//    var description: String {
+//        "Historical Problem: \(topValue) \(problemType) \(bottomValue) = \(correctSolution) --> Selected \(String(describing: selectedSolution))"
+//    }
+//}

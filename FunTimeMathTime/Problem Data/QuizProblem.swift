@@ -36,8 +36,6 @@ class QuizProblem: BasicProblem, ObservableObject {
     private var remainderText: String {
         guard
             correctSolution.containsRemainder
-//            let remainder = correctSolution.remainder,
-//            remainder > 0
         else {
             return ""
         }

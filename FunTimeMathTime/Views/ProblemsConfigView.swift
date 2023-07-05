@@ -147,6 +147,7 @@ struct ProblemsConfigView: View {
         config.selectedValues = self.selectedValues
         config.autoStartQuiz = self.autoStartQuiz
         config.randomize = self.randomize
+        config.problemType = self.problemType
         
         return config
     }

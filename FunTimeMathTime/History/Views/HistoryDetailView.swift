@@ -12,17 +12,10 @@ struct HistoryDetailView: View {
     let problemSet: HistoricalProbSet
     
     
-    var rows: [GridItem] {
-        var theRows = [GridItem]()
-        
-        for _ in 1...6 {
-            let item = GridItem(.flexible(), alignment: .center)
-            theRows.append(item)
-        }
-        
-        return theRows
-    }
-    
+    var columns: [GridItem] = [
+        GridItem(.fixed(120), spacing: 40),
+        GridItem(.fixed(120))
+    ]
 
     init(problemSet: HistoricalProbSet) {
         self.problemSet = problemSet
@@ -34,13 +27,13 @@ struct HistoryDetailView: View {
             headerView
             
             ScrollView(.vertical) {
-                LazyVGrid(columns: rows) {
+                LazyVGrid(columns: columns, spacing: 20) {
                     ForEach(problemSet.problems) { problem in
                         HistoricalProblemView(problem: problem)
-                            .padding(10)
                     }
                 }
             }
+            
         }
         .padding()
     
@@ -48,8 +41,7 @@ struct HistoryDetailView: View {
     
     
     private var headerView: some View {
-        HStack {
-//            Text("\(problemSet.problemCount) \(problemSet.problemType.rawValue) Problems,")
+        VStack {
             Text("\(Int(problemSet.problemCount)) \(problemSet.problemType) Problems,")
             Text("\(problemSet.answeredCount) Answered,")
             Text("\(problemSet.correctlyAnswered) Correct,")

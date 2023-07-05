@@ -13,7 +13,6 @@ struct HistoricalProblemView: View {
     @State private var showingCorrectAnswer: Bool = false
     
     private let problem: HistoricalProblem
-//    private let problem: QuizProblem
     
     private let correctColor = Color.green.opacity(0.5)
     private let incorrectColor = Color.red.opacity(0.5)
@@ -22,7 +21,6 @@ struct HistoricalProblemView: View {
     
     
     init(problem: HistoricalProblem) {
-//    init(problem: QuizProblem) {
         self.problem = problem
         _visibleSolution = State(initialValue: problem.selectedSolution ?? problem.correctSolution)
     }
@@ -36,7 +34,6 @@ struct HistoricalProblemView: View {
                     RoundedRectangle(cornerRadius: 10)
                         .stroke(.black, lineWidth: 10.0)
                 }
-//                .padding(5)
 
             VStack(alignment: .center) {
                 
@@ -48,7 +45,7 @@ struct HistoricalProblemView: View {
                 
                 Rectangle()
                     .frame(width: 80, height: 4)
-//                    .padding(.top, -10)
+                    .padding(.top, -10)
                 
                 HStack {
                     if problem.selectedSolution != nil {
@@ -67,14 +64,16 @@ struct HistoricalProblemView: View {
                     }
                     
                 } // HSTACK - Solutions
+//                .padding(.bottom, 10)
                 
             } // VStack
-            .frame(width: 100)
             .cornerRadius(10)
+//            .padding(.horizontal)
             .padding()
             .font(.title)
             .bold()
-        }
+            
+        } // ZStack
             
     }
     

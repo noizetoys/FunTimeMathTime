@@ -51,7 +51,7 @@ struct ProblemView: View {
                                      isCorrectSolution: solution == problem.correctSolution,
                                      selected: solution == problem.selectedSolution,
                                      solutionSelected: solutionSelected)
-                            .frame(width: 60, height: 60)
+                            .frame(width: 80, height: 80)
                             .onTapGesture {
                                 withAnimation {
                                     problem.selectedSolution = solution

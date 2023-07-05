@@ -6,37 +6,42 @@
 //
 
 import SwiftUI
-//import SwiftData
+import SwiftData
 
 
-//struct HistoryListView: View {
-//    @Environment(\.modelContext) private var modelContext
-//    @Query var problemSets: [HistoricalProbSet]
-//    
-//    
-//    var body: some View {
-//        VStack {
-//            
-//            List {
-//                Section {
-//                    ForEach(problemSets) { set in
-//                        NavigationLink {
-//                            HistoryDetailView(problemSet: set)
-//                        } label: {
-//                            HistoryListCellView(problemSet: set)
+struct HistoryListView: View {
+    @Environment(\.modelContext) private var modelContext
+    @Query var problemSets: [HistoricalProbSet]
+    
+    
+    var body: some View {
+        NavigationStack {
+            List {
+                Section {
+                    ForEach(problemSets) { set in
+                        NavigationLink {
+                            HistoryDetailView(problemSet: set)
+                        } label: {
+                            HistoryListCellView(problemSet: set)
+                        }
+                    }
+//                    .onDelete(perform: { indexSet in
+//                        for index in indexSet {
+//                            let item = problemSets.remove(at: index)
+//                            modelContext.delete(item)
 //                        }
-//                    }
-//                    
-//                } header: {
-//                    Text("Previous Quizes")
-//                }
-//                
-//            }
-//        }
-//        
-//    }
-//    
-//}
+//                    })
+                    
+                } header: {
+                    Text("Previous Quizes")
+                }
+                
+            }
+        }
+        
+    }
+    
+}
 
 
 struct HistoryListCellView: View {

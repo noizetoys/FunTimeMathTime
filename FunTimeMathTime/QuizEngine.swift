@@ -22,6 +22,7 @@ class QuizEngine {
     var quizInProgress = false
     var quizComplete = false
 
+    var problemTypeString: String { problemSetConfig.problemType.rawValue }
     var problemCount: Int { problems.count }
     var correctlyAnswered: Int { problems.reduce(into: 0) { $0 = $0 + ($1.correctlyAnswered == true ? 1 : 0) } }
 
@@ -42,7 +43,11 @@ class QuizEngine {
     private var cancellables = [AnyCancellable]()
     private var problemCountCancellable = [AnyCancellable]()
 
+    
+    var context: ModelContext? = nil
+    
     init(config: ProblemSetConfiguration) {
+        self.context = context
         problemSetConfig = config
         problems = ProblemGenerator.problemSet(for: config)
         print("\n🚗 QuizEngine: INIT problemSetConfig = \(problemSetConfig)")
@@ -62,13 +67,22 @@ class QuizEngine {
     }
     
     
+    func cancel() {
+        cancellables = []
+        quizInProgress = false
+    }
+    
+    
     func end() {
         endTime = .now
+        
+        saveProblemSet()
         
         cancellables.forEach { $0.cancel() }
         cancellables = []
         
         quizInProgress = false
+        
         quizComplete = true
     }
     
@@ -81,6 +95,7 @@ class QuizEngine {
         }
         else {
             currentProblem = unansweredProblems.removeFirst()
+            
             currentProblem?
                 .$selectedSolution
                 .sink { solution in
@@ -109,11 +124,14 @@ class QuizEngine {
     }
     
     
-    func saveProblemSet(to context: ModelContext) {
-        // Save to Historical Data
-        print("\n🔥 QuizEngine:  saveProblemSet")
+    func saveProblemSet() {
+        context?.insert(object: historicalProblemSet())
+    }
+    
+    
+    func historicalProblemSet() -> HistoricalProbSet {
         var convertedProblems = [HistoricalProblem]()
-//
+        
         for problem in problems {
             let histProb = HistoricalProblem(id: problem.id,
                                              topValue: problem.topValue,
@@ -123,16 +141,10 @@ class QuizEngine {
                                              selectedSolution: problem.selectedSolution)
             convertedProblems.append(histProb)
         }
-            //        let problemSet = HistoricalProbSet(problems: problems, start: startTime, end: endTime, config: problemSetConfig)
         
-//        print("\n🔥 QuizEngine:  saveProblemSet: problemSet = \(problemSet)")
-        print("\n🔥 QuizEngine:  saveProblemSet: convertedProblems")
-        for problem in convertedProblems {
-            print(problem)
-        }
-//        print("\n🔥 QuizEngine:  saveProblemSet: convertedProblems = \(convertedProblems)")
-//        context.insert(object: problemSet)
-        
+        return HistoricalProbSet(problems: convertedProblems,
+                                 start: startTime,
+                                 end: endTime,
+                                 config: problemSetConfig)
     }
-    
 }

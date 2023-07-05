@@ -10,8 +10,9 @@ import SwiftData
 
 
 @Model
-class HistoricalProbSet {
+class HistoricalProbSet: Identifiable {
     @Attribute(.unique) var id: UUID
+//    var id: UUID
     var problems: [HistoricalProblem]
 //    var problems: [QuizProblem]
     
@@ -45,14 +46,14 @@ class HistoricalProbSet {
 //    init(problemSet: QuizProblemSet, config: ProblemSetConfiguration) {
         self.id = UUID()
         
-        print("\nHistoricalProbSet: problems:")
-        problems.forEach { print($0) }
+//        print("\nHistoricalProbSet: problems:")
+//        problems.forEach { print($0) }
         self.problems = problems
         
 //        self.problems = problems.map { HistoricalProblem.new(from: $0) }
         
-        print("\nHistoricalProbSet: Historical problems")
-        self.problems.forEach { print($0) }
+//        print("\nHistoricalProbSet: Historical problems")
+//        self.problems.forEach { print($0) }
         
         self.startTime = start
         self.endTime = end

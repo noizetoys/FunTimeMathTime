@@ -21,6 +21,7 @@ struct EquationView: View {
                 Text("\(problem.bottomValue)")
             }
         }
+        .font(.largeTitle)
     }
     
 }

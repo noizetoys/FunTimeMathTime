@@ -7,63 +7,52 @@
 
 import SwiftUI
 import SwiftData
-import Combine
 
 
 struct QuizView: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(QuizEngine.self) private var quizEngine: QuizEngine
     @Environment(\.modelContext) private var context
     
-    @State private var quizEngine: QuizEngine
-    
     @State private var showCountdownSheet = false
+    @State private var quizInProgress = false
+    @State private var quizComplete = false
     
-    @State private var timer: Timer? = nil
-
-    @State var remainingSeconds: TimeInterval = 0
-    var timeString: String {
-        let minutes = Int(remainingSeconds / 60)
-        let seconds = Int(remainingSeconds.truncatingRemainder(dividingBy: 60))
-        let secondsString = seconds > 9 ? "\(seconds)" : "0\(seconds)"
-        
-        return "\(minutes):\(secondsString)"
-    }
-
     
         // MARK: - Private -
+    
+    private var needsTimer: Bool { quizEngine.problemSetConfig.timeLimit > 0 }
     
     
         // MARK: - LifeCycle -
 
-    init(config: ProblemSetConfiguration) {
-        _quizEngine = State(initialValue: QuizEngine(config: config))
-    }
+//    init() { }
     
     
     var body: some View {
-        VStack(spacing: 20) {
-            Text(quizEngine.problemTypeString)
-                .font(.largeTitle)
-                .bold()
-                .padding()
-            
+        VStack(spacing: 40) {
             timerView
-                .padding()
             
             HStack {
-                if quizEngine.quizInProgress {
-                    ProblemView(problem: quizEngine.currentProblem)
+                ScrollView(.horizontal) {
+                    
+                    HStack {
+                        if quizInProgress {
+                            ProblemView(problem: quizEngine.problemSet.currentProblem)
+                        }
+                        else {
+                            tapToBeginButton
+                        }
+                    }
                 }
-                else {
-                    tapToBeginButton
-                }
+                .frame(width: 450, height: 350)
+                
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
             
             HStack {
                 Spacer()
                 
-                if quizEngine.quizInProgress {
+                if quizInProgress {
                     endButton
                     Spacer()
                     skipButton
@@ -75,39 +64,25 @@ struct QuizView: View {
                 Spacer()
                 
             }
-            .padding()
-            
-        }
-        .safeAreaPadding(.horizontal)
-        .sheet(isPresented: $showCountdownSheet, onDismiss: {
-            startTimer()
-            quizEngine.start()
-        }, content: {
-            CountDownSheet()
-        })
-        .onChange(of: quizEngine.quizComplete, { old, new in
-            if new == true {
+            .safeAreaPadding(.horizontal)
+            .sheet(isPresented: $showCountdownSheet, onDismiss: {
+                withAnimation {
+                    quizInProgress = true
+                }
+                quizEngine.problemSet.start()
+            }, content: {
+                CountDownSheet()
+            })
+            .sheet(isPresented: $quizComplete) {
+                withAnimation {
+                    quizInProgress = false
+                }
                 dismiss()
+            } content: {
+                QuizCompleteView()
+                    .clipShape(RoundedRectangle(cornerRadius: 35))
             }
-        })
-        
-//        .sheet(isPresented: $quizEngine.quizComplete) {
-//            withAnimation {
-//                dismiss()
-//            }
-//        } content: {
-//            HistoryDetailView(problemSet: quizEngine.historicalProblemSet())
-//            QuizCompleteView(quizEngine: quizEngine)
-//                .clipShape(RoundedRectangle(cornerRadius: 35))
-//        }
-        .onDisappear {
-            timer?.invalidate()
-            timer = nil
         }
-        .onAppear {
-            quizEngine.context = context
-        }
-        
     }
     
     
@@ -123,10 +98,12 @@ struct QuizView: View {
                 }
                 .padding(5)
             
+            
             Text("Tap to Begin")
                 .font(.largeTitle)
                 .bold()
         }
+        .frame(width: 450)
         .onTapGesture {
             withAnimation {
                 showCountdownSheet = true
@@ -135,39 +112,23 @@ struct QuizView: View {
     }
     
     
-    private func startTimer() {
-        if quizEngine.timeLimit > 0 {
-            remainingSeconds = quizEngine.timeLimit * 60.0
-            
-            timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
-                self.remainingSeconds -= 1
-                
-                if self.remainingSeconds <= 0 {
-//                    self.quizEngine.saveProblemSet(to: self.context)
-                    self.quizEngine.end()
-                }
-            }
-            
-            timer?.fire()
-        }
-    }
-    
-    
     private var timerView: some View {
         HStack {
             Spacer()
             
-            Text("\(timeString)")
-                .foregroundStyle(quizEngine.quizInProgress ? .black : .gray.opacity(0.3))
+            Text("\(quizEngine.problemSet.timeString)")
+                .font(.system(size: 96, weight: .bold, design: .none))
+                .foregroundStyle(quizInProgress ? .black : .gray.opacity(0.3))
             
             Spacer()
+                .frame(width: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/)
             
-            Text("\(quizEngine.questionsCountString)")
-            
+            Text("\(quizEngine.problemSet.questionsCountString)")
+                .font(.system(size: 96, weight: .bold, design: .none))
+
             Spacer()
         }
-        .font(.largeTitle)
-        .bold()
+        .fixedSize()
     }
     
     
@@ -175,7 +136,7 @@ struct QuizView: View {
         Button(action: {
             print("Skip Buttom Pressed")
             withAnimation {
-                quizEngine.skip()
+                quizEngine.problemSet.skip()
             }
         }, label: {
             Text("Skip")
@@ -185,7 +146,7 @@ struct QuizView: View {
                 .padding()
         })
         .buttonBorderShape(.roundedRectangle)
-        .frame(width: 150)
+        .frame(width: 200)
         .overlay {
             RoundedRectangle(cornerRadius: 15)
                 .stroke(.black, lineWidth: 6)
@@ -195,9 +156,13 @@ struct QuizView: View {
     
     private var endButton: some View {
         Button(action: {
-//            showQuizCompleteSheet = true
-//            quizEngine.saveProblemSet(to: context)
-            quizEngine.end()
+            withAnimation {
+                quizComplete = true
+                quizEngine.problemSet.end()
+                quizEngine.quizReady = false
+                
+                quizEngine.saveProblemSet(to: context)
+            }
         }, label: {
             Text("End")
                 .foregroundStyle(Color.black)
@@ -206,7 +171,7 @@ struct QuizView: View {
                 .padding()
         })
         .buttonBorderShape(.roundedRectangle)
-        .frame(width: 150)
+        .frame(width: 200)
         .background(.red)
         .clipShape(RoundedRectangle(cornerRadius: 15))
         .overlay {
@@ -219,7 +184,9 @@ struct QuizView: View {
     private var cancelButton: some View {
         Button(role: .cancel) {
             withAnimation {
-                quizEngine.cancel()
+                quizComplete = true
+                quizEngine.problemSet.end()
+                quizEngine.quizReady = false
                 dismiss()
             }
         } label: {
@@ -230,7 +197,7 @@ struct QuizView: View {
                 .padding()
         }
         .buttonBorderShape(.roundedRectangle)
-        .frame(width: 150)
+        .frame(width: 200)
         .background(.red)
         .clipShape(RoundedRectangle(cornerRadius: 15))
         .overlay {
@@ -242,7 +209,7 @@ struct QuizView: View {
 }
 
 
-//#Preview {
+#Preview {
 //    QuizView(config: ProblemSetConfiguration(problemType: .addition,
 //                                             problemCount: 30,
 //                                             timeLimit: 3,
@@ -250,5 +217,5 @@ struct QuizView: View {
 //                                             valueRange: 2...12,
 //                                             selectedValues: [3, 7, 9],
 //                                             randomize: true))
-//    QuizView()
-//}
+    QuizView()
+}

@@ -19,7 +19,7 @@ struct Dashboard: View {
                     Text("Quiz")
                 }
             
-            Text("History")
+            HistoryListView()
                 .tabItem {
                     Image(systemName: "list.number")
                     Text("History")

@@ -16,7 +16,6 @@ struct FunTimeMathTimeApp: App {
         WindowGroup {
             Dashboard()
                 .modelContainer(for: [HistoricalProbSet.self, HistoricalProblem.self, Solution.self])
-//                .modelContainer(for: [HistoricalProbSet.self, QuizProblem.self, Solution.self])
 
         }
     }

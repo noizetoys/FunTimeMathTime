@@ -10,15 +10,14 @@ import SwiftData
 
 
 @Model
-class Solution {
+class Solution: Identifiable {
     @Attribute(.unique) var id: UUID
+//    var id: UUID
     
     var result: Int
-//    var remainder: Int?
     var remainder: Int
     
     
-//    init(result: Int, remainder: Int? = nil) {
     init(result: Int, remainder: Int = 0) {
         self.result = result
         self.remainder = remainder
@@ -28,38 +27,24 @@ class Solution {
 }
 
 extension Solution: Equatable {
-    static func == (lhs: Solution, rhs: Solution) -> Bool {
-        lhs.id == rhs.id
-    }
+    static func == (lhs: Solution, rhs: Solution) -> Bool { lhs.id == rhs.id }
 }
 
 
 extension Solution {
     var resultText: String { "\(result)" }
+    var fullText: String { resultText + (containsRemainder ? " \(remainderText)" : "") }
     
     var remainderText: String {
-        guard
-            containsRemainder
-//            let reminderValue = remainder,
-//            reminderValue > 0
-//            reminder > 0
-        else {
-            return ""
-        }
+        guard containsRemainder
+        else { return "" }
         
-//        return "R: \(reminderValue)"
         return "R: \(remainder)"
     }
     
     
-    var fullText: String {
-        resultText + (containsRemainder ? " \(remainderText)" : "")
-    }
-    
     var containsRemainder: Bool {
-        guard
-//            let remainder,
-            remainder > 0
+        guard remainder > 0
         else { return false}
         
         return true
@@ -71,7 +56,6 @@ extension Solution: CustomStringConvertible {
     var description: String {
         fullText
     }
-    
     
 }
 
