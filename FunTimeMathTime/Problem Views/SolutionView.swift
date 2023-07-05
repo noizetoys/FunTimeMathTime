@@ -66,7 +66,6 @@ struct SolutionView: View, Identifiable {
             
         }
         .bold(!dim || selected)
-//        .frame(height: 80)
         
     }
 }

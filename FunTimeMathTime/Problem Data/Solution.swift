@@ -12,7 +12,6 @@ import SwiftData
 @Model
 class Solution: Identifiable {
     @Attribute(.unique) var id: UUID
-//    var id: UUID
     
     var result: Int
     var remainder: Int
@@ -25,6 +24,7 @@ class Solution: Identifiable {
     }
     
 }
+
 
 extension Solution: Equatable {
     static func == (lhs: Solution, rhs: Solution) -> Bool { lhs.id == rhs.id }

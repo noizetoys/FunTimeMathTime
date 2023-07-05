@@ -64,11 +64,9 @@ struct HistoricalProblemView: View {
                     }
                     
                 } // HSTACK - Solutions
-//                .padding(.bottom, 10)
                 
             } // VStack
             .cornerRadius(10)
-//            .padding(.horizontal)
             .padding()
             .font(.title)
             .bold()

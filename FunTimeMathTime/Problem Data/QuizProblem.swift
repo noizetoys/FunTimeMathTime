@@ -7,13 +7,10 @@
 
 import SwiftUI
 import Combine
-//import SwiftData
 
 // TODO: Add way to store for future reference
 
 class QuizProblem: BasicProblem, ObservableObject {
-//@Model
-//class QuizProblem: BasicProblem {
     let id: UUID
     
     let topValue: Int
@@ -30,7 +27,6 @@ class QuizProblem: BasicProblem, ObservableObject {
         return selected == correctSolution
     }
     
-//    @Transient
     var solutions: [Solution] = []
     
     private var remainderText: String {
@@ -44,7 +40,6 @@ class QuizProblem: BasicProblem, ObservableObject {
     }
     
     // Used for animation
-//    @Transient
     var index: Int = 0
     
     
@@ -134,14 +129,3 @@ extension QuizProblem {
 }
 
 
-    // MARK: - Extension -
-
-//extension Int {
-//    func inverted() -> Int {
-//        let tens = self >= 10 ? self / 10 : 0
-//        let singles = self - (tens * 10)
-//        print("\(self): \(tens) - \(singles) or \(self) -> \((singles * 10) + tens)")
-//        
-//        return (singles * 10) + tens
-//    }
-//}

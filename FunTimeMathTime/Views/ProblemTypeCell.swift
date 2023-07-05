@@ -31,7 +31,6 @@ struct ProblemTypeCell: View {
                 .padding()
         }
         .frame(width: 60, height: 60)
-//        .padding()
     }
     
 }

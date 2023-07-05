@@ -6,13 +6,10 @@
 //
 
 import SwiftUI
-//import SwiftData
 
 
-//@Model
 enum ProblemType: String, CaseIterable, Codable, Identifiable {
     var id: UUID { UUID() }
-    
     
     case addition = "Addition"
     case subtraction = "Subtraction"

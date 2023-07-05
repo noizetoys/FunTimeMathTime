@@ -31,36 +31,6 @@ struct Dashboard: View {
                     Text("Settings")
                 }
         }
-//        NavigationSplitView {
-//                
-//                List(selection: $selectedRow) {
-//                    NavigationLink {
-//                        ProblemsConfigView()
-//                    } label: {
-//                        Text("New Quiz")
-//                    }
-//
-//                    ForEach(problemSets) { set in
-//                        NavigationLink {
-//                            HistoryDetailView(problemSet: set)
-//                        } label: {
-//                            HistoryListCellView(problemSet: set)
-//                        }
-//                    }
-//                    
-//                }
-//
-//        } detail: {
-//            if quizEngine.quizReady {
-//                QuizView()
-//            }
-//            else if selectedRow == nil {
-//                ProblemsConfigView()
-//            }
-//        }
-//        .onAppear {
-//            selectedRow = nil
-//        }
 
     }
     

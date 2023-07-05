@@ -10,7 +10,6 @@ import SwiftUI
 
 struct QuizCompleteView: View {
     @Environment(\.dismiss) private var dismiss
-//    @Environment(QuizEngine.self) private var quizEngine: QuizEngine
     var quizEngine: QuizEngine
     
 

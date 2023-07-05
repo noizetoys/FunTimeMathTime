@@ -12,7 +12,6 @@ import SwiftData
 @Model
 class HistoricalProblem: Identifiable {
     @Attribute(.unique) var id: UUID
-//    var id: UUID
     
     var topValue: Int
     var bottomValue: Int
@@ -33,33 +32,24 @@ class HistoricalProblem: Identifiable {
                   correctSolution: Solution,
                   selectedSolution: Solution?)
     {
-    print("\n ---> Historical Problem:  INIT")
         self.id = id
-    print("ID: \(id)")
         self.topValue = topValue
-    print("Top Value: \(topValue)")
         self.bottomValue = bottomValue
-    print("Bottom Value: \(bottomValue)")
         self.problemType = problemType.rawValue
-    print("Problem Type: \(problemType)")
         self.correctSolution = correctSolution
-    print("Correct Solution: \(correctSolution)")
         self.selectedSolution = selectedSolution
-    print("Selected Solution: \(selectedSolution)")
     }
     
     
     static func new(from problem: QuizProblem) -> HistoricalProblem {
-    print("\n ---> Historical Problem:  new from \(problem)")
-        
-        return HistoricalProblem.init(id: problem.id,
-                  topValue: problem.topValue,
-                  bottomValue: problem.bottomValue,
-                  problemType: problem.problemType,
-                  correctSolution: problem.correctSolution,
-                  selectedSolution: problem.selectedSolution)
+        HistoricalProblem.init(id: problem.id,
+                               topValue: problem.topValue,
+                               bottomValue: problem.bottomValue,
+                               problemType: problem.problemType,
+                               correctSolution: problem.correctSolution,
+                               selectedSolution: problem.selectedSolution)
     }
-
+    
     
 //    static func sampleProblem(top: Int?, bottom: Int?, type: ProblemType? = .addition) -> HistoricalProblem {
 //        let topValue = top ?? Int.random(in: 2...12)

@@ -15,12 +15,10 @@ struct QuizView: View {
     @Environment(\.modelContext) private var context
     
     @State private var quizEngine: QuizEngine
-    
     @State private var showCountdownSheet = false
-    
     @State private var timer: Timer? = nil
-
     @State var remainingSeconds: TimeInterval = 0
+    
     var timeString: String {
         let minutes = Int(remainingSeconds / 60)
         let seconds = Int(remainingSeconds.truncatingRemainder(dividingBy: 60))

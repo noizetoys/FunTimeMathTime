@@ -6,16 +6,13 @@
 //
 
 import Foundation
-//import Observation
 
 
-//@Observable
 class ProblemSetConfiguration: Identifiable {
     private(set) var id: UUID = UUID()
     
     var problemType: ProblemType = .addition
-//    var problemCount: Float = 30
-    var problemCount: Float = 10
+    var problemCount: Float = 30
     var timeLimit: Float = 3
     
     var valueRange: ClosedRange<Int> = 1...12
@@ -28,8 +25,7 @@ class ProblemSetConfiguration: Identifiable {
         // MARK: - Lifecycle -
 
     init(problemType: ProblemType = .addition,
-//         problemCount: Float = 30,
-         problemCount: Float = 10,
+         problemCount: Float = 30,
          timeLimit: Float = 3,
          valueRange: ClosedRange<Int> = 1...12,
          selectedValues: [Int] = [],
