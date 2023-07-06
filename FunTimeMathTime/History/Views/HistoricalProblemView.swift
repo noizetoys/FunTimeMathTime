@@ -91,6 +91,7 @@ struct HistoricalProblemView: View {
         }
     }
     
+    
     private var correctAnswerView: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 10)
@@ -108,6 +109,7 @@ struct HistoricalProblemView: View {
         
     }
 
+    
     private var inCorrectAnswerView: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 10)

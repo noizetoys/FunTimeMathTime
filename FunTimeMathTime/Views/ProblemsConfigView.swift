@@ -9,7 +9,6 @@ import SwiftUI
 
 
 struct ProblemsConfigView: View {
-//    @Environment(QuizEngine.self) private var quizEngine: QuizEngine
     @Environment(\.dismiss) private var dismiss
     
     /// Numbers to use as TOP value
@@ -44,6 +43,7 @@ struct ProblemsConfigView: View {
     
     @Binding private var paths: [ProblemSetConfiguration]
     
+    
     init(paths: Binding<[ProblemSetConfiguration]>) {
         self._paths = paths
     }
@@ -51,9 +51,6 @@ struct ProblemsConfigView: View {
     
     var body: some View {
         VStack {
-            Text("Quiz Configurator")
-                .font(.title)
-                .bold()
             
             HStack(spacing: 10) {
                 ForEach(ProblemType.allCases, id:\.self) { type in
@@ -63,7 +60,7 @@ struct ProblemsConfigView: View {
                         }
                 }
             }
-            .padding(.vertical)
+            .padding(.bottom)
             
             LazyVGrid(columns: columns, alignment: .center, spacing: 10, pinnedViews: [], content: {
                 ForEach(valueRange, id: \.self) { value in
@@ -84,28 +81,21 @@ struct ProblemsConfigView: View {
                         }
                 } // For Each
             })
-            .padding()
             
             // Sliders, etc.
             VStack {
-                VStack {
-                    Text("Number of Problems:  \(Int(problemCount))")
-                    
+                Section("Number of Problems: \(Int(problemCount))") {
                     problemCountSlider
-                        .frame(width: 200)
                 }
-                .padding()
+                .frame(height: 40)
+                .padding(.horizontal)
                 
-                VStack {
-                    Text(timeLimitText)
-                    
+                Section("\(timeLimitText)") {
                     timerSlider
-                        .frame(width: 200)
                 }
-                .padding(.top)
+                .frame(height: 40)
+                .padding(.horizontal)
             }
-            .bold()
-            .padding(.vertical)
             
             buttonsRow
         }
@@ -117,6 +107,8 @@ struct ProblemsConfigView: View {
             resetAllValues()
             print("ProblemsConfigView: 'onAppear' ")
         }
+        .navigationTitle("Quiz Bits")
+        .navigationBarTitleDisplayMode(.inline)
     }
     
     
@@ -202,7 +194,7 @@ struct ProblemsConfigView: View {
             }
             
             Spacer()
-                .frame(width: 100)
+//                .frame(width: 60)
             
                 // TODO: Select
             cuteButton(title: "Select", color: .green) {
@@ -213,9 +205,9 @@ struct ProblemsConfigView: View {
                     return
                 }
                 
-//                withAnimation {
+                withAnimation {
                     paths.append(createConfig())
-//                }
+                }
             }
             
             Spacer()

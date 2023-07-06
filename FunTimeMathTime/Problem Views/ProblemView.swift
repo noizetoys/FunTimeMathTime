@@ -24,20 +24,11 @@ struct ProblemView: View {
     
     var body: some View {
         ZStack {
-            RoundedRectangle(cornerRadius: 10)
-                .foregroundColor(.white)
-                .overlay {
-                    RoundedRectangle(cornerRadius: 10)
-                        .stroke(.black, lineWidth: 10.0)
-                }
-                .padding(5)
-
+            
             VStack(alignment: .center) {
                 HStack {
                     Spacer()
-                    
                     EquationView(problem: problem)
-                    
                     Spacer()
                 }
                 
@@ -59,7 +50,6 @@ struct ProblemView: View {
                             }
                             .padding(.horizontal, 10)
                     }
-                    
                 } // HSTACK - Solutions
 
             } // VStack
@@ -69,8 +59,9 @@ struct ProblemView: View {
             .bold()
             
         } // ZStack
-//        .frame(width: 200)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .frame(maxWidth: .infinity)
+        .background(.gray.opacity(0.2))
+        .clipShape(RoundedRectangle(cornerRadius: 15))
     }
     
 }

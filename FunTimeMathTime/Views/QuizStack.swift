@@ -18,6 +18,9 @@ struct QuizStack: View {
                 .navigationDestination(for: ProblemSetConfiguration.self) { config in
                     QuizView(config: config)
                 }
+                .navigationDestination(for: HistoricalProbSet.self) { probSet in
+                    HistoryDetailView(problemSet: probSet)
+                }
         }
     }
     

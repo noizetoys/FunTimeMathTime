@@ -82,7 +82,6 @@ class QuizEngine {
         cancellables = []
         
         quizInProgress = false
-        
         quizComplete = true
     }
     

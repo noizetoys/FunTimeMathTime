@@ -32,8 +32,6 @@ struct CountDownSheet: View {
         .onAppear {
             _ = timer.connect()
         }
-        .frame(width: 600, height: 200, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
-        .background(.pink.opacity(0.5))
         .clipShape(RoundedRectangle(cornerRadius: 15))
     }
     

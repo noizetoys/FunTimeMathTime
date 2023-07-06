@@ -19,6 +19,7 @@ struct QuizView: View {
     @State private var timer: Timer? = nil
     @State var remainingSeconds: TimeInterval = 0
     
+    
     var timeString: String {
         let minutes = Int(remainingSeconds / 60)
         let seconds = Int(remainingSeconds.truncatingRemainder(dividingBy: 60))
@@ -28,9 +29,6 @@ struct QuizView: View {
     }
 
     
-        // MARK: - Private -
-    
-    
         // MARK: - LifeCycle -
 
     init(config: ProblemSetConfiguration) {
@@ -39,18 +37,17 @@ struct QuizView: View {
     
     
     var body: some View {
-        VStack(spacing: 20) {
-            Text(quizEngine.problemTypeString)
-                .font(.largeTitle)
-                .bold()
-                .padding()
+        VStack {
+            Spacer()
             
             timerView
                 .padding()
             
             HStack {
                 if quizEngine.quizInProgress {
-                    ProblemView(problem: quizEngine.currentProblem)
+                    withAnimation {
+                        ProblemView(problem: quizEngine.currentProblem)
+                    }
                 }
                 else {
                     tapToBeginButton
@@ -66,9 +63,6 @@ struct QuizView: View {
                     Spacer()
                     skipButton
                 }
-                else {
-                    cancelButton
-                }
                 
                 Spacer()
                 
@@ -82,22 +76,14 @@ struct QuizView: View {
             quizEngine.start()
         }, content: {
             CountDownSheet()
+                .frame(height: 100)
         })
         .onChange(of: quizEngine.quizComplete, { old, new in
             if new == true {
+//            HistoryDetailView(problemSet: quizEngine.historicalProblemSet())
                 dismiss()
             }
         })
-        
-//        .sheet(isPresented: $quizEngine.quizComplete) {
-//            withAnimation {
-//                dismiss()
-//            }
-//        } content: {
-//            HistoryDetailView(problemSet: quizEngine.historicalProblemSet())
-//            QuizCompleteView(quizEngine: quizEngine)
-//                .clipShape(RoundedRectangle(cornerRadius: 35))
-//        }
         .onDisappear {
             timer?.invalidate()
             timer = nil
@@ -105,7 +91,8 @@ struct QuizView: View {
         .onAppear {
             quizEngine.context = context
         }
-        
+        .navigationTitle(quizEngine.problemTypeString)
+        .navigationBarTitleDisplayMode(.inline)
     }
     
     
@@ -114,11 +101,7 @@ struct QuizView: View {
     private var tapToBeginButton: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 10)
-                .foregroundColor(.white)
-                .overlay {
-                    RoundedRectangle(cornerRadius: 10)
-                        .stroke(.black, lineWidth: 10.0)
-                }
+                .foregroundColor(.clear)
                 .padding(5)
             
             Text("Tap to Begin")
@@ -130,6 +113,8 @@ struct QuizView: View {
                 showCountdownSheet = true
             }
         }
+        .background(.gray.opacity(0.2))
+        .clipShape(RoundedRectangle(cornerRadius: 15))
     }
     
     
@@ -141,7 +126,6 @@ struct QuizView: View {
                 self.remainingSeconds -= 1
                 
                 if self.remainingSeconds <= 0 {
-//                    self.quizEngine.saveProblemSet(to: self.context)
                     self.quizEngine.end()
                 }
             }
@@ -171,7 +155,6 @@ struct QuizView: View {
     
     private var skipButton: some View {
         Button(action: {
-            print("Skip Buttom Pressed")
             withAnimation {
                 quizEngine.skip()
             }
@@ -193,8 +176,6 @@ struct QuizView: View {
     
     private var endButton: some View {
         Button(action: {
-//            showQuizCompleteSheet = true
-//            quizEngine.saveProblemSet(to: context)
             quizEngine.end()
         }, label: {
             Text("End")
@@ -203,30 +184,6 @@ struct QuizView: View {
                 .bold()
                 .padding()
         })
-        .buttonBorderShape(.roundedRectangle)
-        .frame(width: 150)
-        .background(.red)
-        .clipShape(RoundedRectangle(cornerRadius: 15))
-        .overlay {
-            RoundedRectangle(cornerRadius: 15)
-                .stroke(.black, lineWidth: 6)
-        }
-    }
-    
-    
-    private var cancelButton: some View {
-        Button(role: .cancel) {
-            withAnimation {
-                quizEngine.cancel()
-                dismiss()
-            }
-        } label: {
-            Text("Cancel")
-                .foregroundColor(.white)
-                .font(.title)
-                .bold()
-                .padding()
-        }
         .buttonBorderShape(.roundedRectangle)
         .frame(width: 150)
         .background(.red)
