@@ -25,7 +25,7 @@ struct Dashboard: View {
                     Text("History")
                 }
             
-            Text("Settings")
+            SettingsView()
                 .tabItem {
                     Image(systemName: "gearshape")
                     Text("Settings")

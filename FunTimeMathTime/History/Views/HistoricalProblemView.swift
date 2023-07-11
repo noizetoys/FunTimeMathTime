@@ -47,27 +47,8 @@ struct HistoricalProblemView: View {
                     .frame(width: 80, height: 4)
                     .padding(.top, -10)
                 
-                HStack {
-                    if problem.selectedSolution != nil {
-                        if problem.correctSolutionChosen {
-                            correctAnswerView
-                        }
-                        else {
-                            inCorrectAnswerView
-                                .onTapGesture {
-                                    showingCorrectAnswer.toggle()
-                                }
-                        }
-                    }
-                    else {
-                        noCorrectAnswerView
-                                .onTapGesture {
-                                    showingCorrectAnswer.toggle()
-                                }
-                    }
-                    
-                } // HSTACK - Solutions
-                .frame(width: 100, height: 80)
+                solutionView
+                    .frame(width: 100, height: 80)
                 
             } // VStack
             .cornerRadius(10)
@@ -96,6 +77,29 @@ struct HistoricalProblemView: View {
     }
     
     
+    @ViewBuilder
+    private var solutionView: some View {
+        if problem.selectedSolution != nil {
+            if problem.correctSolutionChosen {
+                correctAnswerView
+            }
+            else {
+                inCorrectAnswerView
+                    .onTapGesture {
+                        showingCorrectAnswer.toggle()
+                    }
+            }
+        }
+        else {
+            noCorrectAnswerView
+                .onTapGesture {
+                    showingCorrectAnswer.toggle()
+                }
+        }
+        
+    }
+    
+    
     private var correctAnswerView: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 10)
@@ -109,8 +113,6 @@ struct HistoricalProblemView: View {
             }
             
         }
-//        .frame(width: 100, height: 80)
-        
     }
 
     
@@ -126,8 +128,6 @@ struct HistoricalProblemView: View {
             }
             
         }
-//        .frame(width: 100, height: 80)
-
     }
     
     
@@ -143,9 +143,8 @@ struct HistoricalProblemView: View {
             }
             
         }
-            //        .frame(width: 100, height: 80)
-        
     }
+    
 }
 
 
