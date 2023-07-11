@@ -47,7 +47,7 @@ class HistoricalProblem: Identifiable {
                                bottomValue: problem.bottomValue,
                                problemType: problem.problemType,
                                correctSolution: problem.correctSolution,
-                               selectedSolution: problem.selectedSolution)
+                               selectedSolution: problem.solutionSelected)
     }
     
     

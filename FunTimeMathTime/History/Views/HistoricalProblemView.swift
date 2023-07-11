@@ -60,10 +60,14 @@ struct HistoricalProblemView: View {
                         }
                     }
                     else {
-                        Text("---")
+                        noCorrectAnswerView
+                                .onTapGesture {
+                                    showingCorrectAnswer.toggle()
+                                }
                     }
                     
                 } // HSTACK - Solutions
+                .frame(width: 100, height: 80)
                 
             } // VStack
             .cornerRadius(10)
@@ -105,7 +109,7 @@ struct HistoricalProblemView: View {
             }
             
         }
-        .frame(width: 100, height: 80)
+//        .frame(width: 100, height: 80)
         
     }
 
@@ -122,10 +126,26 @@ struct HistoricalProblemView: View {
             }
             
         }
-        .frame(width: 100, height: 80)
+//        .frame(width: 100, height: 80)
 
     }
     
+    
+    private var noCorrectAnswerView: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 10)
+                .foregroundColor(showingCorrectAnswer ? correctColor : Color.gray.opacity(0.5) )
+                .background(.white)
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+            
+            VStack {
+                Text(showingCorrectAnswer ? correctText : "?")
+            }
+            
+        }
+            //        .frame(width: 100, height: 80)
+        
+    }
 }
 
 

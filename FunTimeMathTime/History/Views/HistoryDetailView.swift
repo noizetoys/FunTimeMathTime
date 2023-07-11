@@ -36,14 +36,14 @@ struct HistoryDetailView: View {
             
         }
         .padding()
+        .navigationTitle(problemSet.problemType)
     
     }
     
     
     private var headerView: some View {
         VStack {
-            Text("\(Int(problemSet.problemCount)) \(problemSet.problemType) Problems,")
-            Text("\(problemSet.answeredCount) Answered,")
+            Text("\(Int(problemSet.problemCount)) Problems, \(problemSet.answeredCount) Answered,")
             Text("\(problemSet.correctlyAnswered) Correct,")
             Text("Completed in \(problemSet.completionTimeString)")
         }

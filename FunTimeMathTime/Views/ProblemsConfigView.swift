@@ -68,8 +68,8 @@ struct ProblemsConfigView: View {
                     
                     ValueGridItem(selected: isSelected, value: value)
                         .onTapGesture {
-                            if selectedValues.contains(value) {
-                                selectedValues.append(value)
+                            if selectedValues.contains(value), let index = selectedValues.firstIndex(of: value) {
+                                selectedValues.remove(at: index)
                             }
                             else {
                                 selectedValues.append(value)
@@ -105,7 +105,6 @@ struct ProblemsConfigView: View {
         .padding()
         .onAppear {
             resetAllValues()
-            print("ProblemsConfigView: 'onAppear' ")
         }
         .navigationTitle("Quiz Bits")
         .navigationBarTitleDisplayMode(.inline)
@@ -194,7 +193,6 @@ struct ProblemsConfigView: View {
             }
             
             Spacer()
-//                .frame(width: 60)
             
                 // TODO: Select
             cuteButton(title: "Select", color: .green) {

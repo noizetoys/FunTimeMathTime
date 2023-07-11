@@ -11,34 +11,50 @@ import SwiftData
 
 struct HistoryListView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query var problemSets: [HistoricalProbSet]
+    @Query(sort: \.startTime, order: .reverse) var problemSets: [HistoricalProbSet]
     
     
     var body: some View {
         NavigationStack {
+            
             List {
-                Section {
-                    ForEach(problemSets) { set in
-                        NavigationLink {
-                            HistoryDetailView(problemSet: set)
-                        } label: {
-                            HistoryListCellView(problemSet: set)
-                        }
-                    }
-//                    .onDelete(perform: { indexSet in
-//                        for index in indexSet {
-//                            let item = problemSets.remove(at: index)
-//                            modelContext.delete(item)
-//                        }
-//                    })
+                ForEach(sortedSectionKeys, id: \.self) { key in
                     
-                } header: {
-                    Text("Previous Quizes")
+                    Section(key.formatted(date: .numeric, time: .omitted)) {
+                        ForEach(problems(for: key)) { set in
+                            
+                            NavigationLink {
+                                HistoryDetailView(problemSet: set)
+                            } label: {
+                                HistoryListCellView(problemSet: set)
+                            }
+                        }
+                        .onDelete(perform: { indexSet in
+                            for index in indexSet {
+                                modelContext.delete(problemSets[index])
+                            }
+                        })
+                    }
                 }
                 
             }
         }
         
+    }
+    
+    
+    private var sections: [Date: [HistoricalProbSet]] {
+        Dictionary.init(grouping: problemSets) { $0.startTime }
+    }
+    
+    
+    private var sortedSectionKeys: [Date] {
+        sections.keys.sorted { $0 > $1 }
+    }
+    
+    
+    private func problems(for key: Date) -> [HistoricalProbSet] {
+        Array(sections[key]?.sorted { $0.startTime < $1.startTime } ?? [])
     }
     
 }
@@ -59,7 +75,6 @@ struct HistoryListCellView: View {
                 Text("\(problemSet.answeredCount)/\(Int(problemSet.problemCount))")
                     .bold()
                 
-//                Text("\(problemSet.problemType.rawValue)")
                 Text("\(problemSet.problemType)")
                     .italic()
                     .bold()

@@ -37,47 +37,55 @@ struct QuizView: View {
     
     
     var body: some View {
-        VStack {
-            Spacer()
-            
-            timerView
-                .padding()
-            
-            HStack {
-                if quizEngine.quizInProgress {
-                    withAnimation {
-                        ProblemView(problem: quizEngine.currentProblem)
+        ZStack {
+            VStack {
+                Spacer()
+                
+                timerView
+                    .padding()
+                
+                HStack {
+                    if quizEngine.quizInProgress {
+                        withAnimation {
+                            ProblemView(problem: quizEngine.currentProblem)
+                        }
+                    }
+                    else {
+                        if showCountdownSheet {
+                            CountDownSheet(showCountdown: $showCountdownSheet) {
+//                                withAnimation {
+                                    self.startTimer()
+                                    self.quizEngine.start()
+//                                }
+                            }
+                            .clipShape(RoundedRectangle(cornerRadius: 15))
+                        }
+                        else {
+                            tapToBeginButton
+                        }
+
                     }
                 }
-                else {
-                    tapToBeginButton
-                }
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            
-            HStack {
-                Spacer()
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
                 
-                if quizEngine.quizInProgress {
-                    endButton
+                HStack {
                     Spacer()
-                    skipButton
+                    
+                    if quizEngine.quizInProgress {
+                        endButton
+                        Spacer()
+                        skipButton
+                    }
+                    
+                    Spacer()
+                    
                 }
-                
-                Spacer()
+                .padding()
                 
             }
-            .padding()
-            
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .safeAreaPadding(.horizontal)
-        .sheet(isPresented: $showCountdownSheet, onDismiss: {
-            startTimer()
-            quizEngine.start()
-        }, content: {
-            CountDownSheet()
-                .frame(height: 100)
-        })
         .onChange(of: quizEngine.quizComplete, { old, new in
             if new == true {
 //            HistoryDetailView(problemSet: quizEngine.historicalProblemSet())

@@ -31,13 +31,10 @@ class QuizEngine {
     var unansweredCount: Int { unansweredProblems.count }
     var unansweredProblems: [QuizProblem] = []
     
-    var answeredCount: Int { answeredProblems.count }
-    private var answeredProblems: [QuizProblem] = []
-    
     var timeLimit: TimeInterval { TimeInterval(problemSetConfig.timeLimit) }
     
     var questionsCountString: String {
-        "\(answeredProblems.count)/\(problemCount)"
+        "\(problemCount - unansweredProblems.count)/\(problemCount)"
     }
     
     private var cancellables = [AnyCancellable]()
@@ -50,14 +47,12 @@ class QuizEngine {
         self.context = context
         problemSetConfig = config
         problems = ProblemGenerator.problemSet(for: config)
-        print("\n🚗 QuizEngine: INIT problemSetConfig = \(problemSetConfig)")
     }
     
     
         // MARK: - Public -
     
     func start() {
-        answeredProblems = []
         unansweredProblems = []
         unansweredProblems = problems
         startTime = .now
@@ -89,28 +84,30 @@ class QuizEngine {
     func next() {
         cancellables.forEach { $0.cancel() }
         
-        if unansweredProblems.isEmpty {
-            end()
-        }
+        guard
+            unansweredProblems.isEmpty == false
         else {
-            currentProblem = unansweredProblems.removeFirst()
-            
-            currentProblem?
-                .$selectedSolution
-                .sink { solution in
-                    if solution == nil { return }
-                    
-                    if let problem = self.currentProblem {
-                        self.answeredProblems.append(problem)
-                        
-                        if self.unansweredProblems.isEmpty == false {
-                            self.next()
-                        }
-                        else { self.end() }
-                    }
-                }
-                .store(in: &cancellables)
+            end()
+            return
         }
+        
+        currentProblem = unansweredProblems.removeFirst()
+        
+        currentProblem?
+            .$selectedSolution
+            .sink { solution in
+                guard
+                    solution != nil,
+                    self.currentProblem != nil
+                else { return }
+                
+//                print("\nSINK: Current Problem: \(self.currentProblem)")
+//                print("SINK: currentProblem.selectedSolution = \(self.currentProblem?.selectedSolution)")
+//                print("SINK: currentProblem.solutionSelected (not published) = \(self.currentProblem?.solutionSelected)")
+                
+                self.unansweredProblems.isEmpty ? self.end() : self.next()
+            }
+            .store(in: &cancellables)
     }
     
     
@@ -137,7 +134,7 @@ class QuizEngine {
                                              bottomValue: problem.bottomValue,
                                              problemType: problem.problemType,
                                              correctSolution: problem.correctSolution,
-                                             selectedSolution: problem.selectedSolution)
+                                             selectedSolution: problem.solutionSelected)
             convertedProblems.append(histProb)
         }
         
@@ -146,4 +143,5 @@ class QuizEngine {
                                  end: endTime,
                                  config: problemSetConfig)
     }
+    
 }

@@ -18,7 +18,12 @@ class QuizProblem: BasicProblem, ObservableObject {
     let problemType: ProblemType
     
     let correctSolution: Solution
+    // Used to trigger changing problem
     @Published var selectedSolution: Solution?
+    /// Not published.
+    ///  Used to overcome problem with last question
+    ///  Triggering 'SINK' before actual assignment occurs
+    var solutionSelected: Solution?
 
     var correctlyAnswered: Bool? {
         guard let selected = selectedSolution

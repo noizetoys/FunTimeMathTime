@@ -45,7 +45,10 @@ struct ProblemView: View {
                             .frame(width: 80, height: 80)
                             .onTapGesture {
                                 withAnimation {
+                                    print("\n-----> ProblemView: Solution tapped:  PRE assign")
+                                    problem.solutionSelected = solution
                                     problem.selectedSolution = solution
+                                    print("ProblemView: Solution tapped:  POST assign <-----/n")
                                 }
                             }
                             .padding(.horizontal, 10)
