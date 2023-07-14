@@ -45,6 +45,13 @@ enum ProblemType: String, CaseIterable, Codable, Identifiable {
         }
     }
     
+    
+//    private func createDivisionSolution(topValue: Int, bottomValue: Int) -> Solution {
+//        
+//        
+//        
+//    }
+    
 }
 
 

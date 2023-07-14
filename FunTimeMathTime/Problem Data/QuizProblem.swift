@@ -18,13 +18,13 @@ class QuizProblem: BasicProblem, ObservableObject {
     let problemType: ProblemType
     
     let correctSolution: Solution
-    // Used to trigger changing problem
+        // Used to trigger changing problem
     @Published var selectedSolution: Solution?
-    /// Not published.
-    ///  Used to overcome problem with last question
-    ///  Triggering 'SINK' before actual assignment occurs
+        /// Not published.
+        ///  Used to overcome problem with last question
+        ///  Triggering 'SINK' before actual assignment occurs
     var solutionSelected: Solution?
-
+    
     var correctlyAnswered: Bool? {
         guard let selected = selectedSolution
         else { return nil}
@@ -44,7 +44,7 @@ class QuizProblem: BasicProblem, ObservableObject {
         return "Remainder \(correctSolution.remainder)"
     }
     
-    // Used for animation
+        // Used for animation
     var index: Int = 0
     
     
@@ -67,15 +67,21 @@ class QuizProblem: BasicProblem, ObservableObject {
         var tempOptions = [Solution]()
         
         tempOptions.append(correctSolution)
-        tempOptions.append(problemType.solution(topValue: topValue, bottomValue: bottomValue + 1))
-        if problemType == .division && bottomValue == 1 {
-            tempOptions.append(problemType.solution(topValue: topValue, bottomValue: bottomValue + 2))
+        
+        if problemType == .division && topValue < bottomValue {
+            tempOptions.append(problemType.solution(topValue: topValue, bottomValue: topValue - 1))
+            tempOptions.append(problemType.solution(topValue: topValue, bottomValue: topValue + 1))
         }
         else {
+            tempOptions.append(problemType.solution(topValue: topValue, bottomValue: bottomValue + 1))
             tempOptions.append(problemType.solution(topValue: topValue, bottomValue: bottomValue - 1))
         }
         
-        solutions = tempOptions.shuffled().shuffled()
+        for _ in 1...Int.random(in: 3...10) {
+            tempOptions.shuffle()
+        }
+        
+        solutions = tempOptions
     }
     
    
