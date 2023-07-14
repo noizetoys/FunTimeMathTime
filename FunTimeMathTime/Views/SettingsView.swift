@@ -151,22 +151,11 @@ struct SettingsView: View {
                     
                 }
                 
-                
-                    //            Button {
-                    //                
-                    //            } label: {
-                    //                HStack {
-                    //                    Spacer()
-                    //                    Text("Save Settings")
-                    //                    Spacer()
-                    //                }
-                    //            }
-                
             }
-//            .padding()
             .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.inline)
         }
+        
     }
     
     
