@@ -39,8 +39,9 @@ enum ProblemType: String, CaseIterable, Codable, Identifiable {
             case .subtraction: return Solution(result: topValue - bottomValue)
             case .multiplication: return Solution(result: topValue * bottomValue)
             case .division:
-                let mantissa = Int(topValue / bottomValue)
-                let remainder = Int(topValue % bottomValue)
+                let adjustedBottom = bottomValue == 0 ? 1 : bottomValue
+                let mantissa = Int(topValue / adjustedBottom)
+                let remainder = Int(topValue % adjustedBottom)
                 return Solution(result: mantissa, remainder: remainder)
         }
     }
