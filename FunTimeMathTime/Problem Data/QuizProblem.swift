@@ -47,7 +47,8 @@ class QuizProblem: BasicProblem, ObservableObject {
         // Used for animation
     var index: Int = 0
     
-    
+    @AppStorage(SettingsConstants.RANDOMIZEPROBLEMS) private var randomizeProblems: Bool = true
+
         // MARK: - Lifecycle
     
     init(topValue: Int, bottomValue: Int, problemType: ProblemType) {
@@ -77,8 +78,10 @@ class QuizProblem: BasicProblem, ObservableObject {
             tempOptions.append(problemType.solution(topValue: topValue, bottomValue: bottomValue - 1))
         }
         
-        for _ in 1...Int.random(in: 3...10) {
-            tempOptions.shuffle()
+        if randomizeProblems {
+            for _ in 1...Int.random(in: 3...10) {
+                tempOptions.shuffle()
+            }
         }
         
         solutions = tempOptions

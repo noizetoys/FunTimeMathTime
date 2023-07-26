@@ -15,9 +15,6 @@ fileprivate func values<T: Strideable>(from start: T, to end: T, by step: T) -> 
         values.append(val)
     }
     
-    
-    let array = Array(stride(from: start, to: end, by: step as! T.Stride))
-    
     return values
 }
 
@@ -25,17 +22,22 @@ fileprivate func values<T: Strideable>(from start: T, to end: T, by step: T) -> 
 struct SettingsConstants {
     private init() {}
     
-    static let MINIMUMPROBLEMS = "MINIMUMPROBLEMS"
+    static let MINIMUMPROBLEMS = "minimumProblems"
     static let MAXIMUMPROBLEMS = "maximumProblems"
+    static let NUMBEROFPROBLEMS = "numberOfProblems"
     static let MAXIMUMSOLUTIONS = "maximumSolutions"
+    
     static let MINIMUMVALUE = "minimumValue"
     static let MAXIMUMVALUE = "maximumValue"
+    
     static let MULTIPLEPROBLEMTYPES = "multipleProblemTypes"
     static let MULTIPLECHOICE = "multipleChoice"
     static let RANDOMIZEPROBLEMS = "randomizeProblems"
+    
     static let MINIMUMTIME = "minimumTime"
     static let MAXIMUMTIME = "maximumTime"
     static let AUTOSTARTQUIZ = "autoStartQuiz"
+    
     static let SHOWSCORE = "showScore"
 }
 
@@ -43,6 +45,7 @@ struct SettingsConstants {
 struct SettingsView: View {
     @AppStorage(SettingsConstants.MINIMUMPROBLEMS) private var minimumProblems: Int = 5
     @AppStorage(SettingsConstants.MAXIMUMPROBLEMS) private var maximumProblems: Int = 50
+    @AppStorage(SettingsConstants.NUMBEROFPROBLEMS) private var numberOfProblems: Int = 20
     @AppStorage(SettingsConstants.MAXIMUMSOLUTIONS) private var maximumSolutions: Int = 3
     
     @AppStorage(SettingsConstants.MINIMUMVALUE) private var minimumValue: Int = 1
@@ -66,6 +69,8 @@ struct SettingsView: View {
                     NumberPicker(binding: $minimumProblems, values: values(from: 5, to: 55, by: 5), text: "Fewest")
                     
                     NumberPicker(binding: $maximumProblems, values: values(from: 10, to: 155, by: 5), text: "Most")
+                    
+                    NumberPicker(binding: $numberOfProblems, values: values(from: minimumProblems, to: maximumProblems, by: 5), text: "Most")
                     
                     NumberPicker(binding: $maximumSolutions, values: Array<Int>.fromRange(2...6), text: "Number of Solutions")
                 }

@@ -18,7 +18,7 @@ struct ProblemsConfigView: View {
     
     // Used to generate Config
     @State var problemType: ProblemType = .addition
-    @State var problemCount: Float = 30
+    @State var problemCount: Float = 20
     @State var timeLimit: Float = 3.0
     @State var valueRange: ClosedRange<Int> = 1...12
     @State var selectedValues: [Int] = []
@@ -29,7 +29,7 @@ struct ProblemsConfigView: View {
         let limit = timeLimit
         return limit > 0 ? "Time Limit:  \(limit) Minutes" : "No Time Limit"
     }
-    private let problemCountRange: ClosedRange<Float> = 20...50
+    @State var problemCountRange: ClosedRange<Float> = 20...50
     
     private var columns: [GridItem] = [
         GridItem(.flexible(minimum: 40, maximum: 60), spacing: 10, alignment: .center),
@@ -38,6 +38,25 @@ struct ProblemsConfigView: View {
         GridItem(.flexible(minimum: 40, maximum: 60), spacing: 10, alignment: .center),
     ]
     
+    // AppStorage
+    
+    @AppStorage(SettingsConstants.MINIMUMPROBLEMS) private var defaultMinimumProblems: Int = 5
+    @AppStorage(SettingsConstants.MAXIMUMPROBLEMS) private var defaultMaximumProblems: Int = 50
+    @AppStorage(SettingsConstants.NUMBEROFPROBLEMS) private var numberOfProblems: Int = 20
+    @AppStorage(SettingsConstants.MAXIMUMSOLUTIONS) private var defaultMaximumSolutions: Int = 3
+    
+    @AppStorage(SettingsConstants.MINIMUMVALUE) private var defaultMinimumValue: Int = 1
+    @AppStorage(SettingsConstants.MAXIMUMVALUE) private var defaultMaximumValue: Int = 12
+    @AppStorage(SettingsConstants.MULTIPLEPROBLEMTYPES) private var defaultMultipleProblemTypes: Bool = false
+    @AppStorage(SettingsConstants.MULTIPLECHOICE) private var defaultMultipleChoice: Bool = true
+    @AppStorage(SettingsConstants.RANDOMIZEPROBLEMS) private var defaultRandomizeProblems: Bool = true
+    
+    @AppStorage(SettingsConstants.MINIMUMTIME) private var defaultMinimumTime: Double = 0.0
+    @AppStorage(SettingsConstants.MAXIMUMTIME) private var defaultMaximumTime: Double = 10.0
+    @AppStorage(SettingsConstants.AUTOSTARTQUIZ) private var defaultAutoStartQuiz: Bool = true
+    
+    @AppStorage(SettingsConstants.SHOWSCORE) private var defaultShowScore: Bool = true
+
     
         // MARK: - View
     
@@ -46,6 +65,12 @@ struct ProblemsConfigView: View {
     
     init(paths: Binding<[ProblemSetConfiguration]>) {
         self._paths = paths
+        
+        // Use defaults
+//        problemCountRange = Float(defaultMinimumProblems)...Float(defaultMaximumProblems)
+//        valueRange = defaultMinimumValue...defaultMaximumValue
+//        
+        resetAllValues()
     }
         
     
@@ -87,17 +112,20 @@ struct ProblemsConfigView: View {
                 Section("Number of Problems: \(Int(problemCount))") {
                     problemCountSlider
                 }
+                .bold()
                 .frame(height: 40)
                 .padding(.horizontal)
                 
                 Section("\(timeLimitText)") {
                     timerSlider
                 }
+                .bold()
                 .frame(height: 40)
                 .padding(.horizontal)
             }
             
             buttonsRow
+                .padding(.top)
         }
         .alert("No Numbers Selected!", isPresented: $showAlert) {
             Button("Ok", role: .cancel) { }
@@ -120,12 +148,13 @@ struct ProblemsConfigView: View {
         }
         
         problemType = .addition
-        problemCount = 30
+        problemCount = Float(numberOfProblems)
         timeLimit = 3.0
-        valueRange = 1...12
+        valueRange = defaultMinimumValue...defaultMaximumValue
         selectedValues = []
-        autoStartQuiz = false
-        randomize = true
+        autoStartQuiz = defaultAutoStartQuiz
+        randomize = defaultRandomizeProblems
+        problemCountRange = Float(defaultMinimumProblems)...Float(defaultMaximumProblems)
     }
     
     
@@ -159,7 +188,7 @@ struct ProblemsConfigView: View {
     
     private var timerSlider: some View {
         Slider(value: $timeLimit,
-               in: 0...10,
+               in: Float(defaultMinimumTime)...Float(defaultMaximumTime),
                step: 0.5,
                label: { Text("Timer") },
                minimumValueLabel: { Text("None") },
@@ -168,19 +197,19 @@ struct ProblemsConfigView: View {
     }
     
     
-    private var randomizeToggle: some View {
-        HStack {
-            Toggle(isOn: $randomize) {
-                Text("Randomize Order")
-                    .lineLimit(1)
-                    .multilineTextAlignment(.leading)
-                    .font(.title)
-                    .bold()
-            }
-            .frame(width: 350)
-        }
-        .padding()
-    }
+//    private var randomizeToggle: some View {
+//        HStack {
+//            Toggle(isOn: $randomize) {
+//                Text("Randomize Order")
+//                    .lineLimit(1)
+//                    .multilineTextAlignment(.leading)
+//                    .font(.title)
+//                    .bold()
+//            }
+//            .frame(width: 350)
+//        }
+//        .padding()
+//    }
     
     
     private var buttonsRow: some View {
@@ -221,7 +250,7 @@ struct ProblemsConfigView: View {
                 .font(.title)
                 .bold()
         })
-        .frame(maxWidth: 150, maxHeight: 80)
+        .frame(maxWidth: 150, maxHeight: 60)
         .background(color)
         .foregroundColor(.white)
         .clipShape(.rect(cornerRadius: 10))
@@ -246,7 +275,7 @@ struct ValueGridItem: View, Identifiable {
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 10)
-                .foregroundColor( selected ? .orange : .clear)
+                .foregroundColor( selected ? .green.opacity(0.8) : .clear)
                 .overlay {
                     RoundedRectangle(cornerRadius: 10)
                         .stroke(.black, lineWidth: 4.0)

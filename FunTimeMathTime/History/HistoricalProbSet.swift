@@ -25,7 +25,7 @@ class HistoricalProbSet: Identifiable {
     
     var valueRangeLowerBounds: Int
     var valueRangeUpperBounds: Int
-    var selectedValues: [Int]
+    @Relationship(.cascade) var selectedValues: [Int]
     var autoStartQuiz: Bool
     
     var problemType: String

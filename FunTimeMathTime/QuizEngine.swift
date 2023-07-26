@@ -121,7 +121,7 @@ class QuizEngine {
     
     
     func saveProblemSet() {
-        context?.insert(object: historicalProblemSet())
+        context?.insert(historicalProblemSet())
     }
     
     

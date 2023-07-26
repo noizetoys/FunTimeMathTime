@@ -11,7 +11,7 @@ import SwiftData
 
 struct HistoryListView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query(sort: \.startTime, order: .reverse) var problemSets: [HistoricalProbSet]
+    @Query(sort: \HistoricalProbSet.startTime, order: .reverse) var problemSets: [HistoricalProbSet]
     
     
     var body: some View {
